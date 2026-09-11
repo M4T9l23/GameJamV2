@@ -16,14 +16,14 @@ EnemyScene = ExtResource("2_8gbba")
 scale = Vector2(0.4, 0.386)
 
 [node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
-position = Vector2(86, 50)
+position = Vector2(75, 64)
 scale = Vector2(0.4, 0.386)
 
 [node name="Wall2" parent="." unique_id=576701195 instance=ExtResource("4_jjvhh")]
-position = Vector2(83, -78.999985)
+position = Vector2(83, -84.00001)
 scale = Vector2(0.4, 0.386)
 
 [node name="Wall3" parent="." unique_id=1082431219 instance=ExtResource("4_jjvhh")]
-position = Vector2(239, 87)
+position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
