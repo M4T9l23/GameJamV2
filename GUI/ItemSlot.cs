@@ -23,6 +23,9 @@ public partial class ItemSlot : Panel
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
+		if (PickupMode.Instance == null || !PickupMode.Instance.Active)
+			return default;
+
 		if (_icon.Texture == null)
 			return default;
 
@@ -40,11 +43,24 @@ public partial class ItemSlot : Panel
 
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
+		if (PickupMode.Instance == null || !PickupMode.Instance.Active)
+			return false;
+
+		if (data.AsGodotObject() is WorldItem)
+			return IsEmpty();
+
 		return true;
 	}
 
 	public override void _DropData(Vector2 atPosition, Variant data)
 	{
+		if (data.AsGodotObject() is WorldItem worldItem)
+		{
+			SetTexture(worldItem.GetTexture());
+			worldItem.QueueFree();
+			return;
+		}
+
 		var otherIcon = data.As<TextureRect>();
 		var tmp = _icon.Texture;
 		_icon.Texture = otherIcon.Texture;

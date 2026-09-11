@@ -2,7 +2,14 @@ using Godot;
 
 public partial class Inventory : Panel
 {
+	public static Inventory Instance { get; private set; }
+
 	private Variant _dataBk;
+
+	public override void _Ready()
+	{
+		Instance = this;
+	}
 
 	public override void _Process(double delta)
 	{

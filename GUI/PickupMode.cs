@@ -48,8 +48,22 @@ public partial class PickupMode : Node
 	{
 		Active = !Active;
 		if (Active)
+		{
 			Input.SetCustomMouseCursor(_openCursor, Input.CursorShape.Arrow, _openHotspot);
+			ResetStuckWorldItems();
+		}
 		else
+		{
 			Input.SetCustomMouseCursor(null, Input.CursorShape.Arrow);
+		}
+	}
+
+	private void ResetStuckWorldItems()
+	{
+		foreach (Node node in GetTree().GetNodesInGroup("world_items"))
+		{
+			if (node is WorldItem item)
+				item.ResetState();
+		}
 	}
 }
