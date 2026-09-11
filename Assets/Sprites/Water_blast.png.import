@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlvk2a5oc6knm"
-path="res://.godot/imported/Ruka otevrena.png-1deba05a4159c699a79af8fff4e47360.ctex"
+uid="uid://b5ik3bipg63tr"
+path="res://.godot/imported/Water_blast.png-cd0de986c003952e4b0139ee2775aade.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Ruka otevrena.png"
-dest_files=["res://.godot/imported/Ruka otevrena.png-1deba05a4159c699a79af8fff4e47360.ctex"]
+source_file="res://Assets/Sprites/Water_blast.png"
+dest_files=["res://.godot/imported/Water_blast.png-cd0de986c003952e4b0139ee2775aade.ctex"]
 
 [params]
 
