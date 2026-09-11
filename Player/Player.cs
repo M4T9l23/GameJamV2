@@ -42,9 +42,9 @@ public partial class Player : CharacterBody2D
 
         if (input != Vector2.Zero)
         {
-            _facing = input.Normalized();
             _animatedSprite.Play("move_animation");
-
+            _facing = input.Normalized();
+            
             _animatedSprite.Rotation = _facing.Angle() + Mathf.DegToRad(SpriteAngleOffsetDegrees);
         }
         else
