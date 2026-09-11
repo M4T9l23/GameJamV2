@@ -44,7 +44,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s0gn5")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"default",
 "speed": 8.0
 }]
@@ -63,6 +63,7 @@ polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
 position = Vector2(-73, -74.00002)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
+autoplay = "default"
 frame = 4
 frame_progress = 1.0
 centered = false
