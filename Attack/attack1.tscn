@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cbu1bq8jwoa0i"]
+
+[ext_resource type="Script" uid="uid://dkjjawj3dbifp" path="res://Attack/Attack1.cs" id="1_db15e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
+
+[node name="Area2D" type="Area2D" unique_id=919805070]
+script = ExtResource("1_db15e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=375859771]
+shape = SubResource("RectangleShape2D_fxl0e")
+
+[node name="Polygon2D" type="Polygon2D" parent="CollisionShape2D" unique_id=1903411092]
+polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
