@@ -41,6 +41,10 @@ public partial class ItemSlot : Panel
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
+		// Bez pickup módu (Tab) se s itemy nedá hýbat.
+		if (PickupMode.Instance == null || !PickupMode.Instance.Active)
+			return default;
+
 		if (_icon == null || _icon.Texture == null)
 			return default;
 

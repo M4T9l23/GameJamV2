@@ -4,8 +4,6 @@
 [ext_resource type="Script" uid="uid://bia5411sh8s0k" path="res://GUI/Inventory.cs" id="1_fp6ph"]
 [ext_resource type="Script" uid="uid://deum3idkwccxu" path="res://GUI/ItemSlot.cs" id="1_gmbn6"]
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_j1q2g"]
-
 [node name="Node2D" type="Node2D" unique_id=588614674]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1707927035]
@@ -23,8 +21,9 @@ script = ExtResource("1_fp6ph")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Inventory" unique_id=328069236]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = -7.0
+offset_right = 884.0
+offset_bottom = 133.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -70,7 +69,7 @@ offset_right = -18.0
 offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("CanvasTexture_j1q2g")
+texture = ExtResource("1_3425d")
 expand_mode = 1
 stretch_mode = 5
 
