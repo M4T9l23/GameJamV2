@@ -4,6 +4,7 @@
 size = Vector2(443, 70)
 
 [node name="StaticBody2D" type="StaticBody2D" unique_id=234318673]
+collision_layer = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=141582422]
 position = Vector2(221, 36)

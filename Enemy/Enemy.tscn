@@ -74,6 +74,9 @@ animations = [{
 scale = Vector2(1.2000009, 1.72)
 script = ExtResource("1_3o4wt")
 Visual = NodePath("AnimatedSprite2D")
+SeparationDistance = 80.0
+SeparationWeight = 20.0
+WallWeight = 10.0
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=897123053]
 position = Vector2(7.9166574, -4.069768)
