@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rmk6vicj4ii2"
-path="res://.godot/imported/player_sprite_test.png-460df29993e263f2fce7f4ca45f6bf22.ctex"
+uid="uid://dof3fp1egr8o6"
+path="res://.godot/imported/Fireball animation.png-f0e695f91ac3915539ec986350286a24.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/player_sprite_test.png"
-dest_files=["res://.godot/imported/player_sprite_test.png-460df29993e263f2fce7f4ca45f6bf22.ctex"]
+source_file="res://Assets/Sprites/Fireball animation.png"
+dest_files=["res://.godot/imported/Fireball animation.png-f0e695f91ac3915539ec986350286a24.ctex"]
 
 [params]
 

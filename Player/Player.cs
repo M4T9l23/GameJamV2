@@ -10,9 +10,11 @@ public partial class Player : CharacterBody2D
     private const float Speed = 200f;
     private Vector2 _facing = Vector2.Right;
     private bool _canShoot = true;
+    private AnimatedSprite2D _animatedSprite;
 
     public override void _Ready()
     {
+        _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         Health = MaxHealth;
         AddToGroup("player");
     }
@@ -40,6 +42,21 @@ public partial class Player : CharacterBody2D
         {
             GD.Print("Player Position", GlobalPosition);
         }
+        
+        if (input != Vector2.Zero)
+        {
+            _animatedSprite.Play("move_animation");
+            
+            if (input.X != 0)
+            {
+                _animatedSprite.FlipH = input.X < 0;
+            }
+        }
+        else
+        {
+            _animatedSprite.Play("idle_animation");
+        }
+        
         if (input != Vector2.Zero)
             _facing = input.Normalized();
 

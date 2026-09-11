@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5vemat1qlypa"
-path="res://.godot/imported/Animace_astronauta_revamp.png-06b4b162172c464de52564f9a307bf56.ctex"
+path="res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Animace_astronauta_revamp.png"
-dest_files=["res://.godot/imported/Animace_astronauta_revamp.png-06b4b162172c464de52564f9a307bf56.ctex"]
+source_file="res://Assets/Sprites/Animace_astronauta_revamp.png"
+dest_files=["res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"]
 
 [params]
 
