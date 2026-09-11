@@ -2,50 +2,80 @@ using Godot;
 
 public partial class Inventory : Panel
 {
-	private Variant _dataBk;
+	private const string WorldItemScenePath = "res://GUI/Items/WorldItem.tscn";
 
-	public override void _Process(double delta)
+	private TextureRect _draggedIcon;
+
+	public override void _Ready()
 	{
-		if (Input.GetCurrentCursorShape() == Input.CursorShape.Forbidden)
-		{
-			DisplayServer.CursorSetShape(DisplayServer.CursorShape.Arrow);
-		}
+		// Panel inventáře musí umět přijmout drop, jinak Godot ukazuje
+		// kurzor "Forbidden" a NotificationDragEnd chodí s divným stavem.
+		MouseFilter = MouseFilterEnum.Stop;
+		FocusMode = FocusModeEnum.None;
 	}
 
+	// Inventář přijme cokoliv, ale nic s tím nedělá - ikonu vrátí zpět
+	// do původního slotu (viz _Notification níže).
+	public override bool _CanDropData(Vector2 atPosition, Variant data)
+	{
+		return data.VariantType != Variant.Type.Nil && data.As<TextureRect>() != null;
+	}
+
+	public override void _DropData(Vector2 atPosition, Variant data)
+	{
+		if (data.As<TextureRect>() is TextureRect icon)
+			icon.Show();
+	}
+
+	// POZOR: NotificationDragBegin/End jsou v C# bindings typu long,
+	// takže je nelze použít jako case labely u switch(int what).
 	public override void _Notification(int what)
 	{
 		if (what == NotificationDragBegin)
 		{
-			_dataBk = GetViewport().GuiGetDragData();
+			Variant data = GetViewport().GuiGetDragData();
+			_draggedIcon = data.VariantType != Variant.Type.Nil
+				? data.As<TextureRect>()
+				: null;
+			return;
 		}
 
 		if (what == NotificationDragEnd)
 		{
-			if (!GetViewport().GuiIsDragSuccessful())
-			{
-				if (_dataBk.VariantType != Variant.Type.Nil)
-				{
-					if (_dataBk.AsGodotObject() is TextureRect icon)
-					{
-						Vector2 mousePos = GetGlobalMousePosition();
+			TextureRect icon = _draggedIcon;
+			_draggedIcon = null;
 
-						if (GetGlobalRect().HasPoint(mousePos))
-						{
-							// Puštěno v rámci panelu inventáře, ale mimo platný slot -> zrušit tažení
-							icon.Show();
-						}
-						else
-						{
-							// Puštěno mimo inventář -> item se objeví ve světě jako pickup
-							SpawnPickup(icon.Texture);
-							icon.Texture = null;
-							icon.Show();
-						}
-					}
-					_dataBk = default;
-				}
-			}
+			if (icon == null || !IsInstanceValid(icon))
+				return;
+
+			if (GetViewport().GuiIsDragSuccessful())
+				return;
+
+			// Nesahat na nody uprostřed rušení dragu - odložit o jeden frame.
+			CallDeferred(nameof(HandleFailedDrop), icon);
 		}
+	}
+
+	private void HandleFailedDrop(TextureRect icon)
+	{
+		if (icon == null || !IsInstanceValid(icon))
+			return;
+
+		Vector2 mousePos = GetGlobalMousePosition();
+
+		if (GetGlobalRect().HasPoint(mousePos))
+		{
+			// Puštěno v rámci panelu inventáře, ale mimo platný slot -> zrušit tažení.
+			icon.Show();
+			return;
+		}
+
+		// Puštěno mimo inventář -> item se objeví ve světě jako pickup.
+		Texture2D texture = icon.Texture;
+		icon.Texture = null;
+		icon.Show();
+
+		SpawnPickup(texture);
 	}
 
 	private void SpawnPickup(Texture2D texture)
@@ -53,11 +83,22 @@ public partial class Inventory : Panel
 		if (texture == null)
 			return;
 
-		var scene = GD.Load<PackedScene>("res://GUI/Items/WorldItem.tscn");
-		var pickup = scene.Instantiate<WorldItem>();
+		var scene = GD.Load<PackedScene>(WorldItemScenePath);
+		if (scene == null)
+		{
+			GD.PushError($"Inventory: nepodarilo se nacist {WorldItemScenePath}");
+			return;
+		}
 
-		GetTree().CurrentScene.AddChild(pickup);
+		Node parent = GetTree().CurrentScene;
+		if (parent == null)
+			return;
+
+		var pickup = scene.Instantiate<WorldItem>();
+		parent.AddChild(pickup);
 		pickup.SetTexture(texture);
+
+		// Pozice myši ve světě (ne v GUI vrstvě).
 		pickup.GlobalPosition = pickup.GetGlobalMousePosition();
 	}
 }

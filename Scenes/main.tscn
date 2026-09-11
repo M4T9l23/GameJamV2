@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://3bb3qkheio60"]
 
-[ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy.tscn" id="2_8gbba"]
+[ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/Enemy1/EnemySpawner.cs" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
@@ -11,6 +12,7 @@
 scale = Vector2(0.3, 0.29)
 script = ExtResource("1_jjgbg")
 EnemyScene = ExtResource("2_8gbba")
+MaxEnemies = 0
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
 scale = Vector2(0.4, 0.386)
@@ -27,3 +29,6 @@ scale = Vector2(0.4, 0.386)
 position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
+
+[node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("5_kry3j")]
+scale = Vector2(0.75, 0.75)

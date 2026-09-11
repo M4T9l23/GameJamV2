@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://djos7eh4sq0tp"]
 
-[ext_resource type="Script" uid="uid://b3duedluhxi2p" path="res://Enemy/Enemy.cs" id="1_3o4wt"]
+[ext_resource type="Script" uid="uid://b3duedluhxi2p" path="res://Enemy/Enemy1/Enemy.cs" id="1_3o4wt"]
 [ext_resource type="Texture2D" uid="uid://c2gybhvg3bvr3" path="res://Assets/Sprites/eye_man_spritesheet.png" id="2_epr5s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
