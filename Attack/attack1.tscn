@@ -1,8 +1,52 @@
 [gd_scene format=3 uid="uid://cbu1bq8jwoa0i"]
 
 [ext_resource type="Script" uid="uid://dkjjawj3dbifp" path="res://Attack/Attack1.cs" id="1_db15e"]
+[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/fireball_spritesheet.png" id="2_4np7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ralh"]
+atlas = ExtResource("2_4np7o")
+region = Rect2(354, 816, 617, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kjk1"]
+atlas = ExtResource("2_4np7o")
+region = Rect2(354, 45, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0budp"]
+atlas = ExtResource("2_4np7o")
+region = Rect2(1146, 45, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c22do"]
+atlas = ExtResource("2_4np7o")
+region = Rect2(354, 816, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0gn5"]
+atlas = ExtResource("2_4np7o")
+region = Rect2(1146, 816, 442, 771)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ralh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kjk1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0budp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c22do")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0gn5")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
 
 [node name="Area2D" type="Area2D" unique_id=919805070]
 script = ExtResource("1_db15e")
@@ -12,3 +56,9 @@ shape = SubResource("RectangleShape2D_fxl0e")
 
 [node name="Polygon2D" type="Polygon2D" parent="CollisionShape2D" unique_id=1903411092]
 polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=647478583]
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+frame_progress = 0.6857242
+centered = false
+offset = Vector2(85.295, 0)
