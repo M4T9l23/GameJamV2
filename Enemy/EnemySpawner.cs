@@ -3,8 +3,10 @@ using Godot;
 public partial class EnemySpawner : Node2D
 {
     [Export] public PackedScene EnemyScene;
-    [Export] public float SpawnInterval = 2f;
-    [Export] public float SpawnDistance = 400f;
+    [Export] public float SpawnInterval = 3f;
+    [Export] public float SpawnDistance = 600f;
+    [Export] public int MaxEnemies = 15;
+
 
     private float _timer;
 
@@ -12,7 +14,7 @@ public partial class EnemySpawner : Node2D
     {
         GD.Print("Spawner: ready");
     }
-
+    
     public override void _Process(double delta)
     {
         _timer -= (float)delta;
@@ -20,6 +22,11 @@ public partial class EnemySpawner : Node2D
             return;
 
         _timer = SpawnInterval;
+
+        // Don't spawn if we're already at the cap
+        if (GetTree().GetNodesInGroup("enemies").Count >= MaxEnemies)
+            return;
+
         SpawnEnemy();
     }
 
@@ -44,6 +51,8 @@ public partial class EnemySpawner : Node2D
         Vector2 offset = Vector2.Right.Rotated(GD.Randf() * Mathf.Tau) * SpawnDistance;
         enemy.GlobalPosition = player.GlobalPosition + offset;
 
-        GD.Print($"Spawner: spawned enemy at {enemy.GlobalPosition}");
+        if (enemy.GetChildCount() > 15)
+        {
+        }
     }
 }
