@@ -1,15 +1,90 @@
 [gd_scene format=3 uid="uid://djos7eh4sq0tp"]
 
 [ext_resource type="Script" uid="uid://b3duedluhxi2p" path="res://Enemy/Enemy.cs" id="1_3o4wt"]
+[ext_resource type="Texture2D" uid="uid://c2gybhvg3bvr3" path="res://Assets/Sprites/eye_man_spritesheet.png" id="2_epr5s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
+size = Vector2(35.833313, 73.25581)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vonkd"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(0, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vso2s"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(214, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkela"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(428, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2k2y"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(642, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jd4ap"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(856, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ypri"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(1070, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxjip"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(1284, 0, 214, 216)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvarv"]
+atlas = ExtResource("2_epr5s")
+region = Rect2(1498, 0, 214, 216)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vonkd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vso2s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkela")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2k2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jd4ap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ypri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxjip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvarv")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Enemy-1" type="CharacterBody2D" unique_id=210615792]
 scale = Vector2(1.2000009, 1.72)
 script = ExtResource("1_3o4wt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=768180105]
+position = Vector2(7.9166574, -4.069768)
 shape = SubResource("RectangleShape2D_gtgmb")
 
 [node name="Polygon2D" type="Polygon2D" parent="CollisionShape2D" unique_id=897123053]
 polygon = PackedVector2Array(-2, -8, -10, -1, -2, 9, 7, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867286319]
+position = Vector2(-1.9073486e-06, -0.58139515)
+scale = Vector2(1.093068, 0.8687554)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+autoplay = "default"
+frame = 7
+frame_progress = 0.7641732
