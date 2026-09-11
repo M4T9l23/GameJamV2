@@ -10,6 +10,7 @@ public partial class Enemy : CharacterBody2D
 
     public override void _Ready()
     {
+        AddToGroup("enemies");
         _player = GetTree().GetFirstNodeInGroup("player") as Node2D;
     }
 
