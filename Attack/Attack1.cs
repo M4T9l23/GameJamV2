@@ -3,8 +3,11 @@ using Godot;
 public partial class Attack1 : Area2D
 {
     [Export] public float Speed = 400f;
+    [Export] public int Damage = 1;
     public Vector2 Direction = Vector2.Right;
     public Node Shooter; // so the bullet doesn't hit whoever fired it
+
+    private bool _hasHit;
 
     public override void _Ready()
     {
@@ -24,11 +27,12 @@ public partial class Attack1 : Area2D
 
     private void OnBodyEntered(Node2D body)
     {
-        if (body == Shooter) return;
+        if (_hasHit || body == Shooter) return;
+        _hasHit = true;
 
         if (body is Enemy enemy)
-            enemy.TakeDamage(1);
+            enemy.TakeDamage(Damage);
 
-        QueueFree(); // also disappears when it hits walls
+        QueueFree(); // walls, enemies, anything solid
     }
 }

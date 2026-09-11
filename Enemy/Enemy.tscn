@@ -4,7 +4,8 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
 
-[node name="Enemy-1" type="Area2D" unique_id=1212443512]
+[node name="Enemy-1" type="CharacterBody2D" unique_id=210615792]
+scale = Vector2(1.2000009, 1.72)
 script = ExtResource("1_3o4wt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=768180105]

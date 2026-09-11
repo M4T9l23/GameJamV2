@@ -1,7 +1,13 @@
 [gd_scene format=3 uid="uid://3bb3qkheio60"]
 
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy.tscn" id="2_8gbba"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
-[node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("1_jjgbg")]
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122]
+script = ExtResource("1_jjgbg")
+EnemyScene = ExtResource("2_8gbba")
+
+[node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]

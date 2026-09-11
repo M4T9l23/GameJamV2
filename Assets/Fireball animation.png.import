@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c27ufvux36iev"
-path="res://.godot/imported/Animace astronauta.png-74a40f57c69151dff3dd469d3fec6a13.ctex"
+uid="uid://dof3fp1egr8o6"
+path="res://.godot/imported/Fireball animation.png-b5bf56317b6360eaa188b9dde2050769.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Animace astronauta.png"
-dest_files=["res://.godot/imported/Animace astronauta.png-74a40f57c69151dff3dd469d3fec6a13.ctex"]
+source_file="res://Assets/Fireball animation.png"
+dest_files=["res://.godot/imported/Fireball animation.png-b5bf56317b6360eaa188b9dde2050769.ctex"]
 
 [params]
 
