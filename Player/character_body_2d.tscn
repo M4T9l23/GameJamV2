@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://ckjctphwfa8xg"]
 
 [ext_resource type="Script" uid="uid://um6athh6d7wc" path="res://Player/Player.cs" id="1_v8jqv"]
+[ext_resource type="PackedScene" uid="uid://cbu1bq8jwoa0i" path="res://Attack/attack1.tscn" id="2_vvw5e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1439360079]
 script = ExtResource("1_v8jqv")
+BulletScene = ExtResource("2_vvw5e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1967567405]
 shape = SubResource("RectangleShape2D_fxl0e")
