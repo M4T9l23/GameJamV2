@@ -105,6 +105,4 @@ polygon = PackedVector2Array(-10, -10, -10, 9, 10, 9, 10, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813099957]
 rotation = 3.1415927
 sprite_frames = SubResource("SpriteFrames_mti6b")
-animation = &"move_animation"
-autoplay = "idle_animation"
-frame_progress = 0.29151744
+animation = &"idle_animation"
