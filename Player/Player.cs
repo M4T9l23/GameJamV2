@@ -5,7 +5,8 @@ public partial class Player : CharacterBody2D
     [Export] public int MaxHealth = 5;
     [Export] public PackedScene BulletScene;
     [Export] public float FireRate = 1.00f;
-
+    [Export] public float SpriteAngleOffsetDegrees = 180f;
+    
     public int Health;
     private const float Speed = 200f;
     private Vector2 _facing = Vector2.Right;
@@ -38,23 +39,18 @@ public partial class Player : CharacterBody2D
     {
         Vector2 input = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
         Velocity = input * Speed;
-        
+
         if (input != Vector2.Zero)
         {
+            _facing = input.Normalized();
             _animatedSprite.Play("move_animation");
-            
-            if (input.X != 0)
-            {
-                _animatedSprite.FlipH = input.X < 0;
-            }
+
+            _animatedSprite.Rotation = _facing.Angle() + Mathf.DegToRad(SpriteAngleOffsetDegrees);
         }
         else
         {
             _animatedSprite.Play("idle_animation");
         }
-        
-        if (input != Vector2.Zero)
-            _facing = input.Normalized();
 
         MoveAndSlide();
 
