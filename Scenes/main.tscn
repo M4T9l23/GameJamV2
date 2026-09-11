@@ -8,10 +8,22 @@
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122]
+scale = Vector2(0.3, 0.29)
 script = ExtResource("1_jjgbg")
 EnemyScene = ExtResource("2_8gbba")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
+scale = Vector2(0.4, 0.386)
 
-[node name="StaticBody2D" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
+[node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
 position = Vector2(86, 50)
+scale = Vector2(0.4, 0.386)
+
+[node name="Wall2" parent="." unique_id=576701195 instance=ExtResource("4_jjvhh")]
+position = Vector2(83, -78.999985)
+scale = Vector2(0.4, 0.386)
+
+[node name="Wall3" parent="." unique_id=1082431219 instance=ExtResource("4_jjvhh")]
+position = Vector2(239, 87)
+rotation = -1.5477359
+scale = Vector2(0.4, 0.386)

@@ -38,10 +38,6 @@ public partial class Player : CharacterBody2D
     {
         Vector2 input = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
         Velocity = input * Speed;
-        if (Velocity != Vector2.Zero)
-        {
-            GD.Print("Player Position", GlobalPosition);
-        }
         
         if (input != Vector2.Zero)
         {
