@@ -15,6 +15,10 @@ run/main_scene="uid://ckjctphwfa8xg"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+PickupMode="*uid://dsf8s27un75of"
+
 [display]
 
 window/stretch/mode="canvas_items"
