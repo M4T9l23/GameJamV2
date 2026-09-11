@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://cbu1bq8jwoa0i" path="res://Attack/attack1.tscn" id="4_kry3j"]
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
@@ -14,6 +15,7 @@ EnemyScene = ExtResource("2_8gbba")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
 scale = Vector2(0.4, 0.386)
+BulletScene = ExtResource("4_kry3j")
 
 [node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
 position = Vector2(75, 64)

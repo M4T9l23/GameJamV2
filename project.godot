@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GameJamV2"
-run/main_scene="uid://ckjctphwfa8xg"
+run/main_scene="uid://3bb3qkheio60"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

@@ -58,7 +58,9 @@ shape = SubResource("RectangleShape2D_fxl0e")
 polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=647478583]
+position = Vector2(-38, -40)
+scale = Vector2(0.12479742, 0.108949415)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 frame_progress = 0.6857242
+speed_scale = 0.4
 centered = false
-offset = Vector2(85.295, 0)
