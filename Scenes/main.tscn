@@ -319,19 +319,19 @@ sources/38 = SubResource("TileSetAtlasSource_f6rfp")
 sources/39 = SubResource("TileSetAtlasSource_sasc4")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d1ilt"]
-size = Vector2(1973, 41)
+size = Vector2(2095.5, 41)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6iyac"]
-size = Vector2(2001, 60)
+size = Vector2(2074.5, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fdnlq"]
-size = Vector2(57, 2015)
+size = Vector2(57, 2038.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hptm8"]
-size = Vector2(39, 1995)
+size = Vector2(39, 2145)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_region"]
-size = Vector2(800, 600)
+size = Vector2(833.3334, 644.6667)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_entrance"]
 size = Vector2(160, 40)
@@ -342,7 +342,7 @@ size = Vector2(160, 40)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
-Entries = [SubResource("Resource_hibaj"), SubResource("Resource_3w5oe"), SubResource("Resource_pdsj5")]
+Entries = Array[ExtResource("2_h1bgf")]([SubResource("Resource_hibaj"), SubResource("Resource_3w5oe"), SubResource("Resource_pdsj5")])
 FloorMap = NodePath("../TileMap")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
@@ -366,25 +366,25 @@ layer_0/tile_data = PackedInt32Array(-1, 35, 0, 65535, 0, 0, -65537, 2, 0, -1310
 [node name="border south" type="StaticBody2D" parent="." unique_id=1252232798]
 
 [node name="CollisionShape2D_S" type="CollisionShape2D" parent="border south" unique_id=1032265013]
-position = Vector2(-55.5, 913.5)
+position = Vector2(-50, 979)
 shape = SubResource("RectangleShape2D_d1ilt")
 
 [node name="border north" type="StaticBody2D" parent="." unique_id=1107000904]
 
 [node name="CollisionShape2D_N" type="CollisionShape2D" parent="border north" unique_id=1138500833]
-position = Vector2(-55, -1056)
+position = Vector2(-94.75, -1125)
 shape = SubResource("RectangleShape2D_6iyac")
 
 [node name="border east" type="StaticBody2D" parent="." unique_id=1050368188]
 
 [node name="CollisionShape2D_E" type="CollisionShape2D" parent="border east" unique_id=79191894]
-position = Vector2(927.5, -70.5)
+position = Vector2(967, -62.25)
 shape = SubResource("RectangleShape2D_fdnlq")
 
 [node name="border west" type="StaticBody2D" parent="." unique_id=1102912973]
 
 [node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
-position = Vector2(-1044.5, -71.5)
+position = Vector2(-1115, -78.5)
 shape = SubResource("RectangleShape2D_hptm8")
 
 [node name="Droid" parent="." unique_id=479326033 instance=ExtResource("23_gt3je")]
@@ -400,6 +400,7 @@ collision_layer = 0
 collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Region" unique_id=425964771]
+position = Vector2(-30, 6.333313)
 shape = SubResource("RectangleShape2D_region")
 
 [node name="Entrance" type="StaticBody2D" parent="Arena" unique_id=1848628705]
@@ -448,6 +449,6 @@ scale = Vector2(3, 1)
 script = ExtResource("23_3pmx8")
 
 [node name="PauseOnESC" type="Node2D" parent="." unique_id=976625617]
-position = Vector2(-13, -1)
+position = Vector2(-42, -91)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")
