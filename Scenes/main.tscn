@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
