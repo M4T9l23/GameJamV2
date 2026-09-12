@@ -16,6 +16,7 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 	private Vector2 _lastPlayerPos;
 	private Vector2 _heading;
 	private bool _dead;
+	private AnimatedSprite2D _animatedSprite;
 
 	public override void _Ready()
 	{
@@ -27,6 +28,8 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 			_lastPlayerPos = _player.GlobalPosition;
 			_heading = GlobalPosition.DirectionTo(_player.GlobalPosition);
 		}
+		// Grab the AnimatedSprite2D reference
+		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -59,6 +62,7 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 		{
 			if (GetSlideCollision(i).GetCollider() is Player player)
 			{
+				
 				player.TakeDamage(ContactDamage);
 				QueueFree();
 				return;
@@ -66,7 +70,7 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 		}
 	}
 
-	public void TakeDamage(int amount)
+	public async void TakeDamage(int amount)
 	{
 		if (_dead) return;
 
@@ -74,6 +78,14 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 		if (Health <= 0)
 		{
 			_dead = true;
+        
+			// Disable collision so it doesn't hit the player or projectiles while dying
+			GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+        
+			// Play the animation and wait for it to finish
+			_animatedSprite.Play("death_animation");
+			await ToSignal(_animatedSprite, AnimatedSprite2D.SignalName.AnimationFinished);
+        
 			QueueFree();
 		}
 	}
