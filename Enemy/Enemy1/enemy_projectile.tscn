@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://ci5hvtypgk8rp"]
+
+[ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="1_bbxyb"]
+[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/projectiles/fireball_spritesheet.png" id="2_t3l6r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxl0e"]
+radius = 11.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ralh"]
+atlas = ExtResource("2_t3l6r")
+region = Rect2(354, 816, 617, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kjk1"]
+atlas = ExtResource("2_t3l6r")
+region = Rect2(354, 45, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0budp"]
+atlas = ExtResource("2_t3l6r")
+region = Rect2(1146, 45, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c22do"]
+atlas = ExtResource("2_t3l6r")
+region = Rect2(354, 816, 442, 771)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0gn5"]
+atlas = ExtResource("2_t3l6r")
+region = Rect2(1146, 816, 442, 771)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u28ej"]
+animations = [{
+"frames": [{
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_4ralh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kjk1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0budp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c22do")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0gn5")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Area2D2" type="Area2D" unique_id=751966320]
+position = Vector2(0, -1)
+collision_layer = 3
+collision_mask = 3
+priority = 1
+script = ExtResource("1_bbxyb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=480150161]
+scale = Vector2(1.532266, -0.61176074)
+shape = SubResource("CircleShape2D_fxl0e")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=70849204]
+position = Vector2(-73, -74.00002)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_u28ej")
+autoplay = "default"
+frame_progress = 0.028199404
+centered = false

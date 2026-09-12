@@ -1,161 +1,113 @@
 using Godot;
-using System.Collections.Generic;
 
 public partial class DeathScreen : CanvasLayer
 {
-	// Nastavuje Player.Die() těsně před AddChild. Null = Jane umřela mimo
-	// arénu a menu vypadá jako dřív.
-	public ArenaLogic Arena;
+	private Label _title;
+	private Label[] _options;
+	private string[] _labels;
+	private int _index = 0;
+	private bool _isDeathMode = true;
 
-	private enum Choice
+	// Call right after Instantiate(), before AddChild().
+	// true  = death screen (no pause)
+	// false = pause menu (pauses the tree)
+	public void Setup(bool deathMode)
 	{
-		RespawnInArena,
-		LeaveArena,
-		RestartLevel,
-		MainMenu,
-		Credits,
+		_isDeathMode = deathMode;
 	}
-
-	private readonly List<Label> _pool = new();
-	private readonly List<Choice> _choices = new();
-	private int _index;
 
 	public override void _Ready()
 	{
-		ProcessMode = ProcessModeEnum.Always;   // ← must be before the pause
+		ProcessMode = ProcessModeEnum.Always;
 
-		CollectLabels();
-		BuildChoices();
+		_title = GetNode<Label>("Panel/VBoxContainer/Label");
+		_options = new Label[]
+		{
+			GetNode<Label>("Panel/VBoxContainer/Option0"),
+			GetNode<Label>("Panel/VBoxContainer/Option1"),
+			GetNode<Label>("Panel/VBoxContainer/Option2"),
+			GetNode<Label>("Panel/VBoxContainer/Option3"),
+		};
+
+		if (_isDeathMode)
+		{
+			_title.Text = "[JaneSteel ~]$ Status: Dead";
+			_labels = new string[] { "Restart level", "Leave arena", "Credits", "Exit" };
+		}
+		else
+		{
+			_title.Text = "[JaneSteel ~]$ Status: Paused";
+			_labels = new string[] { "Resume", "Restart level", "Leave arena", "Exit" };
+			GetTree().Paused = true;
+		}
+
 		Refresh();
-
-		GetTree().Paused = true;
 	}
-
-	// Posbírá Labely pojmenované Option* z VBoxContaineru. Když jich je míň,
-	// než potřebujeme, doduplikuje první (aby se zachovalo nastavení fontu).
-	private void CollectLabels()
-	{
-		var box = GetNodeOrNull<VBoxContainer>("Panel/VBoxContainer");
-		if (box == null)
-		{
-			GD.PushError("DeathScreen: chybi Panel/VBoxContainer.");
-			return;
-		}
-
-		foreach (Node child in box.GetChildren())
-		{
-			if (child is Label label && label.Name.ToString().StartsWith("Option"))
-				_pool.Add(label);
-		}
-
-		if (_pool.Count == 0)
-			GD.PushError("DeathScreen: ve VBoxContaineru nejsou zadne Labely 'Option*'.");
-	}
-
-	private void BuildChoices()
-	{
-		_choices.Clear();
-
-		if (Arena != null && IsInstanceValid(Arena))
-		{
-			_choices.Add(Choice.RespawnInArena);
-			_choices.Add(Choice.LeaveArena);
-		}
-
-		_choices.Add(Choice.RestartLevel);
-		_choices.Add(Choice.MainMenu);
-		_choices.Add(Choice.Credits);
-
-		EnsureLabelCount(_choices.Count);
-	}
-
-	private void EnsureLabelCount(int needed)
-	{
-		if (_pool.Count == 0)
-			return;
-
-		Label template = _pool[0];
-		Node parent = template.GetParent();
-
-		while (_pool.Count < needed)
-		{
-			var extra = (Label)template.Duplicate();
-			extra.Name = $"Option{_pool.Count}";
-			parent.AddChild(extra);
-			_pool.Add(extra);
-		}
-
-		// Přebytečné schovat (mimo arénu jsou volby jen tři).
-		for (int i = needed; i < _pool.Count; i++)
-			_pool[i].Hide();
-	}
-
-	private static string LabelFor(Choice choice) => choice switch
-	{
-		Choice.RespawnInArena => "Respawn in arena",
-		Choice.LeaveArena     => "Leave arena",
-		Choice.RestartLevel   => "Restart level",
-		Choice.MainMenu       => "Main menu",
-		Choice.Credits        => "Credits",
-		_ => "?",
-	};
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		if (_choices.Count == 0)
-			return;
-
 		if (@event.IsActionPressed("ui_down"))
 		{
-			_index = (_index + 1) % _choices.Count;
+			_index = (_index + 1) % _options.Length;
 			Refresh();
+			GetViewport().SetInputAsHandled();
 		}
 		else if (@event.IsActionPressed("ui_up"))
 		{
-			_index = (_index - 1 + _choices.Count) % _choices.Count;
+			_index = (_index - 1 + _options.Length) % _options.Length;
 			Refresh();
+			GetViewport().SetInputAsHandled();
 		}
 		else if (@event.IsActionPressed("ui_accept"))
 		{
 			Select();
+			GetViewport().SetInputAsHandled();
+		}
+		else if (@event.IsActionPressed("ui_cancel") && !_isDeathMode)
+		{
+			// Escape closes the pause menu, but never the death screen
+			Resume();
+			GetViewport().SetInputAsHandled();
 		}
 	}
 
 	private void Refresh()
 	{
-		for (int i = 0; i < _choices.Count && i < _pool.Count; i++)
-		{
-			_pool[i].Show();
-			_pool[i].Text = (i == _index ? "> " : "  ") + LabelFor(_choices[i]);
-		}
+		for (int i = 0; i < _options.Length; i++)
+			_options[i].Text = (i == _index ? "> " : "  ") + _labels[i];
+	}
+
+	private void Resume()
+	{
+		GetTree().Paused = false;
+		QueueFree();
 	}
 
 	private void Select()
 	{
-		GetTree().Paused = false; // always unpause before changing scene
-
-		switch (_choices[_index])
+		switch (_labels[_index])
 		{
-			case Choice.RespawnInArena:
-				Arena.RespawnPlayerHere();
-				QueueFree();
+			case "Resume":
+				Resume();
 				break;
 
-			case Choice.LeaveArena:
-				Arena.AbandonArena();
-				QueueFree();
-				break;
-
-			case Choice.RestartLevel:
+			case "Restart level":
+				GetTree().Paused = false;
 				GetTree().ReloadCurrentScene();
 				break;
 
-			case Choice.MainMenu:
-				GetTree().ChangeSceneToFile("res://scenes/MainMenu.tscn");
+			case "Leave arena":
+				GetTree().Paused = false;
+				GetTree().ChangeSceneToFile("res://Scenes/MainMenu.tscn");
 				break;
 
-			case Choice.Credits:
-				GetTree().ChangeSceneToFile("res://scenes/Credits.tscn");
+			case "Credits":
+				GetTree().Paused = false;
+				GetTree().ChangeSceneToFile("res://Scenes/Credits.tscn");
+				break;
+
+			case "Exit":
+				GetTree().Quit();
 				break;
 		}
 	}

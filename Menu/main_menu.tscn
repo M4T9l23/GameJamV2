@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://7e3wk5lnw4ko"]
 
-[ext_resource type="Script" uid="uid://bjs54mqq4c07f" path="res://Menu/MainMenu.cs" id="1_dtkyu"]
+[ext_resource type="Script" uid="uid://c7628x445ee8x" path="res://Menu/MainMenu.cs" id="1_dtkyu"]
 [ext_resource type="FontFile" uid="uid://kkhlqb31vjhq" path="res://Assets/MonospaceBold.ttf" id="1_sla5p"]
 [ext_resource type="Texture2D" uid="uid://by1c2jnxryihk" path="res://Assets/background.jpg" id="2_ci1se"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62yky"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ci1se"]
 texture = ExtResource("2_ci1se")
-modulate_color = Color(0.44755095, 0.44755095, 0.44755095, 1)
+modulate_color = Color(0.5963672, 0.59636724, 0.59636724, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4kxuq"]
 bg_color = Color(0.015686275, 0.44705883, 0.3019608, 1)
@@ -46,7 +46,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_62yky")
+theme_override_styles/panel = SubResource("StyleBoxTexture_ci1se")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1273362442]
 layout_mode = 1

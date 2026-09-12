@@ -2,9 +2,8 @@ using Godot;
 
 public partial class Enemy3 : CharacterBody2D, IDamageable
 {
-    [Export] public float HitRadius = 24f;   // add to the exports up top
+    [Export] public float HitRadius = 24f;
 
-    
     [Export] public int Health = 3;
     [Export] public int ContactDamage = 1;
     [Export] public Godot.Collections.Array<DropEntry> Drops = new();
@@ -16,6 +15,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
 
     [ExportGroup("Facing")]
     [Export] public Node2D Visual;
+    [Export] public AnimatedSprite2D Sprite;      // drag the AnimatedSprite2D here
     [Export] public bool FlipInsteadOfRotate = false;
     [Export] public float RotationOffset = 0f;
 
@@ -28,15 +28,22 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
 
     private Node2D _player;
     private bool _dead;
+    private bool _inAir;
     private double _leapTimer;
 
     public override void _Ready()
     {
         AddToGroup("enemies");
         _player = GetTree().GetFirstNodeInGroup("player") as Node2D;
-        
+
         // Offset the timer slightly so all frogs don't jump on the exact same frame
-        _leapTimer = GD.RandRange(0, LeapCooldown); 
+        _leapTimer = GD.RandRange(0, LeapCooldown);
+
+        if (Sprite != null)
+        {
+            Sprite.Stop();
+            Sprite.Frame = 0;   // crouched
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -46,8 +53,9 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
 
         Vector2 toPlayer = GlobalPosition.DirectionTo(_player.GlobalPosition);
 
-        // Always face the player, even when sliding or waiting to leap
-        FaceDirection(toPlayer);
+        // Only turn while grounded — the leap locks in the direction
+        if (!_inAir)
+            FaceDirection(toPlayer);
 
         _leapTimer += delta;
 
@@ -62,8 +70,15 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
                 ? desired.Normalized()
                 : toPlayer;
 
+            // Snap to the actual leap direction on the frame it launches
+            FaceDirection(leapDirection);
+
             Velocity = leapDirection * LeapForce;
             _leapTimer = 0.0;
+            _inAir = true;
+
+            if (Sprite != null)
+                Sprite.Frame = 1;   // stretched, mid-air
         }
         else
         {
@@ -72,12 +87,18 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             {
                 Velocity = Velocity.MoveToward(Vector2.Zero, Friction * (float)delta);
             }
+
+            // Land once the slide has mostly stopped
+            if (Velocity.Length() < LeapForce * 0.25f)
+            {
+                _inAir = false;
+                if (Sprite != null)
+                    Sprite.Frame = 0;
+            }
         }
 
         MoveAndSlide();
 
-
-// ...replace the for-loop at the end of _PhysicsProcess with:
         if (GlobalPosition.DistanceTo(_player.GlobalPosition) <= HitRadius)
         {
             if (_player is Player player)
@@ -139,9 +160,9 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             Vector2 normal = (Vector2)hit["normal"];
 
             float dist = GlobalPosition.DistanceTo(point);
-            float strength = 1f - (dist / WallDistance); 
+            float strength = 1f - (dist / WallDistance);
 
-            push += normal * strength; 
+            push += normal * strength;
         }
 
         return push;
@@ -175,7 +196,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             QueueFree();
         }
     }
-    
+
     private void DropItems()
     {
         foreach (DropEntry drop in Drops)
@@ -190,7 +211,6 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             Vector2 offset = new Vector2((float)GD.RandRange(-8, 8), (float)GD.RandRange(-8, 8));
             item.Position = GlobalPosition + offset;
 
-            // Assuming WorldItem implementation exists in your project as per original Enemy script
             if (drop.ItemData != null && item is WorldItem worldItem)
                 worldItem.SetItem(drop.ItemData);
 

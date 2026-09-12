@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6musfcg4675j"
-path="res://.godot/imported/Kontejner15.png-a71a26c3df26e7765c623e9f6b109275.ctex"
+uid="uid://by1c2jnxryihk"
+path="res://.godot/imported/background.jpg-b3a2c7d1c105d56ba01ce5ef14c041a0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Kontejner15.png"
-dest_files=["res://.godot/imported/Kontejner15.png-a71a26c3df26e7765c623e9f6b109275.ctex"]
+source_file="res://Assets/background.jpg"
+dest_files=["res://.godot/imported/background.jpg-b3a2c7d1c105d56ba01ce5ef14c041a0.ctex"]
 
 [params]
 
