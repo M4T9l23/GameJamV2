@@ -2,9 +2,34 @@
 
 [ext_resource type="Script" uid="uid://bgw8fwiyeb6eb" path="res://Enemy/Enemy3_frog/Enemy3.cs" id="1_eg515"]
 [ext_resource type="Texture2D" uid="uid://7aec8c34kfr" path="res://Assets/Sprites/sprite_sheets/zaba_spritesheet.png" id="2_eg515"]
+[ext_resource type="Texture2D" uid="uid://b17jmil0fh15t" path="res://Assets/Sprites/Zaba dead.png" id="2_ym2ry"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4chl"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(0, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37dsk"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(1080, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4315"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(2160, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xge4q"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(3240, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_407jj"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(4320, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lji6"]
+atlas = ExtResource("2_ym2ry")
+region = Rect2(5400, 0, 1080, 1080)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ym2ry"]
 atlas = ExtResource("2_eg515")
@@ -16,6 +41,29 @@ region = Rect2(0, 0, 859, 859)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4chl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37dsk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4315")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xge4q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_407jj")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_3lji6")
+}],
+"loop": 0,
+"name": &"death_animation",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ym2ry")
@@ -50,4 +98,4 @@ scale = Vector2(0.35782865, 0.35942712)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1814720070]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
-frame_progress = 0.56451327
+autoplay = "default"

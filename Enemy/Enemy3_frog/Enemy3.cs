@@ -30,6 +30,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
     private bool _dead;
     private bool _inAir;
     private double _leapTimer;
+    private AnimatedSprite2D _animatedSprite;
 
     public override void _Ready()
     {
@@ -44,6 +45,8 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             Sprite.Stop();
             Sprite.Frame = 0;   // crouched
         }
+        // Grab the AnimatedSprite2D reference
+        _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -184,7 +187,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
         }
     }
 
-    public void TakeDamage(int amount)
+    public async void TakeDamage(int amount)
     {
         if (_dead) return;
 
@@ -193,6 +196,14 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
         {
             _dead = true;
             DropItems();
+            
+            // Disable collision so it doesn't hit the player or projectiles while dying
+            GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+        
+            // Play the animation and wait for it to finish
+            _animatedSprite.Play("death_animation");
+            await ToSignal(_animatedSprite, AnimatedSprite2D.SignalName.AnimationFinished);
+            
             QueueFree();
         }
     }
