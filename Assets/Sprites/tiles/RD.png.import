@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1m1tscksgnyb"
-path="res://.godot/imported/Asphalt_lines_horisontal.png-37df1d820196827bf44483e61d3eb825.ctex"
+uid="uid://bvgxr26imd3qp"
+path="res://.godot/imported/RD.png-c0fde04d4363953d37278a6cd6a7de19.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Asphalt_lines_horisontal.png"
-dest_files=["res://.godot/imported/Asphalt_lines_horisontal.png-37df1d820196827bf44483e61d3eb825.ctex"]
+source_file="res://Assets/Sprites/tiles/RD.png"
+dest_files=["res://.godot/imported/RD.png-c0fde04d4363953d37278a6cd6a7de19.ctex"]
 
 [params]
 

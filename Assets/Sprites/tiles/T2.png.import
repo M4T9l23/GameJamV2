@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://beqlbtru52kaf"
-path="res://.godot/imported/Trava.png-4bf219231ac0f84cb88d19607b3cf900.ctex"
+uid="uid://caamb3y07ep13"
+path="res://.godot/imported/T2.png-a6f23454103960775296c61724e7caa4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Trava.png"
-dest_files=["res://.godot/imported/Trava.png-4bf219231ac0f84cb88d19607b3cf900.ctex"]
+source_file="res://Assets/Sprites/tiles/T2.png"
+dest_files=["res://.godot/imported/T2.png-a6f23454103960775296c61724e7caa4.ctex"]
 
 [params]
 

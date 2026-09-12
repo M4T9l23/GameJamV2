@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1heg2qyyvpi"
-path="res://.godot/imported/Eye man animation.png-759d632433323b484399a6fe9c228381.ctex"
+uid="uid://jo70k2dkontu"
+path="res://.godot/imported/T1.png-867dda2e780c838cf9b7e44bd9ca9ac0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Eye man animation.png"
-dest_files=["res://.godot/imported/Eye man animation.png-759d632433323b484399a6fe9c228381.ctex"]
+source_file="res://Assets/Sprites/tiles/T1.png"
+dest_files=["res://.godot/imported/T1.png-867dda2e780c838cf9b7e44bd9ca9ac0.ctex"]
 
 [params]
 

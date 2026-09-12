@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5vemat1qlypa"
-path="res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"
+uid="uid://beqlbtru52kaf"
+path="res://.godot/imported/Trava.png-c817eccbafd771c4dce5bc5d9a082205.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Animace_astronauta_revamp.png"
-dest_files=["res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"]
+source_file="res://Assets/Sprites/tiles/Trava.png"
+dest_files=["res://.godot/imported/Trava.png-c817eccbafd771c4dce5bc5d9a082205.ctex"]
 
 [params]
 
