@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://diqqt2vxkw60f"
-path="res://.godot/imported/fireball_spritesheet.png-3e73494cd5e1c486def868cbabf806c3.ctex"
+uid="uid://c253rsb3s0u15"
+path="res://.godot/imported/Water3.png-c30339d9283373b536253fd8c149515e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/fireball_spritesheet.png"
-dest_files=["res://.godot/imported/fireball_spritesheet.png-3e73494cd5e1c486def868cbabf806c3.ctex"]
+source_file="res://Assets/Sprites/genes/Water3.png"
+dest_files=["res://.godot/imported/Water3.png-c30339d9283373b536253fd8c149515e.ctex"]
 
 [params]
 

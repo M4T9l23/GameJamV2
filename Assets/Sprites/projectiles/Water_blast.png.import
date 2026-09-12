@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhuu2edvjxtw3"
-path="res://.godot/imported/Fire2.png-31bd4487f8e4520d146ced7909bf07d0.ctex"
+uid="uid://b5ik3bipg63tr"
+path="res://.godot/imported/Water_blast.png-602a572e08733420de9090d0d19a19c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Fire2.png"
-dest_files=["res://.godot/imported/Fire2.png-31bd4487f8e4520d146ced7909bf07d0.ctex"]
+source_file="res://Assets/Sprites/projectiles/Water_blast.png"
+dest_files=["res://.godot/imported/Water_blast.png-602a572e08733420de9090d0d19a19c5.ctex"]
 
 [params]
 

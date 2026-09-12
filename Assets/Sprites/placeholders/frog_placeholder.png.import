@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cll4c4tc2on06"
-path="res://.godot/imported/Fire1.png-71822763523a248f4f231113da04c76a.ctex"
+uid="uid://cl2cd1o6u2w7s"
+path="res://.godot/imported/frog_placeholder.png-76e5522351ed87c9b0d8b19680be8685.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Fire1.png"
-dest_files=["res://.godot/imported/Fire1.png-71822763523a248f4f231113da04c76a.ctex"]
+source_file="res://Assets/Sprites/placeholders/frog_placeholder.png"
+dest_files=["res://.godot/imported/frog_placeholder.png-76e5522351ed87c9b0d8b19680be8685.ctex"]
 
 [params]
 

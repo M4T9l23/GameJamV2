@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h4xfragysdqj"
-path="res://.godot/imported/waterball_sprite.png-464378ccf3b89e8f9428c0ba23150733.ctex"
+path="res://.godot/imported/waterball_sprite.png-e127a927d9d79ea380e8315c1ada94b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/waterball_sprite.png"
-dest_files=["res://.godot/imported/waterball_sprite.png-464378ccf3b89e8f9428c0ba23150733.ctex"]
+source_file="res://Assets/Sprites/projectiles/waterball_sprite.png"
+dest_files=["res://.godot/imported/waterball_sprite.png-e127a927d9d79ea380e8315c1ada94b8.ctex"]
 
 [params]
 
