@@ -49,6 +49,11 @@ region = Rect2(1498, 0, 214, 175)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mti6b"]
 animations = [{
+"frames": [],
+"loop": 1,
+"name": &"attack_animation",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_inwu4")
@@ -105,8 +110,11 @@ shape = SubResource("RectangleShape2D_fxl0e")
 polygon = PackedVector2Array(-10, -10, -10, 9, 10, 9, 10, -10)
 
 [node name="Camera2D" type="Camera2D" parent="CollisionShape2D/Polygon2D" unique_id=1433542006]
+limit_left = -1030
+limit_top = -1030
+limit_right = 888
+limit_bottom = 890
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813099957]
 sprite_frames = SubResource("SpriteFrames_mti6b")
-animation = &"idle_animation"
-autoplay = "idle_animation"
+animation = &"attack_animation"
