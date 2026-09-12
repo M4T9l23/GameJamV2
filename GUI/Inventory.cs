@@ -23,6 +23,9 @@ public partial class Inventory : PanelContainer
 		// kurzor "Forbidden" a NotificationDragEnd chodí s divným stavem.
 		MouseFilter = MouseFilterEnum.Stop;
 		FocusMode = FocusModeEnum.None;
+
+		// ArenaLogic si podle téhle grupy zjistí, jakou stage genomu Jane drží.
+		AddToGroup("inventory");
 	}
 
 	// --- veřejné API pro zbytek hry -------------------------------------

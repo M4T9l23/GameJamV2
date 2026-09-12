@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Item" format=3]
+
+[ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="1_item"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/genes/Fire4.png" id="2_tex"]
+
+[resource]
+script = ExtResource("1_item")
+Id = "fire_4"
+DisplayName = "Fire genome IV"
+Texture = ExtResource("2_tex")
+Tags = PackedStringArray("strength:5")
+GenomeFamily = "fire"
+Stage = 4
+metadata/_custom_type_script = "uid://ymtgxosvhtwn"

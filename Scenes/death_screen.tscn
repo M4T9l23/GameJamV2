@@ -24,7 +24,7 @@ script = ExtResource("1_rwas2")
 [node name="Panel" type="Panel" parent="." unique_id=1929591573]
 offset_left = -45.0
 offset_top = -74.0
-offset_right = 285.0
+offset_right = 255.0
 offset_bottom = 226.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_rwas2")
@@ -41,36 +41,28 @@ layout_mode = 2
 offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
-text = "[JaneSteel ~]$ Status: Dead"
+text = "[JaneDoe ~]$ Status: Dead"
 
 [node name="Option0" type="Label" parent="Panel/VBoxContainer" unique_id=1762625771]
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(10, 15)
-theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
-theme_override_fonts/font = ExtResource("2_tseak")
-text = "Restart level "
-
-[node name="Option1" type="Label" parent="Panel/VBoxContainer" unique_id=797986368]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(10, 10)
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
-text = "Leav arena"
+text = "Restart level "
 
-[node name="Option2" type="Label" parent="Panel/VBoxContainer" unique_id=457778091]
+[node name="Option1" type="Label" parent="Panel/VBoxContainer" unique_id=457778091]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(10, 5)
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
-text = "Credits "
+text = "Main menu"
 
-[node name="Option3" type="Label" parent="Panel/VBoxContainer" unique_id=233345494]
+[node name="Option2" type="Label" parent="Panel/VBoxContainer" unique_id=233345494]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(10, 0)
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
-text = "Exit"
+text = "Credits"

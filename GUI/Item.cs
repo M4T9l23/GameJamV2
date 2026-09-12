@@ -17,4 +17,18 @@ public partial class Item : Resource
 	// Když je item v equipment slotu (prvních 5 slotů inventáře), hodnoty
 	// všech jeho tagů se sečtou do PlayerEquipmentBonuses.
 	[Export] public string[] Tags = System.Array.Empty<string>();
+
+	// --- genomy ---------------------------------------------------------
+	// Prázdná GenomeFamily = normální item, nic z tohohle se na něj nevztahuje.
+	//
+	// Když má item family vyplněnou, hlídá se, že Jane může mít v inventáři
+	// vždycky jen jednu stage dané rodiny - vložení vyšší stage do slotu
+	// automaticky smaže tu nižší (viz ItemSlot).
+	[ExportGroup("Genom")]
+	[Export] public string GenomeFamily = "";
+
+	// 1-based, musí sedět na pořadí ve Genome.Stages.
+	[Export] public int Stage = 1;
+
+	public bool IsGenome => !string.IsNullOrEmpty(GenomeFamily);
 }
