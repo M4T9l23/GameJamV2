@@ -9,7 +9,15 @@
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/Asphalt.png" id="7_hptm8"]
 [ext_resource type="Texture2D" uid="uid://hkta2s33tb1i" path="res://Assets/Sprites/Asphalt_cross.png" id="8_d1ilt"]
 [ext_resource type="Texture2D" uid="uid://dpoxy16cqtgbe" path="res://Assets/Sprites/Asphalt_lines.png" id="9_6iyac"]
+[ext_resource type="Texture2D" uid="uid://b384wk4g2s3oe" path="res://Assets/Sprites/T3.png" id="9_b3802"]
 [ext_resource type="Texture2D" uid="uid://b1m1tscksgnyb" path="res://Assets/Sprites/Asphalt_lines_horisontal.png" id="10_fdnlq"]
+[ext_resource type="Texture2D" uid="uid://do86ctenuc0bv" path="res://Assets/Sprites/T4.png" id="10_fevyy"]
+[ext_resource type="Texture2D" uid="uid://bhksdwoqmdnj1" path="res://Assets/Sprites/LD.png" id="13_hibaj"]
+[ext_resource type="Texture2D" uid="uid://c3r6rvg6h1r7e" path="res://Assets/Sprites/LU.png" id="14_pdsj5"]
+[ext_resource type="Texture2D" uid="uid://bvgxr26imd3qp" path="res://Assets/Sprites/RD.png" id="15_ee4r6"]
+[ext_resource type="Texture2D" uid="uid://cu24muhw8c3li" path="res://Assets/Sprites/RU.png" id="16_gt3je"]
+[ext_resource type="Texture2D" uid="uid://jo70k2dkontu" path="res://Assets/Sprites/T1.png" id="17_3pmx8"]
+[ext_resource type="Texture2D" uid="uid://caamb3y07ep13" path="res://Assets/Sprites/T2.png" id="18_u50mg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
 texture = ExtResource("7_hptm8")
@@ -18,6 +26,16 @@ texture_region_size = Vector2i(512, 512)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wsu2k"]
 texture = ExtResource("8_d1ilt")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cbgmd"]
+texture = ExtResource("9_b3802")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1w6v2"]
+texture = ExtResource("10_fevyy")
 texture_region_size = Vector2i(512, 512)
 0:0/0 = 0
 
@@ -31,24 +49,62 @@ texture = ExtResource("10_fdnlq")
 texture_region_size = Vector2i(512, 512)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ueoa1"]
+texture = ExtResource("13_hibaj")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6vcvc"]
+texture = ExtResource("14_pdsj5")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7k868"]
+texture = ExtResource("15_ee4r6")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpc6h"]
+texture = ExtResource("16_gt3je")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kltya"]
+texture = ExtResource("17_3pmx8")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e08e2"]
+texture = ExtResource("18_u50mg")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_62yky"]
 tile_size = Vector2i(512, 512)
 sources/0 = SubResource("TileSetAtlasSource_jkdf5")
 sources/1 = SubResource("TileSetAtlasSource_wsu2k")
 sources/2 = SubResource("TileSetAtlasSource_k12tt")
 sources/3 = SubResource("TileSetAtlasSource_h1bgf")
+sources/4 = SubResource("TileSetAtlasSource_ueoa1")
+sources/5 = SubResource("TileSetAtlasSource_6vcvc")
+sources/6 = SubResource("TileSetAtlasSource_7k868")
+sources/7 = SubResource("TileSetAtlasSource_hpc6h")
+sources/8 = SubResource("TileSetAtlasSource_kltya")
+sources/9 = SubResource("TileSetAtlasSource_e08e2")
+sources/10 = SubResource("TileSetAtlasSource_cbgmd")
+sources/11 = SubResource("TileSetAtlasSource_1w6v2")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d1ilt"]
-size = Vector2(636, 20)
+size = Vector2(1913, 41)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6iyac"]
-size = Vector2(678, 23)
+size = Vector2(1908, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fdnlq"]
-size = Vector2(19, 626)
+size = Vector2(57, 1912)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hptm8"]
-size = Vector2(28, 642)
+size = Vector2(39, 1919)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
@@ -91,28 +147,28 @@ z_index = -1
 scale = Vector2(0.25, 0.25)
 tile_set = SubResource("TileSet_62yky")
 format = 2
-layer_0/tile_data = PackedInt32Array(-1, 1, 0, 65535, 2, 0, -65537, 2, 0, -131073, 2, 0, 131071, 2, 0, -2, 3, 0, -65536, 3, 0, -65535, 3, 0, -3, 3, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 0, 0)
+layer_0/tile_data = PackedInt32Array(-1, 1, 0, 65535, 2, 0, -65537, 2, 0, -131073, 2, 0, 131071, 2, 0, -2, 3, 0, -65536, 3, 0, -65535, 3, 0, -3, 3, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 0, 0, 196607, 2, 0, 262143, 2, 0, -196609, 2, 0, -262145, 2, 0, -4, 3, 0, -5, 3, 0, -65534, 3, 0, -65533, 3, 0, -6, 8, 0, -327681, 9, 0, -65532, 10, 0, 327679, 11, 0, -131078, 4, 0, 131066, 5, 0, 65530, 2, 0, -65542, 2, 0, -327682, 3, 0, -393216, 3, 0, 327678, 3, 0, 262144, 3, 0, 4, 2, 0, -131068, 2, 0, -196604, 6, 0, 65540, 7, 0, -393215, 5, 0, -327683, 7, 0, 262145, 4, 0, 327677, 6, 0, -262147, 6, 0, -131077, 6, 0, 65531, 6, 0, -196606, 6, 0, 2, 6, 0, 196605, 6, 0, 131072, 6, 0, -65541, 7, 0, 131067, 7, 0, -196611, 7, 0, -131070, 7, 0, 196608, 7, 0, 262141, 7, 0, -131076, 4, 0, -262146, 4, 0, -196605, 4, 0, -327679, 4, 0, 131073, 4, 0, 196606, 4, 0, 65532, 4, 0, 131068, 5, 0, -65540, 5, 0, -131069, 5, 0, 196609, 5, 0, 262142, 5, 0, -262143, 5, 0, -196610, 5, 0, -327680, 6, 0, -262144, 7, 0, 65538, 7, 0, 3, 4, 0, 65539, 5, 0, -393219, 4, 0, -196603, 5, 0, 131065, 6, 0, -458751, 6, 0, 65541, 4, 0, -131079, 7, 0, -393223, 1, 0, -196615, 2, 0, -262151, 2, 0, -327687, 2, 0, -393222, 3, 0, -393221, 3, 0, -393220, 3, 0, -458750, 3, 0, -458749, 3, 0, -458748, 3, 0, -458747, 1, 0, 393209, 1, 0, 327681, 7, 0, 393213, 5, 0, 196601, 2, 0, 262137, 2, 0, 327673, 2, 0, 131077, 2, 0, 196613, 2, 0, 262149, 2, 0, 327685, 1, 0, -393211, 2, 0, -327675, 2, 0, -262139, 2, 0, 393210, 3, 0, 393212, 3, 0, 393211, 3, 0, 327682, 3, 0, 327683, 3, 0, 327684, 3, 0, -327677, 1, 0, -262149, 1, 0, 262139, 1, 0, 196611, 1, 0, -327684, 0, 0, -262148, 0, 0, -196612, 0, 0, -196613, 0, 0, -196614, 0, 0, -262150, 0, 0, -327686, 0, 0, -327685, 0, 0, -327678, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -327676, 0, 0, -393212, 0, 0, -393213, 0, 0, -393214, 0, 0, 131074, 0, 0, 196610, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 196612, 0, 0, 131076, 0, 0, 131075, 0, 0, 196604, 0, 0, 196603, 0, 0, 196602, 0, 0, 262138, 0, 0, 327674, 0, 0, 327675, 0, 0, 327676, 0, 0, 262140, 0, 0, -65543, 4, 0, 65529, 5, 0, -458752, 5, 0, 327680, 4, 0, -7, 2, 0, -393217, 3, 0, -393218, 7, 0, -65544, 6, 0, 65528, 7, 0, -8, 2, 0, 393214, 6, 0, 393215, 3, 0, 458751, 3, 0, 393216, 5, 0, 458750, 7, 0, 5, 7, 0, 6, 5, 0, -131066, 4, 0, -131067, 6, 0, -65531, 2, 0, -65530, 2, 0, -524288, 4, 0, -458754, 6, 0, -458753, 3, 0, -458760, 0, 0, -458759, 0, 0, -458758, 0, 0, -458757, 0, 0, -458756, 0, 0, -458755, 0, 0, -524287, 0, 0, -524286, 0, 0, -524285, 0, 0, -524284, 0, 0, -524283, 0, 0, -524282, 0, 0, -458746, 0, 0, -393210, 0, 0, -327674, 0, 0, -196602, 0, 0, -262138, 0, 0, -393224, 0, 0, -327688, 0, 0, -262152, 0, 0, -196616, 0, 0, -131080, 0, 0, 131064, 0, 0, 262136, 0, 0, 196600, 0, 0, 327672, 0, 0, 393208, 0, 0, 458744, 0, 0, 458745, 0, 0, 458746, 0, 0, 458747, 0, 0, 458748, 0, 0, 458749, 0, 0, 393217, 0, 0, 393218, 0, 0, 393220, 0, 0, 393219, 0, 0, 393221, 0, 0, 393222, 0, 0, 327686, 0, 0, 262150, 0, 0, 196614, 0, 0, 131078, 0, 0, 65542, 0, 0)
 
 [node name="border south" type="StaticBody2D" parent="." unique_id=1252232798]
 
 [node name="CollisionShape2D_S" type="CollisionShape2D" parent="border south" unique_id=1032265013]
-position = Vector2(-66, 265)
+position = Vector2(-63.5, 913.5)
 shape = SubResource("RectangleShape2D_d1ilt")
 
 [node name="border north" type="StaticBody2D" parent="." unique_id=1107000904]
 
 [node name="CollisionShape2D_N" type="CollisionShape2D" parent="border north" unique_id=1138500833]
-position = Vector2(-72, -399)
+position = Vector2(-62, -1064)
 shape = SubResource("RectangleShape2D_6iyac")
 
 [node name="border east" type="StaticBody2D" parent="." unique_id=1050368188]
 
 [node name="CollisionShape2D_E" type="CollisionShape2D" parent="border east" unique_id=79191894]
-position = Vector2(264, -64)
+position = Vector2(927.5, -88)
 shape = SubResource("RectangleShape2D_fdnlq")
 
 [node name="border west" type="StaticBody2D" parent="." unique_id=1102912973]
 
 [node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
-position = Vector2(-396, -65)
+position = Vector2(-1044.5, -73.5)
 shape = SubResource("RectangleShape2D_hptm8")
