@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b262igasp18xm"
-path="res://.godot/imported/Ruka zavrena.png-87a484c901135d0f4d8e86130fa88338.ctex"
+uid="uid://b5ik3bipg63tr"
+path="res://.godot/imported/Water_blast.png-cd0de986c003952e4b0139ee2775aade.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Ruka zavrena.png"
-dest_files=["res://.godot/imported/Ruka zavrena.png-87a484c901135d0f4d8e86130fa88338.ctex"]
+source_file="res://Assets/Sprites/Water_blast.png"
+dest_files=["res://.godot/imported/Water_blast.png-cd0de986c003952e4b0139ee2775aade.ctex"]
 
 [params]
 

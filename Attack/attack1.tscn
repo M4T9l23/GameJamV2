@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/fireball_spritesheet.png" id="2_4np7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
+size = Vector2(50, 33.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ralh"]
 atlas = ExtResource("2_4np7o")
@@ -52,13 +53,17 @@ animations = [{
 script = ExtResource("1_db15e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=375859771]
+position = Vector2(-11, 3.25)
 shape = SubResource("RectangleShape2D_fxl0e")
 
 [node name="Polygon2D" type="Polygon2D" parent="CollisionShape2D" unique_id=1903411092]
 polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=647478583]
+position = Vector2(-73, -74.00002)
+scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
-frame_progress = 0.6857242
+autoplay = "default"
+frame = 4
+frame_progress = 1.0
 centered = false
-offset = Vector2(85.295, 0)

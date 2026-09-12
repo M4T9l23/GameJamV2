@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bcrlhq3ppubhr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxl0e"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=106441782]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
+shape = SubResource("CircleShape2D_fxl0e")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=1701339122]
+offset_left = -7.000003
+offset_top = -7.0
+offset_right = 32.999996
+offset_bottom = 33.0
+scale = Vector2(0.35782865, 0.35942712)

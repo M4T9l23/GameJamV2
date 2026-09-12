@@ -3,29 +3,17 @@ using Godot;
 public partial class WorldItem : Area2D
 {
 	private Sprite2D _sprite;
-	private bool _isDragging = false;
+	private DragHandle _handle;
+	private TextureRect _dragIcon;
 
 	public override void _Ready()
 	{
 		_sprite = GetNode<Sprite2D>("Sprite2D");
-		InputPickable = true;
-		InputEvent += OnInputEvent;
-		AddToGroup("world_items");
-	}
 
-	// Nouzové vyčištění stavu, kdyby item zůstal "zaseknutý" uprostřed tažení
-	// (např. kvůli chybějící/pozdní DragEnd notifikaci). Volá se při zapnutí PickupMode.
-	public void ResetState()
-	{
-		_isDragging = false;
-		InputPickable = true;
-		if (_sprite != null)
-			_sprite.Show();
-	}
+		// Area2D._InputEvent neumí Godot drag&drop - potřebujeme Control.
+		InputPickable = false;
 
-	public Texture2D GetTexture()
-	{
-		return _sprite.Texture;
+		BuildDragHandle();
 	}
 
 	public void SetTexture(Texture2D texture)
@@ -34,62 +22,127 @@ public partial class WorldItem : Area2D
 			_sprite = GetNode<Sprite2D>("Sprite2D");
 
 		_sprite.Texture = texture;
+
+		if (_dragIcon != null)
+			_dragIcon.Texture = texture;
+
+		UpdateHandleSize();
 	}
 
-	private void OnInputEvent(Node viewport, InputEvent @event, long shapeIdx)
+	private void BuildDragHandle()
 	{
-		if (_isDragging || !PickupMode.Instance.Active || GetViewport().GuiIsDragging())
-			return;
-
-		if (@event is InputEventMouseButton mb && mb.Pressed && mb.ButtonIndex == MouseButton.Left)
-		{
-			StartDrag();
-		}
-	}
-
-	private void StartDrag()
-	{
-		if (_sprite.Texture == null || Inventory.Instance == null)
-			return;
-
-		_isDragging = true;
-		InputPickable = false; // dokud táhneme, nejde to chytit znovu
-		_sprite.Hide();
-
-		var previewIcon = new TextureRect
+		_dragIcon = new TextureRect
 		{
 			Texture = _sprite.Texture,
 			ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
 			StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-			CustomMinimumSize = new Vector2(96, 96),
 			MouseFilter = Control.MouseFilterEnum.Ignore,
-			Position = -new Vector2(48, 48),
-			Modulate = new Color(1f, 1f, 1f, 0.7f)
+			Visible = false, // sprite kreslí item, tohle drží jen texturu pro drag
 		};
 
-		var previewWrapper = new Control
+		_handle = new DragHandle
 		{
-			MouseFilter = Control.MouseFilterEnum.Ignore
+			Owner2D = this,
+			MouseFilter = Control.MouseFilterEnum.Stop,
 		};
-		previewWrapper.AddChild(previewIcon);
+		_handle.AddChild(_dragIcon);
+		AddChild(_handle);
 
-		Inventory.Instance.ForceDrag(this, previewWrapper);
+		UpdateHandleSize();
 	}
 
-	public override void _Notification(int what)
+	private void UpdateHandleSize()
 	{
-		if (what == NotificationDragEnd && _isDragging)
-		{
-			_isDragging = false;
+		if (_handle == null || _sprite?.Texture == null)
+			return;
 
-			if (!GetViewport().GuiIsDragSuccessful() && IsInstanceValid(this) && _sprite != null)
+		Vector2 size = _sprite.Texture.GetSize() * _sprite.Scale;
+
+		_handle.Size = size;
+		_handle.Position = -size / 2f; // sprite je centrovaný na originu
+		_dragIcon.Size = size;
+		_dragIcon.Position = Vector2.Zero;
+	}
+
+	// Volá DragHandle po skončení tažení (deferred).
+	internal void OnDragFinished()
+	{
+		if (_dragIcon == null)
+			return;
+
+		_dragIcon.Visible = false;
+
+		if (_dragIcon.Texture == null)
+		{
+			// Slot byl prázdný -> item si vzal inventář.
+			QueueFree();
+			return;
+		}
+
+		// Buď se drop nepovedl (textura zůstala stejná), nebo proběhla výměna
+		// s obsazeným slotem a dostali jsme zpátky jeho starý item.
+		_sprite.Texture = _dragIcon.Texture;
+		_sprite.Show();
+		UpdateHandleSize();
+	}
+
+	internal void OnDragStarted()
+	{
+		_sprite.Hide();
+	}
+
+	// Vnitřní Control, který obstarává samotné tažení.
+	private partial class DragHandle : Control
+	{
+		public WorldItem Owner2D;
+
+		private bool _dragging;
+
+		public override Variant _GetDragData(Vector2 atPosition)
+		{
+			if (PickupMode.Instance == null || !PickupMode.Instance.Active)
+				return default;
+
+			if (Owner2D == null || Owner2D._dragIcon?.Texture == null)
+				return default;
+
+			var preview = new TextureRect
 			{
-				// Drag se nepovedl (puštěno mimo prázdný slot) -> item zůstává na místě
-				_sprite.Show();
-				InputPickable = true;
-			}
-			// Pokud byl drag úspěšný, tento uzel je stejně zničen v ItemSlot._DropData,
-			// takže není potřeba nic vracet zpět.
+				Texture = Owner2D._dragIcon.Texture,
+				Size = Size,
+				ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+				StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+				Position = -Size / 2f,
+				MouseFilter = MouseFilterEnum.Ignore,
+			};
+
+			var wrapper = new Control
+			{
+				MouseFilter = MouseFilterEnum.Ignore,
+				Modulate = new Color(1f, 1f, 1f, 0.5f),
+			};
+			wrapper.AddChild(preview);
+			SetDragPreview(wrapper);
+
+			_dragging = true;
+			Owner2D.OnDragStarted();
+
+			return Owner2D._dragIcon;
+		}
+
+		public override void _Notification(int what)
+		{
+			if (what != NotificationDragEnd || !_dragging)
+				return;
+
+			_dragging = false;
+			CallDeferred(nameof(FinishDrag));
+		}
+
+		private void FinishDrag()
+		{
+			if (Owner2D != null && IsInstanceValid(Owner2D))
+				Owner2D.OnDragFinished();
 		}
 	}
 }

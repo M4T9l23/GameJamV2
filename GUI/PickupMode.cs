@@ -1,13 +1,10 @@
 using Godot;
 
-// Přidej tento skript do Project Settings -> Autoload jako singleton
-// s názvem "PickupMode" (přesný název je důležitý kvůli PickupMode.Instance).
+// Autoload: Project Settings -> Autoload, název "PickupMode".
 public partial class PickupMode : Node
 {
 	public static PickupMode Instance { get; private set; }
 
-	// Soubory nahraj do res://GUI/Cursors/ pod přesně těmito názvy.
-	// Pokud je dáš jinam, uprav cesty tady:
 	private const string ClosedCursorPath = "res://Assets/Sprites/Hand_closed.png";
 	private const string OpenCursorPath = "res://Assets/Sprites/Hand_open.png";
 
@@ -16,54 +13,82 @@ public partial class PickupMode : Node
 	private Vector2 _closedHotspot;
 	private Vector2 _openHotspot;
 
-	public bool Active { get; private set; } = false;
+	private bool _dragging;
+
+	public bool Active { get; private set; }
 
 	public override void _Ready()
 	{
 		Instance = this;
+		ProcessMode = ProcessModeEnum.Always;
+
 		_closedCursor = GD.Load<Texture2D>(ClosedCursorPath);
 		_openCursor = GD.Load<Texture2D>(OpenCursorPath);
 
-		_closedHotspot = _closedCursor.GetSize() / 2f;
-		_openHotspot = _openCursor.GetSize() / 2f;
+		if (_closedCursor != null)
+			_closedHotspot = _closedCursor.GetSize() / 2f;
+
+		if (_openCursor != null)
+			_openHotspot = _openCursor.GetSize() / 2f;
 	}
 
-	public override void _UnhandledInput(InputEvent @event)
+	public override void _ExitTree()
+	{
+		if (Instance == this)
+			Instance = null;
+	}
+
+	// _Input, ne _UnhandledInput: Tab je bindnutý na ui_focus_next a Controly
+	// ho spolknou dřív, než se dostane k unhandled input.
+	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventKey key && key.Pressed && !key.Echo && key.Keycode == Key.Tab)
 		{
 			Toggle();
+			GetViewport().SetInputAsHandled();
+			return;
 		}
 
-		if (Active && @event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
+		if (!Active)
+			return;
+
+		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
 		{
-			if (mb.Pressed)
-				Input.SetCustomMouseCursor(_closedCursor, Input.CursorShape.Arrow, _closedHotspot);
-			else
-				Input.SetCustomMouseCursor(_openCursor, Input.CursorShape.Arrow, _openHotspot);
+			if (mb.Pressed == _dragging)
+				return; // ignoruj opakované/duplicitní eventy
+
+			_dragging = mb.Pressed;
+			ApplyCursor();
 		}
 	}
 
 	private void Toggle()
 	{
-		Active = !Active;
-		if (Active)
-		{
-			Input.SetCustomMouseCursor(_openCursor, Input.CursorShape.Arrow, _openHotspot);
-			ResetStuckWorldItems();
-		}
-		else
-		{
-			Input.SetCustomMouseCursor(null, Input.CursorShape.Arrow);
-		}
+		SetActive(!Active);
 	}
 
-	private void ResetStuckWorldItems()
+	public void SetActive(bool active)
 	{
-		foreach (Node node in GetTree().GetNodesInGroup("world_items"))
-		{
-			if (node is WorldItem item)
-				item.ResetState();
-		}
+		if (Active == active)
+			return;
+
+		Active = active;
+		_dragging = false;
+
+		if (Active)
+			ApplyCursor();
+		else
+			Input.SetCustomMouseCursor(null, Input.CursorShape.Arrow);
+	}
+
+	private void ApplyCursor()
+	{
+		Texture2D tex = _dragging ? _closedCursor : _openCursor;
+		Vector2 hotspot = _dragging ? _closedHotspot : _openHotspot;
+
+		if (tex == null)
+			return;
+
+		Input.SetCustomMouseCursor(tex, Input.CursorShape.Arrow, hotspot);
 	}
 }
