@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://um6athh6d7wc" path="res://Player/Player.cs" id="1_v8jqv"]
 [ext_resource type="PackedScene" uid="uid://cbu1bq8jwoa0i" path="res://Attack/attack1.tscn" id="2_vvw5e"]
 [ext_resource type="Texture2D" uid="uid://fm7b5i7vxs38" path="res://Assets/Sprites/Sprite_sheet.png" id="3_inwu4"]
+[ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="3_srlcf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
 
@@ -93,6 +94,7 @@ animations = [{
 scale = Vector2(1.2014606, 1.1587275)
 script = ExtResource("1_v8jqv")
 BulletScene = ExtResource("2_vvw5e")
+_deathScreenScene = ExtResource("3_srlcf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1967567405]
 shape = SubResource("RectangleShape2D_fxl0e")
@@ -105,4 +107,4 @@ polygon = PackedVector2Array(-10, -10, -10, 9, 10, 9, 10, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813099957]
 rotation = 3.1415927
 sprite_frames = SubResource("SpriteFrames_mti6b")
-animation = &"move_animation"
+animation = &"idle_animation"

@@ -38,7 +38,3 @@ scale = Vector2(0.4, 0.386)
 [node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
 position = Vector2(-146, -112)
 InitialItem = ExtResource("7_344ge")
-
-[node name="SpeedBoost2" parent="." unique_id=468350600 instance=ExtResource("6_6bp64")]
-position = Vector2(114, -201)
-InitialItem = ExtResource("7_344ge")
