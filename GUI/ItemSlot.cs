@@ -11,10 +11,18 @@ public partial class ItemSlot : Panel
 
 	public override void _Ready()
 	{
-		_icon = GetNode<TextureRect>("Icon");
+		_icon = GetNodeOrNull<TextureRect>("Icon");
+		if (_icon == null)
+		{
+			GD.PushError($"ItemSlot '{Name}': chybi potomek 'Icon' (TextureRect).");
+			return;
+		}
 
-		// Ikona nesmí krást myš slotu.
+		// Ikona nesmi krast mys slotu.
 		_icon.MouseFilter = MouseFilterEnum.Ignore;
+
+		// Slot musi prijimat mys, jinak nejde drag & drop.
+		MouseFilter = MouseFilterEnum.Stop;
 
 		// Tab by jinak skákal po focusu a nedostal se do PickupMode.
 		FocusMode = FocusModeEnum.None;
@@ -26,7 +34,7 @@ public partial class ItemSlot : Panel
 
 	public Item GetItem() => _item;
 
-	public Texture2D GetTexture() => _icon.Texture;
+	public Texture2D GetTexture() => _icon?.Texture;
 
 	public void SetItem(Item item)
 	{
@@ -35,8 +43,12 @@ public partial class ItemSlot : Panel
 			PlayerEquipmentBonuses.Instance?.RemoveItem(_item);
 
 		_item = item;
-		_icon.Texture = item?.Texture;
-		_icon.Show();
+
+		if (_icon != null)
+		{
+			_icon.Texture = item?.Texture;
+			_icon.Show();
+		}
 
 		if (IsEquipmentSlot && _item != null)
 			PlayerEquipmentBonuses.Instance?.ApplyItem(_item);
@@ -50,7 +62,7 @@ public partial class ItemSlot : Panel
 		if (PickupMode.Instance == null || !PickupMode.Instance.Active)
 			return default;
 
-		if (_item == null)
+		if (_item == null || _icon == null)
 			return default;
 
 		var preview = new TextureRect
@@ -102,7 +114,7 @@ public partial class ItemSlot : Panel
 		if (payload.SourceSlot == this)
 		{
 			// Puštěno na stejný slot - jen vrátit viditelnost.
-			_icon.Show();
+			_icon?.Show();
 			return;
 		}
 
@@ -125,7 +137,7 @@ public partial class ItemSlot : Panel
 			payload.Icon.Texture = outgoing?.Texture;
 		}
 
-		payload.Icon.Show();
+		payload.Icon?.Show();
 	}
 
 	// Projde všechny sloty v inventáři (equipment i normální) a zjistí, jestli

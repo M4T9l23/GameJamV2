@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/Enemy1/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
@@ -115,6 +115,12 @@ scale = Vector2(0.3, 0.29)
 script = ExtResource("1_jjgbg")
 EnemyScene = ExtResource("2_8gbba")
 
+[node name="SpeedBoost2" parent="." unique_id=468350600 instance=ExtResource("6_6bp64")]
+position = Vector2(114, -201)
+
+[node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
+position = Vector2(-146, -112)
+
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
 z_index = 1
 scale = Vector2(0.4, 0.386)
@@ -135,12 +141,6 @@ z_index = 1
 position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
-
-[node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
-position = Vector2(-146, -112)
-
-[node name="SpeedBoost2" parent="." unique_id=468350600 instance=ExtResource("6_6bp64")]
-position = Vector2(114, -201)
 
 [node name="TileMap" type="TileMap" parent="." unique_id=978513498]
 z_index = -1
