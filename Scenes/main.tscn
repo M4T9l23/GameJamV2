@@ -4,10 +4,39 @@
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
-[ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
-[ext_resource type="Resource" uid="uid://dt61peydl5j78" path="res://GUI/Items/Speed.tres" id="7_344ge"]
+[ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/Asphalt.png" id="7_hptm8"]
+[ext_resource type="Texture2D" uid="uid://hkta2s33tb1i" path="res://Assets/Sprites/Asphalt_cross.png" id="8_d1ilt"]
+[ext_resource type="Texture2D" uid="uid://dpoxy16cqtgbe" path="res://Assets/Sprites/Asphalt_lines.png" id="9_6iyac"]
+[ext_resource type="Texture2D" uid="uid://b1m1tscksgnyb" path="res://Assets/Sprites/Asphalt_lines_horisontal.png" id="10_fdnlq"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
+texture = ExtResource("7_hptm8")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wsu2k"]
+texture = ExtResource("8_d1ilt")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k12tt"]
+texture = ExtResource("9_6iyac")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h1bgf"]
+texture = ExtResource("10_fdnlq")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_62yky"]
+tile_size = Vector2i(512, 512)
+sources/0 = SubResource("TileSetAtlasSource_jkdf5")
+sources/1 = SubResource("TileSetAtlasSource_wsu2k")
+sources/2 = SubResource("TileSetAtlasSource_k12tt")
+sources/3 = SubResource("TileSetAtlasSource_h1bgf")
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
@@ -19,22 +48,35 @@ script = ExtResource("1_jjgbg")
 EnemyScene = ExtResource("2_8gbba")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
+z_index = 1
 scale = Vector2(0.4, 0.386)
-_deathScreenScene = ExtResource("5_21xkr")
+collision_layer = 2
 
 [node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
+z_index = 1
 position = Vector2(75, 64)
 scale = Vector2(0.4, 0.386)
 
 [node name="Wall2" parent="." unique_id=576701195 instance=ExtResource("4_jjvhh")]
+z_index = 1
 position = Vector2(83, -84.00001)
 scale = Vector2(0.4, 0.386)
 
 [node name="Wall3" parent="." unique_id=1082431219 instance=ExtResource("4_jjvhh")]
+z_index = 1
 position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
 
 [node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
 position = Vector2(-146, -112)
-InitialItem = ExtResource("7_344ge")
+
+[node name="SpeedBoost2" parent="." unique_id=468350600 instance=ExtResource("6_6bp64")]
+position = Vector2(114, -201)
+
+[node name="TileMap" type="TileMap" parent="." unique_id=978513498]
+z_index = -1
+scale = Vector2(0.25, 0.25)
+tile_set = SubResource("TileSet_62yky")
+format = 2
+layer_0/tile_data = PackedInt32Array(-1, 1, 0, 65535, 2, 0, -65537, 2, 0, -131073, 2, 0, 131071, 2, 0, -2, 3, 0, -65536, 3, 0, -65535, 3, 0, -3, 3, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 0, 0)

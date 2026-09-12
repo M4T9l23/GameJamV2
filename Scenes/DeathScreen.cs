@@ -8,6 +8,7 @@ public partial class DeathScreen : CanvasLayer
 
     public override void _Ready()
     {
+        ProcessMode = ProcessModeEnum.Always;   // ← must be before the pause
         _options = new Label[]
         {
             GetNode<Label>("Panel/VBoxContainer/Option0"),
@@ -16,17 +17,21 @@ public partial class DeathScreen : CanvasLayer
         };
         Refresh();
         GetTree().Paused = true;
+        GD.Print($"Paused: {GetTree().Paused}");
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event.IsActionPressed("ui_down"))
         {
+            GD.Print("ui down");
             _index = (_index + 1) % _options.Length;
             Refresh();
         }
         else if (@event.IsActionPressed("ui_up"))
         {
+            GD.Print("ui up");
+
             _index = (_index - 1 + _options.Length) % _options.Length;
             Refresh();
         }
