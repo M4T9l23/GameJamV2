@@ -53,8 +53,6 @@ HP[##########----------]
 LOCATION: E-404"
 vertical_alignment = 1
 script = ExtResource("2_stats")
-MaxHp = 6
-CurrentHp = 3
 
 [node name="GridContainer" type="GridContainer" parent="Inventory/MarginContainer/HBoxContainer" unique_id=790947249]
 unique_name_in_owner = true
