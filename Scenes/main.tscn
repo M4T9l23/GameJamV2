@@ -457,6 +457,6 @@ position = Vector2(383, -197)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2022608070]
+[node name="LevelMusic" type="AudioStreamPlayer2D" parent="." unique_id=1949929374]
 stream = ExtResource("54_gsvbx")
 autoplay = true

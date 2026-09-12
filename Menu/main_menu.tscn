@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c7628x445ee8x" path="res://Menu/MainMenu.cs" id="1_dtkyu"]
 [ext_resource type="FontFile" uid="uid://kkhlqb31vjhq" path="res://Assets/MonospaceBold.ttf" id="1_sla5p"]
 [ext_resource type="Texture2D" uid="uid://by1c2jnxryihk" path="res://Assets/background.jpg" id="2_ci1se"]
-[ext_resource type="AudioStream" uid="uid://djvot6608blft" path="res://Assets/Music/Menu Music.wav" id="4_ohgnh"]
+[ext_resource type="AudioStream" uid="uid://g6gpkfaic80r" path="res://Assets/Music/Better main.wav" id="4_ohgnh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ci1se"]
 texture = ExtResource("2_ci1se")

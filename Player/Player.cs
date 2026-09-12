@@ -38,6 +38,7 @@ public partial class Player : CharacterBody2D
 	private bool _isDead;
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
+	private AudioStreamPlayer2D _musicPlayer;
 
 	public override void _Ready()
 	{
@@ -46,6 +47,7 @@ public partial class Player : CharacterBody2D
 		Health = MaxHealth;
 		AddToGroup("player");
 		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
+		_musicPlayer = GetNode<AudioStreamPlayer2D>("../LevelMusic");
 	}
 
 	public void TakeDamage(int amount)
@@ -58,6 +60,12 @@ public partial class Player : CharacterBody2D
 
 		if (Health <= 0)
 			Die();
+		// 1. Get the LevelMusic node. 
+		// Since LevelMusic and CharacterBody2D are both direct children of 'main', we use "../LevelMusic"
+		AudioStreamPlayer musicPlayer = GetNode<AudioStreamPlayer>("../LevelMusic");
+        
+		// 2. Stop the music
+		musicPlayer.Stop();
 	}
 
 	private void OnAnimationFinished()
@@ -80,6 +88,7 @@ public partial class Player : CharacterBody2D
 		var screen = _deathScreenScene.Instantiate<DeathScreen>();
 		screen.Setup(true);
 		GetTree().CurrentScene.AddChild(screen);
+		_musicPlayer?.Stop();
 	}
 
 	// Volá ArenaLogic při respawnu nebo opuštění arény.
