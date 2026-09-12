@@ -117,4 +117,5 @@ limit_bottom = 890
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813099957]
 sprite_frames = SubResource("SpriteFrames_mti6b")
-animation = &"attack_animation"
+animation = &"idle_animation"
+autoplay = "idle_animation"
