@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cbu1bq8jwoa0i"]
 
 [ext_resource type="Script" uid="uid://dkjjawj3dbifp" path="res://Attack/Attack1.cs" id="1_db15e"]
-[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/fireball_spritesheet.png" id="2_4np7o"]
+[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/projectiles/fireball_spritesheet.png" id="2_4np7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
 size = Vector2(50, 33.5)

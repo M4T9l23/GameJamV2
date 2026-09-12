@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h4xfragysdqj"
-path="res://.godot/imported/waterball_sprite.png-464378ccf3b89e8f9428c0ba23150733.ctex"
+uid="uid://b5ik3bipg63tr"
+path="res://.godot/imported/Water_blast.png-602a572e08733420de9090d0d19a19c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/waterball_sprite.png"
-dest_files=["res://.godot/imported/waterball_sprite.png-464378ccf3b89e8f9428c0ba23150733.ctex"]
+source_file="res://Assets/Sprites/projectiles/Water_blast.png"
+dest_files=["res://.godot/imported/Water_blast.png-602a572e08733420de9090d0d19a19c5.ctex"]
 
 [params]
 

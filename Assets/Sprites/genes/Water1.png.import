@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cl2cd1o6u2w7s"
-path="res://.godot/imported/frog_placeholder.png-033d9096f00750efd38a68e1590c2c01.ctex"
+uid="uid://b12bl8wx0vnt1"
+path="res://.godot/imported/Water1.png-c282941083ffd96b461ab39e2e18210f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/frog_placeholder.png"
-dest_files=["res://.godot/imported/frog_placeholder.png-033d9096f00750efd38a68e1590c2c01.ctex"]
+source_file="res://Assets/Sprites/genes/Water1.png"
+dest_files=["res://.godot/imported/Water1.png-c282941083ffd96b461ab39e2e18210f.ctex"]
 
 [params]
 
