@@ -91,8 +91,6 @@ position = Vector2(7.9166574, -4.069766)
 shape = SubResource("RectangleShape2D_gtgmb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867286319]
-position = Vector2(-1.9073486e-06, -0.58139515)
-scale = Vector2(1.093068, 0.8687554)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
-frame_progress = 0.31199792
+frame_progress = 0.64576066

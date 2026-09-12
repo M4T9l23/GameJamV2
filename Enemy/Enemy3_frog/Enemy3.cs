@@ -1,7 +1,10 @@
 using Godot;
 
-public partial class Enemy3 : CharacterBody2D
+public partial class Enemy3 : CharacterBody2D, IDamageable
 {
+    [Export] public float HitRadius = 24f;   // add to the exports up top
+
+    
     [Export] public int Health = 3;
     [Export] public int ContactDamage = 1;
     [Export] public Godot.Collections.Array<DropEntry> Drops = new();
@@ -42,7 +45,7 @@ public partial class Enemy3 : CharacterBody2D
             return;
 
         Vector2 toPlayer = GlobalPosition.DirectionTo(_player.GlobalPosition);
-        
+
         // Always face the player, even when sliding or waiting to leap
         FaceDirection(toPlayer);
 
@@ -51,12 +54,12 @@ public partial class Enemy3 : CharacterBody2D
         if (_leapTimer >= LeapCooldown)
         {
             // Calculate steering direction right before the leap
-            Vector2 desired = toPlayer 
-                + GetSeparation() * SeparationWeight 
-                + GetObstacleAvoidance() * WallWeight;
+            Vector2 desired = toPlayer
+                              + GetSeparation() * SeparationWeight
+                              + GetObstacleAvoidance() * WallWeight;
 
-            Vector2 leapDirection = desired.LengthSquared() > 0.001f 
-                ? desired.Normalized() 
+            Vector2 leapDirection = desired.LengthSquared() > 0.001f
+                ? desired.Normalized()
                 : toPlayer;
 
             Velocity = leapDirection * LeapForce;
@@ -73,10 +76,13 @@ public partial class Enemy3 : CharacterBody2D
 
         MoveAndSlide();
 
-        for (int i = 0; i < GetSlideCollisionCount(); i++)
+
+// ...replace the for-loop at the end of _PhysicsProcess with:
+        if (GlobalPosition.DistanceTo(_player.GlobalPosition) <= HitRadius)
         {
-            if (GetSlideCollision(i).GetCollider() is Player player)
+            if (_player is Player player)
             {
+                _dead = true;
                 player.TakeDamage(ContactDamage);
                 QueueFree();
                 return;

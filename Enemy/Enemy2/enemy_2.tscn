@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bbo35pwjheaf3"]
+
+[ext_resource type="Script" uid="uid://c7otwxiuoy57x" path="res://Enemy/Enemy2/Enemy2.cs" id="1_w1xm3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
+size = Vector2(15, 15)
+
+[node name="CharacterBody2D2" type="CharacterBody2D" unique_id=106441782]
+collision_layer = 3
+collision_mask = 3
+platform_floor_layers = 4294967055
+platform_wall_layers = 15
+script = ExtResource("1_w1xm3")
+Health = 2
+Speed = 200.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
+shape = SubResource("RectangleShape2D_4np7o")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=1701339122]
+offset_left = -7.000003
+offset_top = -7.0
+offset_right = 32.999996
+offset_bottom = 33.0
+scale = Vector2(0.35782865, 0.35942712)

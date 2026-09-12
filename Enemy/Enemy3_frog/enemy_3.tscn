@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=106441782]
+[node name="CharacterBody2D2" type="CharacterBody2D" unique_id=106441782]
 platform_floor_layers = 4294967047
 platform_wall_layers = 7
 script = ExtResource("1_s0rsv")
