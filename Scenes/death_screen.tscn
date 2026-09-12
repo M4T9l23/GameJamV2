@@ -23,9 +23,9 @@ script = ExtResource("1_rwas2")
 
 [node name="Panel" type="Panel" parent="." unique_id=1929591573]
 offset_left = -45.0
-offset_top = 31.0
+offset_top = -74.0
 offset_right = 255.0
-offset_bottom = 331.0
+offset_bottom = 226.0
 scale = Vector2(0.75, 0.75)
 theme_override_styles/panel = SubResource("StyleBoxFlat_rwas2")
 
