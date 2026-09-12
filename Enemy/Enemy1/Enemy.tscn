@@ -41,28 +41,28 @@ region = Rect2(1498, 0, 214, 216)
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_vonkd")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_vso2s")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_fkela")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_d2k2y")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_jd4ap")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_1ypri")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_uxjip")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_kvarv")
 }],
 "loop": 1,
@@ -71,7 +71,7 @@ animations = [{
 }]
 
 [node name="Enemy-1" type="CharacterBody2D" unique_id=210615792 node_paths=PackedStringArray("Visual")]
-scale = Vector2(1.2000009, 1.72)
+scale = Vector2(0.6, 0.6)
 collision_layer = 3
 collision_mask = 3
 platform_floor_layers = 4294967041
@@ -95,5 +95,4 @@ position = Vector2(-1.9073486e-06, -0.58139515)
 scale = Vector2(1.093068, 0.8687554)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
-frame = 7
-frame_progress = 0.7641732
+frame_progress = 0.31199792

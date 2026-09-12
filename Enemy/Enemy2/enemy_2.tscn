@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://bcrlhq3ppubhr"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fxl0e"]
+[ext_resource type="Script" uid="uid://bgw8fwiyeb6eb" path="res://Enemy/Enemy2/Enemy2.cs" id="1_w1xm3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
+size = Vector2(15, 15)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=106441782]
+platform_floor_layers = 4294967047
+platform_wall_layers = 7
+script = ExtResource("1_w1xm3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
-shape = SubResource("CircleShape2D_fxl0e")
+shape = SubResource("RectangleShape2D_4np7o")
 
 [node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=1701339122]
 offset_left = -7.000003

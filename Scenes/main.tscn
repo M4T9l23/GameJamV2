@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://3bb3qkheio60"]
 
-[ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/Enemy1/EnemySpawner.cs" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy2/enemy_2.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/Asphalt.png" id="7_hptm8"]
@@ -18,6 +20,18 @@
 [ext_resource type="Texture2D" uid="uid://cu24muhw8c3li" path="res://Assets/Sprites/RU.png" id="16_gt3je"]
 [ext_resource type="Texture2D" uid="uid://jo70k2dkontu" path="res://Assets/Sprites/T1.png" id="17_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://caamb3y07ep13" path="res://Assets/Sprites/T2.png" id="18_u50mg"]
+
+[sub_resource type="Resource" id="Resource_hibaj"]
+script = ExtResource("2_h1bgf")
+Scene = ExtResource("2_8gbba")
+metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
+
+[sub_resource type="Resource" id="Resource_3w5oe"]
+script = ExtResource("2_h1bgf")
+Scene = ExtResource("5_hibaj")
+Interval = 2.0
+MaxAlive = 5
+metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
 texture = ExtResource("7_hptm8")
@@ -95,25 +109,25 @@ sources/10 = SubResource("TileSetAtlasSource_cbgmd")
 sources/11 = SubResource("TileSetAtlasSource_1w6v2")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d1ilt"]
-size = Vector2(1913, 41)
+size = Vector2(1973, 41)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6iyac"]
-size = Vector2(1908, 60)
+size = Vector2(2001, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fdnlq"]
-size = Vector2(57, 1912)
+size = Vector2(57, 2015)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hptm8"]
-size = Vector2(39, 1919)
+size = Vector2(39, 1995)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("5_kry3j")]
 
-[node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122]
-scale = Vector2(0.3, 0.29)
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
-EnemyScene = ExtResource("2_8gbba")
+Entries = Array[ExtResource("2_h1bgf")]([SubResource("Resource_hibaj"), SubResource("Resource_3w5oe")])
+FloorMap = NodePath("../TileMap")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
 z_index = 1
@@ -152,23 +166,23 @@ layer_0/tile_data = PackedInt32Array(-1, 1, 0, 65535, 2, 0, -65537, 2, 0, -13107
 [node name="border south" type="StaticBody2D" parent="." unique_id=1252232798]
 
 [node name="CollisionShape2D_S" type="CollisionShape2D" parent="border south" unique_id=1032265013]
-position = Vector2(-63.5, 913.5)
+position = Vector2(-55.5, 913.5)
 shape = SubResource("RectangleShape2D_d1ilt")
 
 [node name="border north" type="StaticBody2D" parent="." unique_id=1107000904]
 
 [node name="CollisionShape2D_N" type="CollisionShape2D" parent="border north" unique_id=1138500833]
-position = Vector2(-62, -1064)
+position = Vector2(-55, -1056)
 shape = SubResource("RectangleShape2D_6iyac")
 
 [node name="border east" type="StaticBody2D" parent="." unique_id=1050368188]
 
 [node name="CollisionShape2D_E" type="CollisionShape2D" parent="border east" unique_id=79191894]
-position = Vector2(927.5, -88)
+position = Vector2(927.5, -70.5)
 shape = SubResource("RectangleShape2D_fdnlq")
 
 [node name="border west" type="StaticBody2D" parent="." unique_id=1102912973]
 
 [node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
-position = Vector2(-1044.5, -73.5)
+position = Vector2(-1044.5, -71.5)
 shape = SubResource("RectangleShape2D_hptm8")
