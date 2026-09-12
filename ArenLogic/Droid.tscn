@@ -1,26 +1,65 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://2teh0kiftjcb"]
 
 [ext_resource type="Script" uid="uid://5apkfccqp511" path="res://ArenLogic/Droid.cs" id="1_droid"]
+[ext_resource type="Texture2D" uid="uid://yvo1j1wexooy" path="res://Assets/Sprites/Egg.png" id="2_wurjk"]
 
-[node name="Droid" type="Node2D" node_paths=PackedStringArray("ScanBar")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_drxqw"]
+atlas = ExtResource("2_wurjk")
+region = Rect2(0, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6rba"]
+atlas = ExtResource("2_wurjk")
+region = Rect2(1080, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdpdd"]
+atlas = ExtResource("2_wurjk")
+region = Rect2(2160, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_anhkg"]
+atlas = ExtResource("2_wurjk")
+region = Rect2(3240, 0, 1080, 1080)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drxqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6rba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdpdd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_anhkg")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 7.0
+}]
+
+[node name="Droid" type="Node2D" unique_id=643107466 node_paths=PackedStringArray("ScanBar")]
 script = ExtResource("1_droid")
-FollowDistance = 90.0
-FollowSpeed = 260.0
-ParkSpeed = 400.0
 ScanBar = NodePath("ScanBar")
 
-[node name="Body" type="ColorRect" parent="."]
+[node name="Body" type="ColorRect" parent="." unique_id=11451987]
 offset_left = -14.0
 offset_top = -14.0
 offset_right = 14.0
 offset_bottom = 14.0
 color = Color(0.28235295, 0.8039216, 0, 1)
 
-[node name="ScanBar" type="ProgressBar" parent="."]
+[node name="ScanBar" type="ProgressBar" parent="." unique_id=1091840957]
 offset_left = -40.0
 offset_top = -56.0
 offset_right = 40.0
 offset_bottom = -42.0
-max_value = 100.0
-value = 0.0
 show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1099393354]
+position = Vector2(1, 4)
+scale = Vector2(0.15138891, 0.13935183)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+autoplay = "default"
+frame_progress = 0.5879919
