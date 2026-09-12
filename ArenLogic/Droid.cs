@@ -24,11 +24,28 @@ public partial class Droid : Node2D
 	[ExportGroup("Bar skenu")]
 	[Export] public ProgressBar ScanBar;
 
+	[ExportGroup("Otáčení")]
+	// Node, který se otáčí. Nechej prázdné - najde si první AnimatedSprite2D
+	// nebo Sprite2D mezi dětmi. Otáčí se jen tenhle node, ne celý droid,
+	// aby se s ním neotáčel i ScanBar.
+	[Export] public Node2D Visual;
+	// O kolik je sprite pootočený oproti "doprava". Sprite mířící nahoru
+	// potřebuje 90, mířící doleva 180.
+	[Export] public float RotationOffset = 0f;
+	// Místo otáčení jen překlápět doleva/doprava (pro sprity z boku).
+	[Export] public bool FlipInsteadOfRotate = false;
+	// Vyšší číslo = ostřejší zatáčení. Kolem 20 je to skoro okamžité.
+	[Export] public float TurnSpeed = 10f;
+	// Pod touhle rychlostí (px/s) se směr nepřepočítává, ať sprite
+	// nepoškubává, když droid jen doťukává na místo.
+	[Export] public float MinSpeedToTurn = 5f;
+
 	private enum DroidState { Following, MovingToPark, Parked }
 
 	private DroidState _state = DroidState.Following;
 	private Vector2 _parkPoint;
 	private Node2D _player;
+	private Vector2 _facing = Vector2.Right;
 
 	// ArenaLogic podle tohohle pozná, že už může zablokovat vchod.
 	public bool IsParked => _state == DroidState.Parked;
@@ -39,6 +56,8 @@ public partial class Droid : Node2D
 
 		_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
 
+		AutoWireVisual();
+
 		if (ScanBar != null)
 		{
 			ScanBar.MinValue = 0;
@@ -48,9 +67,28 @@ public partial class Droid : Node2D
 		}
 	}
 
+	private void AutoWireVisual()
+	{
+		if (Visual != null)
+			return;
+
+		foreach (Node child in GetChildren())
+		{
+			if (child is AnimatedSprite2D or Sprite2D)
+			{
+				Visual = (Node2D)child;
+				return;
+			}
+		}
+	}
+
 	public override void _PhysicsProcess(double delta)
 	{
 		float dt = (float)delta;
+
+		// Směr bereme z toho, o kolik se droid opravdu posunul - platí to
+		// pro následování i pro let do vchodu, bez duplikování logiky.
+		Vector2 before = GlobalPosition;
 
 		switch (_state)
 		{
@@ -72,6 +110,31 @@ public partial class Droid : Node2D
 				// Stojí ve vchodu a skenuje.
 				break;
 		}
+
+		UpdateFacing(GlobalPosition - before, dt);
+	}
+
+	// Otáčí jen Visual, ne celý droid - jinak by se s ním otáčel i ScanBar.
+	// Když droid stojí, drží se poslední směr.
+	private void UpdateFacing(Vector2 motion, float dt)
+	{
+		if (Visual == null || dt <= 0f)
+			return;
+
+		if (motion.Length() / dt >= MinSpeedToTurn)
+			_facing = motion.Normalized();
+
+		if (FlipInsteadOfRotate)
+		{
+			float x = Mathf.Abs(Visual.Scale.X);
+			Visual.Scale = new Vector2(_facing.X < 0 ? -x : x, Visual.Scale.Y);
+			return;
+		}
+
+		float target = _facing.Angle() + Mathf.DegToRad(RotationOffset);
+
+		// Exponenciální doběh - nezávislý na framerate a nepřetáčí se.
+		Visual.Rotation = Mathf.LerpAngle(Visual.Rotation, target, 1f - Mathf.Exp(-TurnSpeed * dt));
 	}
 
 	// --- volá ArenaLogic -------------------------------------------------

@@ -22,6 +22,9 @@ PlayerEquipmentBonuses="*uid://bf8y3n8awncho"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
