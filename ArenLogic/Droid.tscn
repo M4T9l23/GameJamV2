@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://5apkfccqp511" path="res://ArenLogic/Droid.cs" id="1_droid"]
+
+[node name="Droid" type="Node2D" node_paths=PackedStringArray("ScanBar")]
+script = ExtResource("1_droid")
+FollowDistance = 90.0
+FollowSpeed = 260.0
+ParkSpeed = 400.0
+ScanBar = NodePath("ScanBar")
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0.28235295, 0.8039216, 0, 1)
+
+[node name="ScanBar" type="ProgressBar" parent="."]
+offset_left = -40.0
+offset_top = -56.0
+offset_right = 40.0
+offset_bottom = -42.0
+max_value = 100.0
+value = 0.0
+show_percentage = false

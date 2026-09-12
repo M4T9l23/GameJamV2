@@ -137,7 +137,33 @@ public partial class ItemSlot : Panel
 			payload.Icon.Texture = outgoing?.Texture;
 		}
 
+		// Genom: v inventáři smí být vždycky jen jedna stage od rodiny.
+		// Vložení nové stage tedy smaže tu starou, ať se Jane nesčítají
+		// bonusy z tagů obou najednou.
+		ClearOtherStagesOfSameGenome(incoming);
+
 		payload.Icon?.Show();
+	}
+
+	// Vyhodí z ostatních slotů jakoukoliv jinou stage stejného genomu.
+	// Pro normální itemy (prázdná GenomeFamily) nedělá nic.
+	private void ClearOtherStagesOfSameGenome(Item incoming)
+	{
+		if (incoming == null || !incoming.IsGenome)
+			return;
+
+		foreach (Node node in GetTree().GetNodesInGroup("item_slots"))
+		{
+			if (node is not ItemSlot slot || slot == this)
+				continue;
+
+			Item held = slot.GetItem();
+			if (held == null || held.GenomeFamily != incoming.GenomeFamily)
+				continue;
+
+			// SetItem(null) sám odečte bonusy, pokud šlo o equipment slot.
+			slot.SetItem(null);
+		}
 	}
 
 	// Projde všechny sloty v inventáři (equipment i normální) a zjistí, jestli
@@ -154,7 +180,16 @@ public partial class ItemSlot : Panel
 			if (node is not ItemSlot slot || slot == this || slot == payload.SourceSlot)
 				continue;
 
-			if (slot._item != null && slot._item.Id == payload.Item.Id)
+			if (slot._item == null)
+				continue;
+
+			// Jiná stage stejného genomu není duplikát - je to upgrade.
+			// Ta stará se při vložení stejně smaže, tak ji tu neblokuj
+			// (platí i kdyby stage sdílely stejné Id).
+			if (payload.Item.IsGenome && slot._item.GenomeFamily == payload.Item.GenomeFamily)
+				continue;
+
+			if (slot._item.Id == payload.Item.Id)
 				return true;
 		}
 
