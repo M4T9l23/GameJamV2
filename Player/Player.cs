@@ -25,6 +25,7 @@ public partial class Player : CharacterBody2D
 		Health = MaxHealth;
 		AddToGroup("player");
 	}
+	
 
 	public void TakeDamage(int amount)
 	{
@@ -81,7 +82,7 @@ public partial class Player : CharacterBody2D
 		}
 
 		MoveAndSlide();
-
+		GD.Print($"Player pos: {GlobalPosition}");
 		if (Input.IsActionPressed("shoot") && _canShoot)
 			Shoot();
 	}

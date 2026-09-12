@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
@@ -22,12 +23,13 @@
 [ext_resource type="Texture2D" uid="uid://cu24muhw8c3li" path="res://Assets/Sprites/tiles/RU.png" id="16_gt3je"]
 [ext_resource type="Texture2D" uid="uid://jo70k2dkontu" path="res://Assets/Sprites/tiles/T1.png" id="17_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://caamb3y07ep13" path="res://Assets/Sprites/tiles/T2.png" id="18_u50mg"]
+[ext_resource type="Script" uid="uid://bodc0a1itwdf4" path="res://Scenes/PauseOnEsc.cs" id="23_gt3je"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("2_8gbba")
 Interval = 5.0
-MaxAlive = 0
+MaxAlive = 5
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="Resource" id="Resource_3w5oe"]
@@ -41,7 +43,7 @@ metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("6_pdsj5")
 Interval = 5.0
-MaxAlive = 0
+MaxAlive = 10
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
@@ -200,3 +202,7 @@ shape = SubResource("RectangleShape2D_fdnlq")
 [node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
 position = Vector2(-1044.5, -71.5)
 shape = SubResource("RectangleShape2D_hptm8")
+
+[node name="PauseOnESC" type="Node2D" parent="." unique_id=1166008275]
+script = ExtResource("23_gt3je")
+_menuScene = ExtResource("5_21xkr")

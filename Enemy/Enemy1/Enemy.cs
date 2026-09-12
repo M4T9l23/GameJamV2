@@ -1,13 +1,27 @@
 using Godot;
 
 public partial class Enemy : CharacterBody2D, IDamageable
-{	
-	[Export] public float HitRadius = 24f;   // add to the exports up top
+{
+	[Export] public float HitRadius = 24f;
 
 	[Export] public int Health = 3;
 	[Export] public int ContactDamage = 1;
 	[Export] public float Speed = 80f;
 	[Export] public Godot.Collections.Array<DropEntry> Drops = new();
+
+	[ExportGroup("Contact")]
+	// Melee enemies explode on the player. Ranged ones should leave this off.
+	[Export] public bool KamikazeOnContact = true;
+
+	[ExportGroup("Ranged Attack")]
+	[Export] public PackedScene ProjectileScene;
+	[Export] public int RangedDamage = 1;
+	[Export] public float AttackRange = 260f;    // starts shooting inside this
+	[Export] public float KeepDistance = 160f;   // backs off if the player gets closer
+	[Export] public float FireCooldown = 1.5f;
+	[Export] public float AimSpread = 4f;        // degrees of random wobble
+	[Export] public float MuzzleOffset = 20f;    // spawn distance from the body
+	[Export] public bool RequireLineOfSight = true;
 
 	[ExportGroup("Facing")]
 	[Export] public Node2D Visual;
@@ -15,19 +29,25 @@ public partial class Enemy : CharacterBody2D, IDamageable
 	[Export] public float RotationOffset = 0f;
 
 	[ExportGroup("Steering")]
-	[Export] public float SeparationDistance = 48f;  // how far apart enemies stay
-	[Export] public float SeparationWeight = 1.5f;   // how hard they push each other
-	[Export] public float WallDistance = 40f;        // how far ahead they look for walls
-	[Export] public float WallWeight = 2f;           // how hard they steer around walls
+	[Export] public float SeparationDistance = 48f;
+	[Export] public float SeparationWeight = 1.5f;
+	[Export] public float WallDistance = 40f;
+	[Export] public float WallWeight = 2f;
 	[Export(PropertyHint.Layers2DPhysics)] public uint WallMask = 4; // layer 3
 
 	private Node2D _player;
 	private bool _dead;
+	private float _fireTimer;
+	private float _strafeDir = 1f;
 
 	public override void _Ready()
 	{
 		AddToGroup("enemies");
 		_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
+
+		// Stagger the first shot so a pack doesn't fire in one volley.
+		_fireTimer = (float)GD.RandRange(0.0, FireCooldown);
+		_strafeDir = GD.Randf() < 0.5f ? -1f : 1f;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -36,12 +56,22 @@ public partial class Enemy : CharacterBody2D, IDamageable
 			return;
 
 		Vector2 toPlayer = GlobalPosition.DirectionTo(_player.GlobalPosition);
+		float dist = GlobalPosition.DistanceTo(_player.GlobalPosition);
 
-		Vector2 desired = toPlayer
+		Vector2 move;
+		bool isRanged = ProjectileScene != null;
+
+		if (!isRanged || dist > AttackRange)
+			move = toPlayer;                        // close the gap
+		else if (dist < KeepDistance)
+			move = -toPlayer;                       // too close, back up
+		else
+			move = toPlayer.Orthogonal() * _strafeDir; // circle while shooting
+
+		Vector2 desired = move
 			+ GetSeparation() * SeparationWeight
 			+ GetObstacleAvoidance() * WallWeight;
 
-		// If the forces cancel out completely, fall back to chasing
 		Vector2 direction = desired.LengthSquared() > 0.001f
 			? desired.Normalized()
 			: toPlayer;
@@ -51,17 +81,58 @@ public partial class Enemy : CharacterBody2D, IDamageable
 		Velocity = direction * Speed;
 		MoveAndSlide();
 
+		// --- shooting ---
+		_fireTimer -= (float)delta;
 
-		if (GlobalPosition.DistanceTo(_player.GlobalPosition) <= HitRadius)
-	{
-		if (_player is Player player)
+		if (isRanged && dist <= AttackRange && _fireTimer <= 0f && HasLineOfSight())
+			Shoot(toPlayer);
+
+		// --- contact ---
+		if (dist <= HitRadius && _player is Player player)
 		{
-			_dead = true;
-			player.TakeDamage(ContactDamage);
-			QueueFree();
-			return;
+			if (KamikazeOnContact)
+			{
+				_dead = true;
+				player.TakeDamage(ContactDamage);
+				QueueFree();
+				return;
+			}
 		}
 	}
+
+	private void Shoot(Vector2 toPlayer)
+	{
+		_fireTimer = FireCooldown;
+
+		float spread = Mathf.DegToRad((float)GD.RandRange(-AimSpread, AimSpread));
+		Vector2 dir = toPlayer.Rotated(spread);
+
+		var instance = ProjectileScene.Instantiate<Node2D>();
+		instance.Position = GlobalPosition + dir * MuzzleOffset;
+
+		if (instance is EnemyProjectile projectile)
+		{
+			projectile.Direction = dir;
+			projectile.Shooter = this;
+			projectile.Damage = RangedDamage;
+		}
+
+		GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, instance);
+	}
+
+	// Don't fire through walls.
+	private bool HasLineOfSight()
+	{
+		if (!RequireLineOfSight)
+			return true;
+
+		var query = PhysicsRayQueryParameters2D.Create(
+			GlobalPosition,
+			_player.GlobalPosition,
+			WallMask);
+		query.Exclude = new Godot.Collections.Array<Rid> { GetRid() };
+
+		return GetWorld2D().DirectSpaceState.IntersectRay(query).Count == 0;
 	}
 
 	// Push away from any enemy that's too close. The closer it is, the harder the push.
@@ -78,7 +149,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 			if (dist > SeparationDistance || dist <= 0.01f)
 				continue;
 
-			float strength = 1f - (dist / SeparationDistance); // 0 at the edge, 1 when overlapping
+			float strength = 1f - (dist / SeparationDistance);
 			push += other.GlobalPosition.DirectionTo(GlobalPosition) * strength;
 		}
 
@@ -115,9 +186,9 @@ public partial class Enemy : CharacterBody2D, IDamageable
 			Vector2 normal = (Vector2)hit["normal"];
 
 			float dist = GlobalPosition.DistanceTo(point);
-			float strength = 1f - (dist / WallDistance); // stronger the closer we get
+			float strength = 1f - (dist / WallDistance);
 
-			push += normal * strength; // the normal points away from the wall surface
+			push += normal * strength;
 		}
 
 		return push;
