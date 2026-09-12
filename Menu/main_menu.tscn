@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c7628x445ee8x" path="res://Menu/MainMenu.cs" id="1_dtkyu"]
 [ext_resource type="FontFile" uid="uid://kkhlqb31vjhq" path="res://Assets/MonospaceBold.ttf" id="1_sla5p"]
 [ext_resource type="Texture2D" uid="uid://by1c2jnxryihk" path="res://Assets/background.jpg" id="2_ci1se"]
+[ext_resource type="AudioStream" uid="uid://djvot6608blft" path="res://Assets/Music/Menu Music.wav" id="4_ohgnh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ci1se"]
 texture = ExtResource("2_ci1se")
@@ -88,5 +89,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_4kxuq")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ee4r6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_mti6b")
 text = "Credits"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2048346745]
+stream = ExtResource("4_ohgnh")
+autoplay = true
+playback_type = 1
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]

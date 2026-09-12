@@ -30,7 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://d23cqqcqitod0" path="res://Assets/Sprites/tiles/Wall_right.png" id="41_bv80c"]
 [ext_resource type="Texture2D" uid="uid://dae638wr044ys" path="res://Assets/Sprites/tiles/Wall_top.png" id="42_ptfg5"]
 [ext_resource type="Script" uid="uid://ba3agrdjeb4fa" path="res://ArenLogic/ArenaLogic.cs" id="46_v2nl5"]
+[ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
@@ -350,6 +351,8 @@ z_index = 1
 position = Vector2(-112, -380.00006)
 scale = Vector2(0.4, 0.386)
 collision_layer = 2
+BaseDamageSecondary = 1
+SecondarySpeed = 300.0
 
 [node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
 z_index = 1
@@ -453,3 +456,7 @@ script = ExtResource("23_3pmx8")
 position = Vector2(383, -197)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2022608070]
+stream = ExtResource("54_gsvbx")
+autoplay = true
