@@ -6,6 +6,7 @@ public partial class Player : CharacterBody2D
 	[Export] public PackedScene BulletScene;
 	[Export] public float FireRate = 1.00f;
 	[Export] public float SpriteAngleOffsetDegrees = 180f;
+	[Export] private PackedScene _deathScreenScene;
 
 	// Základní hodnoty statů bez vybavení. Efektivní hodnota = tohle +
 	// bonus z tagů itemů v equipment slotech (PlayerEquipmentBonuses).
@@ -15,6 +16,7 @@ public partial class Player : CharacterBody2D
 	public int Health;
 	private Vector2 _facing = Vector2.Right;
 	private bool _canShoot = true;
+	private bool _isDead;
 	private AnimatedSprite2D _animatedSprite;
 
 	public override void _Ready()
@@ -26,6 +28,8 @@ public partial class Player : CharacterBody2D
 
 	public void TakeDamage(int amount)
 	{
+		if (_isDead) return;
+
 		Health -= amount;
 		GD.Print($"Player HP: {Health}/{MaxHealth}");
 
@@ -35,8 +39,12 @@ public partial class Player : CharacterBody2D
 
 	private void Die()
 	{
+		if (_isDead) return;
+		_isDead = true;
+
 		GD.Print("Player died");
-		GetTree().ReloadCurrentScene(); // restart the level for now
+		var screen = _deathScreenScene.Instantiate();
+		GetTree().CurrentScene.AddChild(screen);
 	}
 
 	// Aktuální rychlost hráče včetně bonusu z tagu "speed:<číslo>" na
@@ -50,9 +58,6 @@ public partial class Player : CharacterBody2D
 	}
 
 	// Poškození útoku včetně bonusu z tagu "strength:<číslo>".
-	// Zavolej z Shoot() (např. bullet.Damage = GetAttackDamage();), jakmile
-	// bude Attack1 mít public pole/property pro poškození - v uploadnutých
-	// souborech Attack1.cs nebyl, tak jsem Shoot() neupravoval naslepo.
 	public int GetAttackDamage()
 	{
 		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("strength") ?? 0f;
@@ -68,7 +73,6 @@ public partial class Player : CharacterBody2D
 		{
 			_animatedSprite.Play("move_animation");
 			_facing = input.Normalized();
-
 			_animatedSprite.Rotation = _facing.Angle() + Mathf.DegToRad(SpriteAngleOffsetDegrees);
 		}
 		else
