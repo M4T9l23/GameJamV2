@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Enemy : CharacterBody2D
+public partial class Enemy : CharacterBody2D, IDamageable
 {
 	[Export] public int Health = 3;
 	[Export] public int ContactDamage = 1;

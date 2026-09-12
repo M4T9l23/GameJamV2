@@ -79,7 +79,7 @@ platform_wall_layers = 1
 script = ExtResource("1_3o4wt")
 Visual = NodePath("AnimatedSprite2D")
 SeparationDistance = 80.0
-SeparationWeight = 20.0
+SeparationWeight = 10.0
 WallWeight = 10.0
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=897123053]

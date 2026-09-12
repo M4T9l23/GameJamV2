@@ -68,9 +68,9 @@ public partial class Attack1 : Area2D
     {
         if (_hasHit || body == Shooter) return;
         _hasHit = true;
-
-        if (body is Enemy enemy)
-            enemy.TakeDamage(Damage);
+        
+        if (body.IsInGroup("enemies") && body is IDamageable target)
+            target.TakeDamage(Damage);
 
         QueueFree(); // walls, enemies, anything solid
     }
