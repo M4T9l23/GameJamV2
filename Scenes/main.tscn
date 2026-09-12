@@ -30,7 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -370,6 +370,7 @@ position = Vector2(-50, 979)
 shape = SubResource("RectangleShape2D_d1ilt")
 
 [node name="border north" type="StaticBody2D" parent="." unique_id=1107000904]
+visible = false
 
 [node name="CollisionShape2D_N" type="CollisionShape2D" parent="border north" unique_id=1138500833]
 position = Vector2(-94.75, -1125)
@@ -384,11 +385,11 @@ shape = SubResource("RectangleShape2D_fdnlq")
 [node name="border west" type="StaticBody2D" parent="." unique_id=1102912973]
 
 [node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
-position = Vector2(-1115, -78.5)
+position = Vector2(-1120, -72)
 shape = SubResource("RectangleShape2D_hptm8")
 
 [node name="Droid" parent="." unique_id=479326033 instance=ExtResource("23_gt3je")]
-position = Vector2(-94, -543)
+position = Vector2(-588, -786)
 
 [node name="Arena" type="Node2D" parent="." unique_id=591025582]
 position = Vector2(-420, 441.00003)
@@ -400,11 +401,11 @@ collision_layer = 0
 collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Region" unique_id=425964771]
-position = Vector2(-30, 6.333313)
+position = Vector2(-30, 3.9999795)
 shape = SubResource("RectangleShape2D_region")
 
 [node name="Entrance" type="StaticBody2D" parent="Arena" unique_id=1848628705]
-position = Vector2(370, -300.00003)
+position = Vector2(330.66666, -276.6667)
 collision_layer = 7
 collision_mask = 0
 
@@ -449,6 +450,6 @@ scale = Vector2(3, 1)
 script = ExtResource("23_3pmx8")
 
 [node name="PauseOnESC" type="Node2D" parent="." unique_id=976625617]
-position = Vector2(-42, -91)
+position = Vector2(383, -197)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")

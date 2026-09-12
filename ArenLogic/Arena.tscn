@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://ktrgm6wl8j2j"]
 
 [ext_resource type="Script" uid="uid://ba3agrdjeb4fa" path="res://ArenLogic/ArenaLogic.cs" id="1_arena"]
+[ext_resource type="Script" uid="uid://brn3slsrrievu" path="res://ArenLogic/ArenaBorder.cs" id="2_r33ip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_region"]
 size = Vector2(800, 600)
@@ -8,47 +9,44 @@ size = Vector2(800, 600)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_entrance"]
 size = Vector2(160, 40)
 
-[node name="Arena" type="Node2D"]
+[node name="Arena" type="Node2D" unique_id=1058713205]
 script = ExtResource("1_arena")
-SpawnInterval = 2.5
-MaxAlive = 8
-ScanRate = 8.0
-DrainPerEnemy = 4.0
-RespawnHealth = -1
 
-[node name="Region" type="Area2D" parent="."]
+[node name="Region" type="Area2D" parent="." unique_id=726801219]
 collision_layer = 0
 collision_mask = 7
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Region"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Region" unique_id=1425235778]
 shape = SubResource("RectangleShape2D_region")
 
-[node name="Entrance" type="StaticBody2D" parent="."]
+[node name="Entrance" type="StaticBody2D" parent="." unique_id=1486805697]
 position = Vector2(0, 300)
 collision_layer = 7
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrance"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrance" unique_id=1721168954]
 shape = SubResource("RectangleShape2D_entrance")
 disabled = true
 
-[node name="Respawn" type="Marker2D" parent="."]
+[node name="Respawn" type="Marker2D" parent="." unique_id=1449246206]
 position = Vector2(0, 220)
 
-[node name="Exit" type="Marker2D" parent="."]
+[node name="Exit" type="Marker2D" parent="." unique_id=192181024]
 position = Vector2(0, 400)
 
-[node name="RewardPoint" type="Marker2D" parent="."]
-position = Vector2(0, 0)
+[node name="RewardPoint" type="Marker2D" parent="." unique_id=1923606737]
 
-[node name="Spawn1" type="Marker2D" parent="."]
+[node name="Spawn1" type="Marker2D" parent="." unique_id=41971694]
 position = Vector2(-320, -220)
 
-[node name="Spawn2" type="Marker2D" parent="."]
+[node name="Spawn2" type="Marker2D" parent="." unique_id=925153034]
 position = Vector2(320, -220)
 
-[node name="Spawn3" type="Marker2D" parent="."]
+[node name="Spawn3" type="Marker2D" parent="." unique_id=598746983]
 position = Vector2(-320, 220)
 
-[node name="Spawn4" type="Marker2D" parent="."]
+[node name="Spawn4" type="Marker2D" parent="." unique_id=603918759]
 position = Vector2(320, 220)
+
+[node name="Border" type="Node2D" parent="." unique_id=319960845]
+script = ExtResource("2_r33ip")
