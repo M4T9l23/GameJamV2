@@ -1,9 +1,60 @@
 [gd_scene format=3 uid="uid://bbo35pwjheaf3"]
 
 [ext_resource type="Script" uid="uid://c7otwxiuoy57x" path="res://Enemy/Enemy2/Enemy2.cs" id="1_w1xm3"]
+[ext_resource type="Texture2D" uid="uid://cqfcaw7sf522k" path="res://Assets/Sprites/Komar animation.png" id="2_qpft6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqw5c"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(0, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oesri"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(1080, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iyumq"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(2160, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_memwq"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(3240, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b75a3"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(4320, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4iie"]
+atlas = ExtResource("2_qpft6")
+region = Rect2(5400, 0, 1080, 1080)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqw5c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oesri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iyumq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_memwq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b75a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4iie")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 35.0
+}]
 
 [node name="CharacterBody2D2" type="CharacterBody2D" unique_id=106441782]
 collision_layer = 3
@@ -23,3 +74,10 @@ offset_top = -7.0
 offset_right = 32.999996
 offset_bottom = 33.0
 scale = Vector2(0.35782865, 0.35942712)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1699675156]
+position = Vector2(-3, 15)
+scale = Vector2(0.13935184, 0.12870371)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+autoplay = "default"
+frame_progress = 0.8186173
