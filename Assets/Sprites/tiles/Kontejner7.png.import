@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7aec8c34kfr"
-path="res://.godot/imported/zaba_spritesheet.png-6f510b522082d9dcb79fdafe70e2124d.ctex"
+uid="uid://dasal8xlklglr"
+path="res://.godot/imported/Kontejner7.png-d65cfaac4a4c91ab3967972a20ab2253.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/zaba_spritesheet.png"
-dest_files=["res://.godot/imported/zaba_spritesheet.png-6f510b522082d9dcb79fdafe70e2124d.ctex"]
+source_file="res://Assets/Sprites/tiles/Kontejner7.png"
+dest_files=["res://.godot/imported/Kontejner7.png-d65cfaac4a4c91ab3967972a20ab2253.ctex"]
 
 [params]
 
