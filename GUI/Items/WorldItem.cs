@@ -7,6 +7,17 @@ public partial class WorldItem : Area2D
 	// item automaticky nastaví (texturu, Id i tagy).
 	[Export] public Item InitialItem;
 
+	[ExportGroup("Despawn")]
+	// Item zmizí, když sjede z obrazovky. Notifier se vyrábí v kódu,
+	// takže do WorldItem.tscn nemusíš nic přidávat.
+	[Export] public bool DespawnOffScreen = true;
+	// Kolik sekund musí být mimo obraz, než zmizí. Nula = okamžitě.
+	// Krátká prodleva zabrání tomu, aby item zmizel jen proto, že se
+	// Jane na chvilku otočila.
+	[Export] public float DespawnDelay = 0.1f;
+	// Obdélník, podle kterého se posuzuje "je na obrazovce".
+	[Export] public Vector2 DespawnRectSize = new Vector2(64, 64);
+
 	private Sprite2D _sprite;
 	private DragHandle _handle;
 	private TextureRect _dragIcon;
@@ -23,6 +34,60 @@ public partial class WorldItem : Area2D
 
 		if (InitialItem != null)
 			SetItem(InitialItem);
+
+		SetupDespawn();
+	}
+
+	// --- despawn mimo obraz ---------------------------------------------
+
+	private VisibleOnScreenNotifier2D _notifier;
+	private float _offScreenFor;
+	private bool _offScreen;
+
+	private void SetupDespawn()
+	{
+		if (!DespawnOffScreen)
+			return;
+
+		_notifier = new VisibleOnScreenNotifier2D
+		{
+			Name = "DespawnNotifier",
+			Rect = new Rect2(-DespawnRectSize * 0.5f, DespawnRectSize),
+		};
+
+		AddChild(_notifier);
+
+		_notifier.ScreenExited += OnScreenExited;
+		_notifier.ScreenEntered += OnScreenEntered;
+
+		SetProcess(true);
+	}
+
+	private void OnScreenExited()
+	{
+		_offScreen = true;
+		_offScreenFor = 0f;
+	}
+
+	private void OnScreenEntered()
+	{
+		// Vratila se do zaberu - odpocet se rusi.
+		_offScreen = false;
+		_offScreenFor = 0f;
+	}
+
+	public override void _Process(double delta)
+	{
+		if (!_offScreen || _notifier == null)
+			return;
+
+		_offScreenFor += (float)delta;
+
+		if (_offScreenFor < DespawnDelay)
+			return;
+
+		GD.Print($"WorldItem: '{_item?.DisplayName ?? "bez itemu"}' zmizel mimo obraz.");
+		QueueFree();
 	}
 
 	// Aby si ArenaLogic mohl overit, jestli uz odmena neco lezi ve svete.
