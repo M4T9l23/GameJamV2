@@ -80,6 +80,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 0.16862746, 1, 1)
 theme_override_constants/h_separation = 15
 theme_override_fonts/font = ExtResource("1_sla5p")
 theme_override_font_sizes/font_size = 25
