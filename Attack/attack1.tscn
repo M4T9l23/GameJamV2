@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cbu1bq8jwoa0i"]
 
 [ext_resource type="Script" uid="uid://dkjjawj3dbifp" path="res://Attack/Attack1.cs" id="1_db15e"]
-[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/fireball_spritesheet.png" id="2_4np7o"]
+[ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/projectiles/fireball_spritesheet.png" id="2_4np7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
 size = Vector2(50, 33.5)
@@ -29,7 +29,7 @@ region = Rect2(1146, 816, 442, 771)
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 1.5,
 "texture": SubResource("AtlasTexture_4ralh")
 }, {
 "duration": 1.0,
@@ -64,5 +64,5 @@ position = Vector2(-73, -74.00002)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
-frame_progress = 0.68822604
+frame_progress = 0.4626274
 centered = false
