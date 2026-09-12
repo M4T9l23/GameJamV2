@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cbu1bq8jwoa0i" path="res://Attack/attack1.tscn" id="4_kry3j"]
+[ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="6_21xkr"]
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
@@ -29,3 +30,5 @@ scale = Vector2(0.4, 0.386)
 position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
+
+[node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("6_21xkr")]
