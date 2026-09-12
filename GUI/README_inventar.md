@@ -6,10 +6,10 @@
 CanvasLayer
 └─ Inventory (PanelContainer)            ← rámeček, barva, rohy
    └─ MarginContainer                    ← vnitřní odsazení
-      └─ HBoxContainer                   ← mezera mezi statsy a sloty
-         ├─ StatsPanel (Label)           ← %StatsPanel
-         └─ GridContainer                ← %GridContainer, Columns + mezery
-            └─ Itemslot … Itemslot7      ← instance GUI/ItemSlot.tscn
+	  └─ HBoxContainer                   ← mezera mezi statsy a sloty
+		 ├─ StatsPanel (Label)           ← %StatsPanel
+		 └─ GridContainer                ← %GridContainer, Columns + mezery
+			└─ Itemslot … Itemslot7      ← instance GUI/ItemSlot.tscn
 ```
 
 ## Kde co nastavit (všechno přímo v Inspectoru)

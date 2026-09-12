@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
@@ -52,6 +52,7 @@
 [ext_resource type="Texture2D" uid="uid://ukio2bdugsfs" path="res://Assets/Sprites/tiles/Wall_left.png" id="40_gsvbx"]
 [ext_resource type="Texture2D" uid="uid://d23cqqcqitod0" path="res://Assets/Sprites/tiles/Wall_right.png" id="41_bv80c"]
 [ext_resource type="Texture2D" uid="uid://dae638wr044ys" path="res://Assets/Sprites/tiles/Wall_top.png" id="42_ptfg5"]
+[ext_resource type="Texture2D" uid="uid://b83bsj46wqfmw" path="res://Assets/Sprites/tiles/Asphalt_hazard.png" id="43_bv80c"]
 [ext_resource type="Script" uid="uid://ba3agrdjeb4fa" path="res://ArenLogic/ArenaLogic.cs" id="46_v2nl5"]
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 
@@ -251,6 +252,11 @@ texture = ExtResource("13_hibaj")
 texture_region_size = Vector2i(512, 512)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pfx1i"]
+texture = ExtResource("43_bv80c")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6vcvc"]
 texture = ExtResource("14_pdsj5")
 texture_region_size = Vector2i(512, 512)
@@ -318,6 +324,7 @@ sources/36 = SubResource("TileSetAtlasSource_r7bbj")
 sources/37 = SubResource("TileSetAtlasSource_e5peh")
 sources/38 = SubResource("TileSetAtlasSource_f6rfp")
 sources/39 = SubResource("TileSetAtlasSource_sasc4")
+sources/40 = SubResource("TileSetAtlasSource_pfx1i")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d1ilt"]
 size = Vector2(2095.5, 41)
