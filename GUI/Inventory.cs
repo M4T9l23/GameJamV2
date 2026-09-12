@@ -4,7 +4,7 @@ public partial class Inventory : Panel
 {
 	private const string WorldItemScenePath = "res://GUI/Items/WorldItem.tscn";
 
-	private TextureRect _draggedIcon;
+	private ItemDragPayload _draggedPayload;
 
 	public override void _Ready()
 	{
@@ -18,13 +18,13 @@ public partial class Inventory : Panel
 	// do původního slotu (viz _Notification níže).
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
-		return data.VariantType != Variant.Type.Nil && data.As<TextureRect>() != null;
+		return data.As<ItemDragPayload>() != null;
 	}
 
 	public override void _DropData(Vector2 atPosition, Variant data)
 	{
-		if (data.As<TextureRect>() is TextureRect icon)
-			icon.Show();
+		if (data.As<ItemDragPayload>() is ItemDragPayload payload)
+			payload.Icon.Show();
 	}
 
 	// POZOR: NotificationDragBegin/End jsou v C# bindings typu long,
@@ -34,53 +34,64 @@ public partial class Inventory : Panel
 		if (what == NotificationDragBegin)
 		{
 			Variant data = GetViewport().GuiGetDragData();
-			_draggedIcon = data.VariantType != Variant.Type.Nil
-				? data.As<TextureRect>()
-				: null;
+			_draggedPayload = data.As<ItemDragPayload>();
 			return;
 		}
 
 		if (what == NotificationDragEnd)
 		{
-			TextureRect icon = _draggedIcon;
-			_draggedIcon = null;
+			ItemDragPayload payload = _draggedPayload;
+			_draggedPayload = null;
 
-			if (icon == null || !IsInstanceValid(icon))
+			if (payload == null || !IsInstanceValid(payload.Icon))
 				return;
 
 			if (GetViewport().GuiIsDragSuccessful())
 				return;
 
 			// Nesahat na nody uprostřed rušení dragu - odložit o jeden frame.
-			CallDeferred(nameof(HandleFailedDrop), icon);
+			CallDeferred(nameof(HandleFailedDrop), payload);
 		}
 	}
 
-	private void HandleFailedDrop(TextureRect icon)
+	private void HandleFailedDrop(ItemDragPayload payload)
 	{
-		if (icon == null || !IsInstanceValid(icon))
+		if (payload == null || !IsInstanceValid(payload.Icon))
 			return;
 
 		Vector2 mousePos = GetGlobalMousePosition();
 
 		if (GetGlobalRect().HasPoint(mousePos))
 		{
-			// Puštěno v rámci panelu inventáře, ale mimo platný slot -> zrušit tažení.
-			icon.Show();
+			// Puštěno v rámci panelu inventáře, ale mimo platný slot (nebo by
+			// vznikl duplikát) -> zrušit tažení, nic se neděje.
+			payload.Icon.Show();
 			return;
 		}
 
 		// Puštěno mimo inventář -> item se objeví ve světě jako pickup.
-		Texture2D texture = icon.Texture;
-		icon.Texture = null;
-		icon.Show();
+		Item item = payload.Item;
 
-		SpawnPickup(texture);
+		if (payload.SourceSlot != null)
+		{
+			// Zdroj byl slot v inventáři - vyprázdnit ho (a odebrat případné
+			// equipment efekty).
+			payload.SourceSlot.SetItem(null);
+		}
+		else
+		{
+			// Zdroj byl WorldItem - dát mu vědět, že o item přišel.
+			payload.Item = null;
+			payload.Icon.Texture = null;
+			payload.Icon.Show();
+		}
+
+		SpawnPickup(item);
 	}
 
-	private void SpawnPickup(Texture2D texture)
+	private void SpawnPickup(Item item)
 	{
-		if (texture == null)
+		if (item == null)
 			return;
 
 		var scene = GD.Load<PackedScene>(WorldItemScenePath);
@@ -96,7 +107,7 @@ public partial class Inventory : Panel
 
 		var pickup = scene.Instantiate<WorldItem>();
 		parent.AddChild(pickup);
-		pickup.SetTexture(texture);
+		pickup.SetItem(item);
 
 		// Pozice myši ve světě (ne v GUI vrstvě).
 		pickup.GlobalPosition = pickup.GetGlobalMousePosition();

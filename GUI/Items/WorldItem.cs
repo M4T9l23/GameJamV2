@@ -2,9 +2,15 @@ using Godot;
 
 public partial class WorldItem : Area2D
 {
+	// Nastav v Inspectoru u konkrétní instance WorldItem.tscn v levelu -
+	// přetáhni sem .tres soubor s Item resourcem. Při _Ready se podle něj
+	// item automaticky nastaví (texturu, Id i tagy).
+	[Export] public Item InitialItem;
+
 	private Sprite2D _sprite;
 	private DragHandle _handle;
 	private TextureRect _dragIcon;
+	private Item _item;
 
 	public override void _Ready()
 	{
@@ -14,20 +20,29 @@ public partial class WorldItem : Area2D
 		InputPickable = false;
 
 		BuildDragHandle();
+
+		if (InitialItem != null)
+			SetItem(InitialItem);
 	}
 
-	public void SetTexture(Texture2D texture)
+	public void SetItem(Item item)
 	{
+		_item = item;
+
 		if (_sprite == null)
 			_sprite = GetNode<Sprite2D>("Sprite2D");
 
-		_sprite.Texture = texture;
+		_sprite.Texture = item?.Texture;
 
 		if (_dragIcon != null)
-			_dragIcon.Texture = texture;
+			_dragIcon.Texture = item?.Texture;
 
 		UpdateHandleSize();
 	}
+
+	// Zpětná kompatibilita pro ruční umístění pickupu bez plných dat itemu
+	// (Id zůstane prázdné -> kontrola duplicit se pro něj přeskočí).
+	public void SetTexture(Texture2D texture) => SetItem(new Item { Texture = texture });
 
 	private void BuildDragHandle()
 	{
@@ -64,26 +79,25 @@ public partial class WorldItem : Area2D
 		_dragIcon.Position = Vector2.Zero;
 	}
 
-	// Volá DragHandle po skončení tažení (deferred).
-	internal void OnDragFinished()
+	// Volá DragHandle po skončení tažení (deferred). payload.Item je zdroj
+	// pravdy o tom, co (pokud něco) se má vrátit zpátky do světa - buď ho
+	// nikdo nezměnil (drop se nepovedl -> item zůstává), nebo ho nastavil
+	// ItemSlot/Inventory (výměna, nebo null = item byl odebraný do inventáře).
+	internal void OnDragFinished(ItemDragPayload payload)
 	{
-		if (_dragIcon == null)
-			return;
-
 		_dragIcon.Visible = false;
 
-		if (_dragIcon.Texture == null)
+		Item resultItem = payload.Item;
+
+		if (resultItem == null)
 		{
-			// Slot byl prázdný -> item si vzal inventář.
+			// Item si vzal inventář (nebo se ztratil) -> zmizet ze světa.
 			QueueFree();
 			return;
 		}
 
-		// Buď se drop nepovedl (textura zůstala stejná), nebo proběhla výměna
-		// s obsazeným slotem a dostali jsme zpátky jeho starý item.
-		_sprite.Texture = _dragIcon.Texture;
+		SetItem(resultItem);
 		_sprite.Show();
-		UpdateHandleSize();
 	}
 
 	internal void OnDragStarted()
@@ -97,13 +111,14 @@ public partial class WorldItem : Area2D
 		public WorldItem Owner2D;
 
 		private bool _dragging;
+		private ItemDragPayload _payload;
 
 		public override Variant _GetDragData(Vector2 atPosition)
 		{
 			if (PickupMode.Instance == null || !PickupMode.Instance.Active)
 				return default;
 
-			if (Owner2D == null || Owner2D._dragIcon?.Texture == null)
+			if (Owner2D?._item == null || Owner2D._dragIcon?.Texture == null)
 				return default;
 
 			var preview = new TextureRect
@@ -127,7 +142,14 @@ public partial class WorldItem : Area2D
 			_dragging = true;
 			Owner2D.OnDragStarted();
 
-			return Owner2D._dragIcon;
+			_payload = new ItemDragPayload
+			{
+				Item = Owner2D._item,
+				Icon = Owner2D._dragIcon,
+				SourceSlot = null,
+			};
+
+			return _payload;
 		}
 
 		public override void _Notification(int what)
@@ -141,8 +163,10 @@ public partial class WorldItem : Area2D
 
 		private void FinishDrag()
 		{
-			if (Owner2D != null && IsInstanceValid(Owner2D))
-				Owner2D.OnDragFinished();
+			if (Owner2D != null && IsInstanceValid(Owner2D) && _payload != null)
+				Owner2D.OnDragFinished(_payload);
+
+			_payload = null;
 		}
 	}
 }

@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 PickupMode="*uid://dsf8s27un75of"
+PlayerEquipmentBonuses="*uid://bf8y3n8awncho"
 
 [display]
 
