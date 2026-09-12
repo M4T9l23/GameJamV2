@@ -42,14 +42,12 @@ public partial class Player : CharacterBody2D
 		if (_isDead) return;
 		_isDead = true;
 
+		SetPhysicsProcess(false);   // stop moving and shooting
+		_animatedSprite.Play("idle_animation");
+
 		GD.Print("Player died");
-
 		var screen = _deathScreenScene.Instantiate<DeathScreen>();
-
-		// Když Jane umřela uvnitř aktivní arény, death screen nabídne navíc
-		// respawn v aréně a její opuštění (jinak by se dala softlocknout).
-		screen.Arena = GetTree().GetFirstNodeInGroup("active_arena") as ArenaLogic;
-
+		screen.Setup(true);
 		GetTree().CurrentScene.AddChild(screen);
 	}
 

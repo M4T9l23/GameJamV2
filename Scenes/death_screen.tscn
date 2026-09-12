@@ -57,7 +57,7 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(10, 5)
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
-text = "Main menu"
+text = "Unstuck"
 
 [node name="Option2" type="Label" parent="Panel/VBoxContainer" unique_id=233345494]
 layout_mode = 2
@@ -66,3 +66,11 @@ offset_transform_position = Vector2(10, 0)
 theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_fonts/font = ExtResource("2_tseak")
 text = "Credits"
+
+[node name="Option3" type="Label" parent="Panel/VBoxContainer" unique_id=877802322]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(10, -5)
+theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
+theme_override_fonts/font = ExtResource("2_tseak")
+text = "Exit"

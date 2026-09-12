@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b3duedluhxi2p" path="res://Enemy/Enemy1/Enemy.cs" id="1_3o4wt"]
 [ext_resource type="Texture2D" uid="uid://c2gybhvg3bvr3" path="res://Assets/Sprites/sprite_sheets/eye_man_spritesheet.png" id="2_epr5s"]
+[ext_resource type="PackedScene" uid="uid://ci5hvtypgk8rp" path="res://Enemy/Enemy1/enemy_projectile.tscn" id="2_gje4k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
 size = Vector2(35.833313, 110.46511)
@@ -77,6 +78,7 @@ collision_mask = 3
 platform_floor_layers = 4294967041
 platform_wall_layers = 1
 script = ExtResource("1_3o4wt")
+ProjectileScene = ExtResource("2_gje4k")
 Visual = NodePath("AnimatedSprite2D")
 SeparationDistance = 80.0
 SeparationWeight = 10.0
