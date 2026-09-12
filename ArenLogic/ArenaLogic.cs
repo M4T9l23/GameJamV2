@@ -4,7 +4,7 @@ using System.Collections.Generic;
 // Jedna aréna. Když do ní Jane vejde, droid zaparkuje ve vstupu a začne
 // skenovat. Aréna mezitím průběžně spawnuje nepřátele. Bar skenu roste,
 // když je aréna prázdná, a klesá úměrně počtu nepřátel uvnitř. Na 100 %
-// droid uvolní vstup a hodí na zem genom pro tuhle oblast.
+// droid uvolní vstup a hodí na zem item pro tuhle oblast.
 //
 // SETUP VE SCÉNĚ:
 //   ArenaLogic (Node2D)
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 //     +-- DroidPark (Marker2D)   ... vstup, kam si stoupne droid
 //     +-- Respawn (Marker2D)     ... kam se Jane respawne po smrti
 //     +-- Exit (Marker2D)        ... kam Jane skončí, když arénu opustí
-//     +-- RewardPoint (Marker2D) ... kam spadne genom
+//     +-- RewardPoint (Marker2D) ... kam spadne odmena
 //     +-- Border (Node2D + ArenaBorder) ... svítící obrys, volitelný
 //     +-- Spawn1..N (Marker2D)   ... spawn pointy nepřátel
 //
@@ -22,11 +22,12 @@ public partial class ArenaLogic : Node2D
 	public enum ArenaState { Idle, Scanning, Done }
 
 	[ExportGroup("Odměna")]
-	[Export] public Genome Reward;
+	// Item, který spadne po dokončení skenu. Každá aréna má svůj.
+	[Export] public Item Reward;
 	[Export] public Marker2D RewardPoint;
 	[Export] public PackedScene WorldItemScene;
-	// Když už má Jane maximální stage tohohle genomu, defaultně nepadne nic.
-	[Export] public bool GiveRewardWhenMaxed = false;
+	// Když už Jane tenhle item má, defaultně nepadne nic.
+	[Export] public bool DropEvenIfOwned = false;
 
 	[ExportGroup("Prostor")]
 	[Export] public Area2D Region;
@@ -101,7 +102,7 @@ public partial class ArenaLogic : Node2D
 		GD.Print($"  Border:    {(Border != null ? "OK" : "CHYBI (pridej Node2D 'Border' se skriptem ArenaBorder)")}");
 		GD.Print($"  Respawn:   {(RespawnPoint != null ? "OK" : "CHYBI")}");
 		GD.Print($"  Exit:      {(ExitPoint != null ? "OK" : "CHYBI")}");
-		GD.Print($"  Reward:    {(Reward != null ? $"'{Reward.FamilyId}', {Reward.MaxStage} stage" : "CHYBI (nastav Genome .tres)")}");
+		GD.Print($"  Reward:    {(Reward != null ? $"'{Reward.DisplayName}'" : "CHYBI (nastav Item .tres)")}");
 		GD.Print($"  Nepratele: {EnemyScenes.Count} scen, {SpawnPoints.Count} spawn pointu");
 
 		if (Reward == null)
@@ -366,58 +367,39 @@ public partial class ArenaLogic : Node2D
 
 	private void DropReward()
 	{
-		if (Reward == null || Reward.Stages.Count == 0)
+		if (Reward == null)
 		{
-			GD.Print($"Arena '{Name}': neni nastaveny Reward genom, nic nepada.");
+			GD.Print($"Arena '{Name}': neni nastavena odmena (Reward), nic nepada.");
 			return;
 		}
 
-		int currentStage = FindCurrentStage();
-		int nextStage = currentStage + 1;
-
-		if (nextStage > Reward.MaxStage)
+		if (!DropEvenIfOwned && PlayerAlreadyHas(Reward))
 		{
-			if (!GiveRewardWhenMaxed)
-			{
-				GD.Print($"Arena '{Name}': Jane uz ma max stage genomu '{Reward.FamilyId}', nic nepada.");
-				return;
-			}
-
-			nextStage = Reward.MaxStage;
+			GD.Print($"Arena '{Name}': Jane uz ma '{Reward.DisplayName}', nic nepada.");
+			return;
 		}
 
-		Item item = Reward.GetStage(nextStage);
-		if (item == null)
-			return;
-
-		SpawnWorldItem(item);
-		GD.Print($"Arena '{Name}': shozen genom '{Reward.FamilyId}' stage {nextStage}.");
+		SpawnWorldItem(Reward);
+		GD.Print($"Arena '{Name}': shozen item '{Reward.DisplayName}'.");
 	}
 
-	// Projde inventář a najde nejvyšší stage tohohle genomu, kterou Jane drží.
-	// 0 = žádnou nemá (dostane tedy stage 1).
-	private int FindCurrentStage()
+	// Má Jane tenhle item v inventáři? Porovnává se podle Id.
+	private bool PlayerAlreadyHas(Item item)
 	{
-		var inventory = GetTree().GetFirstNodeInGroup("inventory") as Inventory;
-		if (inventory == null)
+		if (GetTree().GetFirstNodeInGroup("inventory") is not Inventory inventory)
 		{
-			GD.Print("ArenaLogic: inventar nenalezen, davam stage 1.");
-			return 0;
+			GD.Print("ArenaLogic: inventar nenalezen.");
+			return false;
 		}
-
-		int best = 0;
 
 		foreach (ItemSlot slot in inventory.GetSlots())
 		{
 			Item held = slot.GetItem();
-			if (held == null || held.GenomeFamily != Reward.FamilyId)
-				continue;
-
-			if (held.Stage > best)
-				best = held.Stage;
+			if (held != null && held.Id == item.Id)
+				return true;
 		}
 
-		return best;
+		return false;
 	}
 
 	private void SpawnWorldItem(Item item)

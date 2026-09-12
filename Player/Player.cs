@@ -3,6 +3,9 @@ using Godot;
 public partial class Player : CharacterBody2D
 {
 	[Signal] public delegate void HealthChangedEventHandler(int current, int max);
+	// Vyletí, když Jane zkusí použít schopnost, kterou nemá odemčenou.
+	// Napoj si na to zvuk nebo hlášku v HUD.
+	[Signal] public delegate void AbilityBlockedEventHandler(string ability);
 	[Export] public int MaxHealth = 5;
 	[Export] public PackedScene BulletScene;
 	[Export] public float FireRate = 1.00f;
@@ -31,10 +34,48 @@ public partial class Player : CharacterBody2D
 	[Export] public float SecondarySpeed = 300f;
 	[Export] public bool SecondaryHoming = false;
 
+	[ExportGroup("Sprint")]
+	// Základní násobič rychlosti při držení sprintu. Itemy s tagem
+	// "sprint:<procenta>" ho zvyšují: sprint:20 = +0.20 k násobiči.
+	[Export] public float SprintMultiplier = 1.6f;
+	// Sekundy sprintu na plnou výdrž. Tag "stamina:<sekundy>" přidává.
+	[Export] public float BaseStamina = 2.0f;
+	// Za jak dlouho se plná výdrž doplní, když Jane nesprintuje.
+	[Export] public float StaminaRecoverySeconds = 3.0f;
+	// Prodleva, než se doplňování rozjede.
+	[Export] public float StaminaRecoveryDelay = 0.6f;
+
+	[ExportGroup("Healing")]
+	// Kolik HP vrátí jedno použití (klávesa R).
+	[Export] public int HealAmount = 2;
+	// Prodleva mezi použitími v sekundách.
+	[Export] public float HealCooldown = 8f;
+
+	[ExportGroup("Zamky schopnosti")]
+	// Když je zapnuto, schopnost jde použít jen s odpovídajícím itemem
+	// v equipment slotu (tag "ability_fire" / "ability_water" /
+	// "ability_sprint" se součtem větším než nula).
+	[Export] public bool RequireFireItem = true;
+	[Export] public bool RequireWaterItem = true;
+	[Export] public bool RequireSprintItem = true;
+	[Export] public bool RequireHealItem = true;
+
+	[ExportGroup("Odolnosti")]
+	// Strop pro součet odolností, aby se Jane nestala nesmrtelnou.
+	// 0.8 = maximálně 80 % pohlceného poškození.
+	[Export] public float MaxResistance = 0.8f;
+
+	public float Stamina { get; private set; }
+	public float StaminaMax => BaseStamina + Bonus("stamina");
+	public bool IsSprinting { get; private set; }
+
+	private float _staminaIdle;
+
 	public int Health;
 	private Vector2 _facing = Vector2.Right;
 	private bool _canShoot = true;
 	private bool _canShootSecondary = true;
+	private bool _canHeal = true;
 	private bool _isDead;
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
@@ -44,19 +85,70 @@ public partial class Player : CharacterBody2D
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_animatedSprite.AnimationFinished += OnAnimationFinished;
-		Health = MaxHealth;
 		AddToGroup("player");
-		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
+
+		Health = GetEffectiveMaxHealth();
+		Stamina = StaminaMax;
+
+		// Když si Jane sundá item s "maxhp", musíme HP doříznout na nové
+		// maximum - jinak by jí zůstalo víc, než smí mít.
+		if (PlayerEquipmentBonuses.Instance != null)
+			PlayerEquipmentBonuses.Instance.BonusesChanged += OnBonusesChanged;
+
+		EmitSignal(SignalName.HealthChanged, Health, GetEffectiveMaxHealth());
+
+		// Kontrolní výpis: když tenhle řádek v konzoli NENÍ, běží stará
+		// zkompilovaná assembly a žádná z těchhle změn se neuplatnila.
+		GD.Print($"Player: zamky schopnosti -> fire={CanCastFire}, water={CanCastWater}, " +
+			$"sprint={CanSprint}, heal={CanHeal} (Require: {RequireFireItem}/{RequireWaterItem}/" +
+			$"{RequireSprintItem}/{RequireHealItem})");
 		_musicPlayer = GetNode<AudioStreamPlayer2D>("../LevelMusic");
 	}
 
+	private void OnBonusesChanged()
+	{
+		int max = GetEffectiveMaxHealth();
+
+		if (Health > max)
+			Health = max;
+
+		if (Stamina > StaminaMax)
+			Stamina = StaminaMax;
+
+		EmitSignal(SignalName.HealthChanged, Mathf.Max(Health, 0), max);
+	}
+
+	// Beztypové poškození - bere se jako fyzické. Nechávám to jako
+	// samostatnou metodu, protože ji přes Call("TakeDamage", x) volá
+	// Attack1 i EnemyProjectile duck typingem.
 	public void TakeDamage(int amount)
+	{
+		TakeTypedDamage(amount, "physical");
+	}
+
+	// Poškození se známým typem ("fire", "water", "physical"). Odolnosti
+	// z vybavení pohltí část podle GetResistance().
+	public void TakeTypedDamage(int amount, string damageType)
 	{
 		if (_isDead) return;
 
-		Health -= amount;
-		EmitSignal(SignalName.HealthChanged, Mathf.Max(Health, 0), MaxHealth);
-		GD.Print($"Player HP: {Health}/{MaxHealth}");
+		float resistance = GetResistance(damageType);
+		int final = Mathf.Max(0, Mathf.RoundToInt(amount * (1f - resistance)));
+
+		// Odolnost nikdy nesmí poškození umazat úplně - jinak by se dala
+		// arena vyfarmit stáním na místě.
+		if (amount > 0 && final == 0)
+			final = 1;
+
+		Health -= final;
+
+		int max = GetEffectiveMaxHealth();
+		EmitSignal(SignalName.HealthChanged, Mathf.Max(Health, 0), max);
+
+		if (resistance > 0f)
+			GD.Print($"Player HP: {Health}/{max} (dmg {amount} -> {final}, {damageType}, res {resistance:P0})");
+		else
+			GD.Print($"Player HP: {Health}/{max}");
 
 		if (Health <= 0)
 			Die();
@@ -98,10 +190,13 @@ public partial class Player : CharacterBody2D
 		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 		GlobalPosition = position;
 		Velocity = Vector2.Zero;
-		Health = health > 0 ? Mathf.Min(health, MaxHealth) : MaxHealth;
+		int max = GetEffectiveMaxHealth();
+		Health = health > 0 ? Mathf.Min(health, max) : max;
+		Stamina = StaminaMax;
 		_isDead = false;
 		_canShoot = true;
 		_canShootSecondary = true;
+		_canHeal = true;
 		_isAttacking = false;
 
 		SetPhysicsProcess(true);   // Die() ho vypnul
@@ -109,35 +204,62 @@ public partial class Player : CharacterBody2D
 		GD.Print($"Player respawned, HP: {Health}/{MaxHealth}");
 	}
 
-	// Aktuální rychlost hráče včetně bonusu z tagu "speed:<číslo>" na
-	// vybavených itemech (prvních 5 slotů inventáře).
-	public float GetEffectiveSpeed()
-	{
-		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("speed") ?? 0f;
-		if (PlayerEquipmentBonuses.Instance == null)
-			GD.Print("Player: PlayerEquipmentBonuses.Instance je null - autoload asi neni registrovany.");
-		return BaseSpeed + bonus;
-	}
+	// Zkratka pro čtení sečteného tagu z vybavených itemů.
+	private static float Bonus(string tag) =>
+		PlayerEquipmentBonuses.Instance?.GetBonus(tag) ?? 0f;
 
-	// Poškození primárního útoku (E = fireball) včetně bonusu z tagu "strength:<číslo>".
-	public int GetAttackDamage()
-	{
-		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("strength") ?? 0f;
-		return BaseDamage + Mathf.RoundToInt(bonus);
-	}
+	// Rychlost chůze včetně tagu "speed". Sprint se násobí až v pohybu.
+	public float GetEffectiveSpeed() => BaseSpeed + Bonus("speed");
 
-	// Poškození sekundárního útoku (Q = waterball). Vlastní base hodnota,
-	// ale sdílí stejný "strength" bonus z vybavení jako primární útok.
-	public int GetAttackDamageSecondary()
+	// Násobič sprintu včetně tagu "sprint:<procenta>".
+	public float GetSprintMultiplier() => SprintMultiplier + Bonus("sprint") / 100f;
+
+	// Maximum HP včetně tagu "maxhp".
+	public int GetEffectiveMaxHealth() =>
+		Mathf.Max(1, MaxHealth + Mathf.RoundToInt(Bonus("maxhp")));
+
+	// Poškození fireballu: base + "strength" (obě střely) + "firepower" (jen oheň).
+	public int GetAttackDamage() =>
+		Mathf.Max(0, BaseDamage + Mathf.RoundToInt(Bonus("strength") + Bonus("firepower")));
+
+	// Poškození waterballu: base + "strength" + "waterpower" (jen voda).
+	public int GetAttackDamageSecondary() =>
+		Mathf.Max(0, BaseDamageSecondary + Mathf.RoundToInt(Bonus("strength") + Bonus("waterpower")));
+
+	// Prodleva mezi výstřely. Tagy "firerate"/"waterrate" jsou PROCENTA
+	// zrychlení, ne sekundy - firerate:50 zkrátí prodlevu na dvě třetiny.
+	// Dělením se to nikdy nedostane na nulu ani do záporu.
+	public float GetEffectiveFireRate() => FireRate / (1f + Bonus("firerate") / 100f);
+
+	public float GetEffectiveFireRateSecondary() =>
+		FireRateSecondary / (1f + Bonus("waterrate") / 100f);
+
+	// --- zámky schopnosti ------------------------------------------------
+
+	public bool CanCastFire => !RequireFireItem || Bonus("ability_fire") > 0f;
+	public bool CanCastWater => !RequireWaterItem || Bonus("ability_water") > 0f;
+	public bool CanSprint => !RequireSprintItem || Bonus("ability_sprint") > 0f;
+	public bool CanHeal => !RequireHealItem || Bonus("ability_heal") > 0f;
+
+	// Podíl pohlceného poškození daného typu, 0 az MaxResistance.
+	// Tagy "fireres", "waterres", "armor" jsou procenta.
+	public float GetResistance(string damageType)
 	{
-		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("strength") ?? 0f;
-		return BaseDamageSecondary + Mathf.RoundToInt(bonus);
+		string tag = damageType switch
+		{
+			"fire" => "fireres",
+			"water" => "waterres",
+			_ => "armor",
+		};
+
+		return Mathf.Clamp(Bonus(tag) / 100f, 0f, MaxResistance);
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 input = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-		Velocity = input * GetEffectiveSpeed();
+
+		Velocity = input * GetEffectiveSpeed() * TickSprint((float)delta, input);
 
 		if (input != Vector2.Zero)
 		{
@@ -151,11 +273,77 @@ public partial class Player : CharacterBody2D
 			
 		MoveAndSlide();
 
-		if (Input.IsActionPressed("shoot") && _canShoot)
+		// Zámky se kontrolují až tady, ne uvnitř Shoot() - jinak by se
+		// spustila attack animace a spálil cooldown i pro zablokovaný útok.
+		if (Input.IsActionJustPressed("shoot") && !CanCastFire)
+			EmitSignal(SignalName.AbilityBlocked, "fire");
+		else if (Input.IsActionPressed("shoot") && _canShoot && CanCastFire)
 			Shoot(Attack1.AttackKind.Fireball);
 
-		if (Input.IsActionPressed("shoot_secondary") && _canShootSecondary)
+		if (Input.IsActionJustPressed("shoot_secondary") && !CanCastWater)
+			EmitSignal(SignalName.AbilityBlocked, "water");
+		else if (Input.IsActionPressed("shoot_secondary") && _canShootSecondary && CanCastWater)
 			Shoot(Attack1.AttackKind.Waterball);
+	}
+
+	// Vrací násobič rychlosti pro tenhle frame a stará se o výdrž.
+	// Sprint jede, jen když Jane drží klávesu, hýbe se a má co utratit.
+	private float TickSprint(float dt, Vector2 input)
+	{
+		if (Input.IsActionJustPressed("heal"))
+		{
+			if (!CanHeal)
+				EmitSignal(SignalName.AbilityBlocked, "heal");
+			else if (_canHeal)
+				Heal();
+		}
+
+		if (Input.IsActionJustPressed("sprint") && !CanSprint)
+			EmitSignal(SignalName.AbilityBlocked, "sprint");
+
+		bool wants = Input.IsActionPressed("sprint") && input != Vector2.Zero && CanSprint;
+
+		IsSprinting = wants && Stamina > 0f;
+
+		if (IsSprinting)
+		{
+			Stamina = Mathf.Max(0f, Stamina - dt);
+			_staminaIdle = 0f;
+			return GetSprintMultiplier();
+		}
+
+		// Doplňování se rozjede až po krátké prodlevě, aby nešlo
+		// sprintovat trhaně pořád dokola.
+		_staminaIdle += dt;
+
+		if (_staminaIdle >= StaminaRecoveryDelay && StaminaRecoverySeconds > 0f)
+			Stamina = Mathf.Min(StaminaMax, Stamina + dt * StaminaMax / StaminaRecoverySeconds);
+
+		return 1f;
+	}
+
+	// Doplní HP a nastartuje cooldown. Když je Jane na plných, použití
+	// se nespotřebuje - jinak by se dal lék omylem vyplýtvat.
+	private async void Heal()
+	{
+		int max = GetEffectiveMaxHealth();
+
+		if (Health >= max)
+		{
+			GD.Print("Player: plne HP, healing se nepouzil.");
+			return;
+		}
+
+		_canHeal = false;
+
+		Health = Mathf.Min(max, Health + HealAmount);
+		EmitSignal(SignalName.HealthChanged, Health, max);
+		GD.Print($"Player healed: {Health}/{max}");
+
+		await ToSignal(GetTree().CreateTimer(HealCooldown), SceneTreeTimer.SignalName.Timeout);
+
+		if (IsInstanceValid(this))
+			_canHeal = true;
 	}
 
 	private async void Shoot(Attack1.AttackKind kind)
@@ -187,7 +375,7 @@ public partial class Player : CharacterBody2D
 		GetTree().CurrentScene.AddChild(bullet);
 		bullet.GlobalPosition = GlobalPosition;
 
-		float rate = isSecondary ? FireRateSecondary : FireRate;
+		float rate = isSecondary ? GetEffectiveFireRateSecondary() : GetEffectiveFireRate();
 		await ToSignal(GetTree().CreateTimer(rate), SceneTreeTimer.SignalName.Timeout);
 
 		if (!IsInstanceValid(this)) return;

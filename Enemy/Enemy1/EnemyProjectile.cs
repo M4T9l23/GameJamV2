@@ -5,6 +5,8 @@ public partial class EnemyProjectile : Area2D
     [Export] public float Speed = 220f;
     [Export] public int Damage = 1;
     [Export] public float Lifetime = 4f;
+    // "physical", "fire" nebo "water" - Jane na to aplikuje odolnosti.
+    [Export] public string DamageType = "physical";
 
     // Set by the enemy right before it spawns us.
     public Vector2 Direction = Vector2.Right;
@@ -37,7 +39,9 @@ public partial class EnemyProjectile : Area2D
 
         _hasHit = true;
 
-        if (body is IDamageable damageable)
+        if (body is Player player)
+            player.TakeTypedDamage(Damage, DamageType);
+        else if (body is IDamageable damageable)
             damageable.TakeDamage(Damage);
         else if (body.HasMethod("TakeDamage"))
             body.Call("TakeDamage", Damage);

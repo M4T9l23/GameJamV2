@@ -26,6 +26,15 @@ public partial class Inventory : PanelContainer
 
 		// ArenaLogic si podle téhle grupy zjistí, jakou stage genomu Jane drží.
 		AddToGroup("inventory");
+
+		// Vyčistit bonusy zděděné z předchozího běhu scény a napočítat je
+		// znovu z toho, co v slotech opravdu je.
+		CallDeferred(nameof(RebuildBonuses));
+	}
+
+	private void RebuildBonuses()
+	{
+		PlayerEquipmentBonuses.Instance?.ResetFrom(GetSlots());
 	}
 
 	// --- veřejné API pro zbytek hry -------------------------------------

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
@@ -339,8 +339,6 @@ size = Vector2(160, 40)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
-[node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("5_kry3j")]
-
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
 Entries = Array[ExtResource("2_h1bgf")]([SubResource("Resource_hibaj"), SubResource("Resource_3w5oe"), SubResource("Resource_pdsj5")])
@@ -456,6 +454,8 @@ script = ExtResource("23_3pmx8")
 position = Vector2(383, -197)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")
+
+[node name="CanvasLayer" parent="." unique_id=795558273 instance=ExtResource("5_kry3j")]
 
 [node name="LevelMusic" type="AudioStreamPlayer2D" parent="." unique_id=1949929374]
 stream = ExtResource("54_gsvbx")

@@ -2,12 +2,9 @@
 
 [ext_resource type="Script" path="res://ArenLogic/Genome.cs" id="1_genome"]
 [ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="2_item"]
-[ext_resource type="Resource" path="res://GUI/Items/Genomes/Water1.tres" id="3_s1"]
-[ext_resource type="Resource" path="res://GUI/Items/Genomes/Water2.tres" id="4_s2"]
-[ext_resource type="Resource" path="res://GUI/Items/Genomes/Water3.tres" id="5_s3"]
-[ext_resource type="Resource" path="res://GUI/Items/Genomes/Water4.tres" id="6_s4"]
+[ext_resource type="Resource" path="res://GUI/Items/Genomes/Water.tres" id="3_stage"]
 
 [resource]
 script = ExtResource("1_genome")
 FamilyId = "water"
-Stages = Array[ExtResource("2_item")]([ExtResource("3_s1"), ExtResource("4_s2"), ExtResource("5_s3"), ExtResource("6_s4")])
+Stages = Array[ExtResource("2_item")]([ExtResource("3_stage")])

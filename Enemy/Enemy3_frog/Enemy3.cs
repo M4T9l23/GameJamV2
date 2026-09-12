@@ -6,6 +6,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
 
     [Export] public int Health = 3;
     [Export] public int ContactDamage = 1;
+    [Export] public string DamageType = "physical";
     [Export] public Godot.Collections.Array<DropEntry> Drops = new();
 
     [ExportGroup("Leaping Movement")]
@@ -107,7 +108,7 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             if (_player is Player player)
             {
                 _dead = true;
-                player.TakeDamage(ContactDamage);
+                player.TakeTypedDamage(ContactDamage, DamageType);
                 QueueFree();
                 return;
             }

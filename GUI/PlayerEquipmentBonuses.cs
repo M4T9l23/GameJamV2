@@ -37,6 +37,27 @@ public partial class PlayerEquipmentBonuses : Node
 		return _bonuses.TryGetValue(tagKey.ToLowerInvariant(), out float value) ? value : 0f;
 	}
 
+	// Autoload přežívá reload scény, ale sloty inventáře ne - jejich itemy
+	// se zahodí bez volání RemoveItem. Bez tohohle by bonusy (a hlavně
+	// odemčené schopnosti) zůstaly viset napořád i s prázdným inventářem.
+	public void ResetFrom(System.Collections.Generic.IEnumerable<ItemSlot> slots)
+	{
+		_bonuses.Clear();
+
+		if (slots != null)
+		{
+			foreach (ItemSlot slot in slots)
+			{
+				Item item = slot?.GetItem();
+				if (item != null)
+					ChangeItem(item, 1f);
+			}
+		}
+
+		GD.Print($"PlayerEquipmentBonuses: reset, aktivnich tagu: {_bonuses.Count}");
+		EmitSignal(SignalName.BonusesChanged);
+	}
+
 	public void ApplyItem(Item item) => ChangeItem(item, 1f);
 
 	public void RemoveItem(Item item) => ChangeItem(item, -1f);

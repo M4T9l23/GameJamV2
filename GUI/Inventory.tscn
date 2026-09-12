@@ -61,7 +61,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 4
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
-columns = 7
+columns = 3
 
 [node name="Itemslot" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=264551335 instance=ExtResource("4_slot")]
 layout_mode = 2
@@ -75,8 +75,3 @@ IsEquipmentSlot = true
 layout_mode = 2
 IsEquipmentSlot = true
 
-[node name="Itemslot4" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=1154537791 instance=ExtResource("4_slot")]
-layout_mode = 2
-
-[node name="Itemslot5" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=1250681256 instance=ExtResource("4_slot")]
-layout_mode = 2

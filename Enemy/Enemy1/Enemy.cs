@@ -6,6 +6,9 @@ public partial class Enemy : CharacterBody2D, IDamageable
 
 	[Export] public int Health = 3;
 	[Export] public int ContactDamage = 1;
+	// "physical", "fire" nebo "water". Jane to porovnava s tagy
+	// fireres / waterres / armor na vybavenych itemech.
+	[Export] public string DamageType = "physical";
 	[Export] public float Speed = 80f;
 	[Export] public Godot.Collections.Array<DropEntry> Drops = new();
 
@@ -99,7 +102,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 			if (KamikazeOnContact)
 			{
 				_dead = true;
-				player.TakeDamage(ContactDamage);
+				player.TakeTypedDamage(ContactDamage, DamageType);
 				QueueFree();
 				return;
 			}

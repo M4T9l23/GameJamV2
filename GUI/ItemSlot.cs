@@ -38,8 +38,11 @@ public partial class ItemSlot : Panel
 
 	public void SetItem(Item item)
 	{
-		// Equipment efekty: nejdřív dole odebrat starý item, teprve pak přidat nový.
-		if (IsEquipmentSlot && _item != null)
+		// Bonusy a odemčené schopnosti platí z CELÉHO inventáře, ne jen
+		// z equipment slotů - stačí item mít, nemusí být vybavený.
+		// (Kdybys to chtěl zpátky jen na equipment, vrať sem podmínku
+		// IsEquipmentSlot &&.)
+		if (_item != null)
 			PlayerEquipmentBonuses.Instance?.RemoveItem(_item);
 
 		_item = item;
@@ -50,7 +53,7 @@ public partial class ItemSlot : Panel
 			_icon.Show();
 		}
 
-		if (IsEquipmentSlot && _item != null)
+		if (_item != null)
 			PlayerEquipmentBonuses.Instance?.ApplyItem(_item);
 	}
 
@@ -137,33 +140,7 @@ public partial class ItemSlot : Panel
 			payload.Icon.Texture = outgoing?.Texture;
 		}
 
-		// Genom: v inventáři smí být vždycky jen jedna stage od rodiny.
-		// Vložení nové stage tedy smaže tu starou, ať se Jane nesčítají
-		// bonusy z tagů obou najednou.
-		ClearOtherStagesOfSameGenome(incoming);
-
 		payload.Icon?.Show();
-	}
-
-	// Vyhodí z ostatních slotů jakoukoliv jinou stage stejného genomu.
-	// Pro normální itemy (prázdná GenomeFamily) nedělá nic.
-	private void ClearOtherStagesOfSameGenome(Item incoming)
-	{
-		if (incoming == null || !incoming.IsGenome)
-			return;
-
-		foreach (Node node in GetTree().GetNodesInGroup("item_slots"))
-		{
-			if (node is not ItemSlot slot || slot == this)
-				continue;
-
-			Item held = slot.GetItem();
-			if (held == null || held.GenomeFamily != incoming.GenomeFamily)
-				continue;
-
-			// SetItem(null) sám odečte bonusy, pokud šlo o equipment slot.
-			slot.SetItem(null);
-		}
 	}
 
 	// Projde všechny sloty v inventáři (equipment i normální) a zjistí, jestli
@@ -181,12 +158,6 @@ public partial class ItemSlot : Panel
 				continue;
 
 			if (slot._item == null)
-				continue;
-
-			// Jiná stage stejného genomu není duplikát - je to upgrade.
-			// Ta stará se při vložení stejně smaže, tak ji tu neblokuj
-			// (platí i kdyby stage sdílely stejné Id).
-			if (payload.Item.IsGenome && slot._item.GenomeFamily == payload.Item.GenomeFamily)
 				continue;
 
 			if (slot._item.Id == payload.Item.Id)

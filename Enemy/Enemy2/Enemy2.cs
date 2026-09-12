@@ -4,6 +4,7 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 {
 	[Export] public int Health = 3;
 	[Export] public int ContactDamage = 1;
+	[Export] public string DamageType = "physical";
 	[Export] public float Speed = 110f;
 
 	[ExportGroup("Interception")]
@@ -83,7 +84,7 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 		{
 			if (GetSlideCollision(i).GetCollider() is Player player)
 			{
-				player.TakeDamage(ContactDamage);
+				player.TakeTypedDamage(ContactDamage, DamageType);
 				QueueFree();
 				return;
 			}
