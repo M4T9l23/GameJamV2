@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkjjawj3dbifp" path="res://Attack/Attack1.cs" id="1_db15e"]
 [ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/projectiles/fireball_spritesheet.png" id="2_4np7o"]
+[ext_resource type="Texture2D" uid="uid://h4xfragysdqj" path="res://Assets/Sprites/projectiles/waterball_sprite.png" id="3_4ralh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxl0e"]
 size = Vector2(50, 33.5)
@@ -26,6 +27,22 @@ region = Rect2(354, 816, 442, 771)
 atlas = ExtResource("2_4np7o")
 region = Rect2(1146, 816, 442, 771)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwvkm"]
+atlas = ExtResource("3_4ralh")
+region = Rect2(87, 0, 750, 794)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e88hm"]
+atlas = ExtResource("3_4ralh")
+region = Rect2(837, 0, 750, 794)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nycvh"]
+atlas = ExtResource("3_4ralh")
+region = Rect2(87, 794, 750, 794)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqa3t"]
+atlas = ExtResource("3_4ralh")
+region = Rect2(837, 794, 750, 794)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
 "frames": [{
@@ -45,14 +62,32 @@ animations = [{
 "texture": SubResource("AtlasTexture_s0gn5")
 }],
 "loop": 1,
-"name": &"default",
+"name": &"fireball",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwvkm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e88hm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nycvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqa3t")
+}],
+"loop": 1,
+"name": &"waterball",
+"speed": 5.0
 }]
 
 [node name="Area2D" type="Area2D" unique_id=919805070]
 script = ExtResource("1_db15e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=375859771]
+visible = false
 position = Vector2(-11, 3.25)
 shape = SubResource("RectangleShape2D_fxl0e")
 
@@ -60,9 +95,10 @@ shape = SubResource("RectangleShape2D_fxl0e")
 polygon = PackedVector2Array(-7, -5, -10, 10, 10, 10, 10, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=647478583]
-position = Vector2(-73, -74.00002)
+position = Vector2(-103, -82)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
-autoplay = "default"
-frame_progress = 0.4626274
+animation = &"fireball"
+autoplay = "fireball"
+frame_progress = 0.98286784
 centered = false
