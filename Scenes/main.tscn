@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
@@ -31,7 +31,7 @@
 [ext_resource type="PackedScene" path="res://ArenLogic/Arena.tscn" id="22_ee4r6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -411,5 +411,6 @@ scale = Vector2(3, 1)
 script = ExtResource("23_3pmx8")
 
 [node name="PauseOnESC" type="Node2D" parent="." unique_id=976625617]
+position = Vector2(-13, -1)
 script = ExtResource("24_3pmx8")
 _menuScene = ExtResource("5_21xkr")

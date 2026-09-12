@@ -68,6 +68,26 @@ public partial class StatsPanel : Label
 		ClipText = false;
 		AutowrapMode = TextServer.AutowrapMode.Off;
 		TextOverrunBehavior = TextServer.OverrunBehavior.NoTrimming;
+		// Deferred, protože Inventory/CanvasLayer se může načíst dřív než hráč.
+		CallDeferred(nameof(HookPlayer));
+	}
+
+	private void HookPlayer()
+	{
+		if (GetTree().GetFirstNodeInGroup("player") is not Player player)
+		{
+			GD.Print("StatsPanel: hráč není ve skupině 'player' (zatím).");
+			return;
+		}
+
+		player.HealthChanged += OnHealthChanged;
+		OnHealthChanged(player.Health, player.MaxHealth);
+	}
+
+	private void OnHealthChanged(int current, int max)
+	{
+		CurrentHp = current;
+		MaxHp = max;
 
 		Refresh();
 	}
@@ -92,8 +112,8 @@ public partial class StatsPanel : Label
 
 	private void Refresh()
 	{
-		int filled = _maxHp > 0
-			? Mathf.Clamp(Mathf.RoundToInt((float)_currentHp / _maxHp * _barLength), 0, _barLength)
+		int filled = _maxHp > 0 && _currentHp > 0
+			? Mathf.Clamp(Mathf.CeilToInt((float)_currentHp / _maxHp * _barLength), 1, _barLength)
 			: 0;
 
 		string bar = new string('#', filled) + new string('-', _barLength - filled);

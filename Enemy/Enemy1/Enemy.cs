@@ -80,7 +80,7 @@ public partial class Enemy : CharacterBody2D, IDamageable
 
 		Velocity = direction * Speed;
 		MoveAndSlide();
-
+	
 		// --- shooting ---
 		_fireTimer -= (float)delta;
 

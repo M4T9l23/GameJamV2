@@ -2,6 +2,7 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
+	[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 	[Export] public int MaxHealth = 5;
 	[Export] public PackedScene BulletScene;
 	[Export] public float FireRate = 1.00f;
@@ -32,12 +33,7 @@ public partial class Player : CharacterBody2D
 		_animatedSprite.AnimationFinished += OnAnimationFinished;
 		Health = MaxHealth;
 		AddToGroup("player");
-	}
-
-	private void OnAnimationFinished()
-	{
-		if (_animatedSprite.Animation == AttackAnim)
-			_isAttacking = false;
+		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 	}
 
 	public void TakeDamage(int amount)
@@ -45,11 +41,19 @@ public partial class Player : CharacterBody2D
 		if (_isDead) return;
 
 		Health -= amount;
+		EmitSignal(SignalName.HealthChanged, Mathf.Max(Health, 0), MaxHealth);
 		GD.Print($"Player HP: {Health}/{MaxHealth}");
 
 		if (Health <= 0)
 			Die();
 	}
+
+	private void OnAnimationFinished()
+	{
+		if (_animatedSprite.Animation == AttackAnim)
+			_isAttacking = false;
+	}
+	
 
 	private void Die()
 	{
@@ -70,6 +74,7 @@ public partial class Player : CharacterBody2D
 	// health <= 0 znamená plné HP.
 	public void RespawnAt(Vector2 position, int health)
 	{
+		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 		GlobalPosition = position;
 		Velocity = Vector2.Zero;
 		Health = health > 0 ? Mathf.Min(health, MaxHealth) : MaxHealth;
@@ -113,7 +118,7 @@ public partial class Player : CharacterBody2D
 		// Attack animace má přednost před idle/move
 		if (!_isAttacking)
 			_animatedSprite.Play(input != Vector2.Zero ? MoveAnim : IdleAnim);
-
+			
 		MoveAndSlide();
 
 		if (Input.IsActionPressed("shoot") && _canShoot)
