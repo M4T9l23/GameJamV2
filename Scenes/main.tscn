@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
-[ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy2/enemy_2.tscn" id="5_hibaj"]
+[ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/tiles/Asphalt.png" id="7_hptm8"]
