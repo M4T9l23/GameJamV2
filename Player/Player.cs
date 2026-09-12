@@ -43,8 +43,27 @@ public partial class Player : CharacterBody2D
 		_isDead = true;
 
 		GD.Print("Player died");
-		var screen = _deathScreenScene.Instantiate();
+
+		var screen = _deathScreenScene.Instantiate<DeathScreen>();
+
+		// Když Jane umřela uvnitř aktivní arény, death screen nabídne navíc
+		// respawn v aréně a její opuštění (jinak by se dala softlocknout).
+		screen.Arena = GetTree().GetFirstNodeInGroup("active_arena") as ArenaLogic;
+
 		GetTree().CurrentScene.AddChild(screen);
+	}
+
+	// Volá ArenaLogic při respawnu nebo opuštění arény.
+	// health <= 0 znamená plné HP.
+	public void RespawnAt(Vector2 position, int health)
+	{
+		GlobalPosition = position;
+		Velocity = Vector2.Zero;
+		Health = health > 0 ? Mathf.Min(health, MaxHealth) : MaxHealth;
+		_isDead = false;
+		_canShoot = true;
+
+		GD.Print($"Player respawned, HP: {Health}/{MaxHealth}");
 	}
 
 	// Aktuální rychlost hráče včetně bonusu z tagu "speed:<číslo>" na

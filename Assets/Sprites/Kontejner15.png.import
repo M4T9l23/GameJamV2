@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvwh7o5e5uqy5"
-path="res://.godot/imported/Díra.png-25437619d389111350382fffa3831c34.ctex"
+uid="uid://c6musfcg4675j"
+path="res://.godot/imported/Kontejner15.png-a71a26c3df26e7765c623e9f6b109275.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Díra.png"
-dest_files=["res://.godot/imported/Díra.png-25437619d389111350382fffa3831c34.ctex"]
+source_file="res://Assets/Sprites/Kontejner15.png"
+dest_files=["res://.godot/imported/Kontejner15.png-a71a26c3df26e7765c623e9f6b109275.ctex"]
 
 [params]
 
