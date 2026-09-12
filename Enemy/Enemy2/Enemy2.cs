@@ -16,10 +16,15 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 	private Vector2 _lastPlayerPos;
 	private Vector2 _heading;
 	private bool _dead;
+	
+	[Export] public float SpriteAngleOffsetDegrees = 0f;
 	private AnimatedSprite2D _animatedSprite;
+
+	private Node2D _sprite;
 
 	public override void _Ready()
 	{
+		_sprite = GetNodeOrNull<Node2D>("AnimatedSprite2D") ?? GetNodeOrNull<Node2D>("Sprite2D");
 		AddToGroup("enemies");
 		_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
 
@@ -58,11 +63,26 @@ public partial class Enemy2 : CharacterBody2D, IDamageable
 		Velocity = _heading * Speed;
 		MoveAndSlide();
 
+		_heading = _heading.Lerp(desired, 1f - Mathf.Exp(-TurnSpeed * dt)).Normalized();
+
+		if (_sprite != null)
+			_sprite.Rotation = _heading.Angle() + Mathf.DegToRad(SpriteAngleOffsetDegrees);
+
+		Velocity = _heading * Speed;
+		MoveAndSlide();
+		
+		_heading = _heading.Lerp(desired, 1f - Mathf.Exp(-TurnSpeed * dt)).Normalized();
+
+		if (_sprite != null)
+			_sprite.Rotation = _heading.Angle() + Mathf.DegToRad(SpriteAngleOffsetDegrees);
+
+		Velocity = _heading * Speed;
+		MoveAndSlide();
+
 		for (int i = 0; i < GetSlideCollisionCount(); i++)
 		{
 			if (GetSlideCollision(i).GetCollider() is Player player)
 			{
-				
 				player.TakeDamage(ContactDamage);
 				QueueFree();
 				return;

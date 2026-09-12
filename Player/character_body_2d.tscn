@@ -102,6 +102,8 @@ collision_mask = 3
 script = ExtResource("1_v8jqv")
 BulletScene = ExtResource("2_vvw5e")
 _deathScreenScene = ExtResource("3_srlcf")
+BaseDamageSecondary = 3
+SecondarySpeed = 100.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1967567405]
 shape = SubResource("RectangleShape2D_fxl0e")

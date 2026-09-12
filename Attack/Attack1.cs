@@ -11,6 +11,11 @@ public partial class Attack1 : Area2D
 		Waterball
 	}
 
+	// Kolik stupňů otočit sprite, aby mířil ve směru letu.
+	// Fireball art míří doprava (0), waterball doleva (180).
+	[Export] public float FireballSpriteAngleOffset = 0f;
+	[Export] public float WaterballSpriteAngleOffset = 180f;
+	
 	[Export] public AttackKind Kind = AttackKind.Fireball;
 
 	[Export] public float Speed = 400f;
@@ -31,7 +36,12 @@ public partial class Attack1 : Area2D
 		// Both "fireball" and "waterball" animations live in the same
 		// SpriteFrames on this node, switch to whichever one this shot is.
 		_sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		_sprite.Play(Kind == AttackKind.Fireball ? "fireball" : "waterball");
+
+		bool isFire = Kind == AttackKind.Fireball;
+		_sprite.Play(isFire ? "fireball" : "waterball");
+		_sprite.RotationDegrees = isFire
+			? FireballSpriteAngleOffset
+			: WaterballSpriteAngleOffset;
 
 		// clean up missed shots after 3 seconds
 		GetTree().CreateTimer(3.0).Timeout += () =>
@@ -93,5 +103,5 @@ public partial class Attack1 : Area2D
 		}
 
 		QueueFree(); // walls, enemies, anything solid
-	}
+	} 
 }
