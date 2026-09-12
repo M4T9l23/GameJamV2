@@ -80,6 +80,7 @@ public partial class Player : CharacterBody2D
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
 	private AudioStreamPlayer2D _musicPlayer;
+	private AudioStreamPlayer _defeatSound;
 
 	public override void _Ready()
 	{
@@ -102,7 +103,9 @@ public partial class Player : CharacterBody2D
 		GD.Print($"Player: zamky schopnosti -> fire={CanCastFire}, water={CanCastWater}, " +
 			$"sprint={CanSprint}, heal={CanHeal} (Require: {RequireFireItem}/{RequireWaterItem}/" +
 			$"{RequireSprintItem}/{RequireHealItem})");
+		
 		_musicPlayer = GetNode<AudioStreamPlayer2D>("../LevelMusic");
+		_defeatSound = GetNode<AudioStreamPlayer>("DefeatSound");
 	}
 
 	private void OnBonusesChanged()
@@ -152,12 +155,7 @@ public partial class Player : CharacterBody2D
 
 		if (Health <= 0)
 			Die();
-		// 1. Get the LevelMusic node. 
-		// Since LevelMusic and CharacterBody2D are both direct children of 'main', we use "../LevelMusic"
-		AudioStreamPlayer musicPlayer = GetNode<AudioStreamPlayer>("../LevelMusic");
-        
-		// 2. Stop the music
-		musicPlayer.Stop();
+		
 	}
 
 	private void OnAnimationFinished()
@@ -181,6 +179,7 @@ public partial class Player : CharacterBody2D
 		screen.Setup(true);
 		GetTree().CurrentScene.AddChild(screen);
 		_musicPlayer?.Stop();
+		_defeatSound?.Play();
 	}
 
 	// Volá ArenaLogic při respawnu nebo opuštění arény.
