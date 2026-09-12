@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c2gybhvg3bvr3" path="res://Assets/Sprites/eye_man_spritesheet.png" id="2_epr5s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
-size = Vector2(35.833313, 73.25581)
+size = Vector2(35.833313, 110.46511)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vonkd"]
 atlas = ExtResource("2_epr5s")
@@ -72,6 +72,10 @@ animations = [{
 
 [node name="Enemy-1" type="CharacterBody2D" unique_id=210615792 node_paths=PackedStringArray("Visual")]
 scale = Vector2(1.2000009, 1.72)
+collision_layer = 3
+collision_mask = 3
+platform_floor_layers = 4294967041
+platform_wall_layers = 1
 script = ExtResource("1_3o4wt")
 Visual = NodePath("AnimatedSprite2D")
 SeparationDistance = 80.0
@@ -83,7 +87,7 @@ position = Vector2(7.9166574, -4.069768)
 polygon = PackedVector2Array(-2, -8, -10, -1, -2, 9, 7, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=768180105]
-position = Vector2(7.9166574, -4.069768)
+position = Vector2(7.9166574, -4.069766)
 shape = SubResource("RectangleShape2D_gtgmb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867286319]

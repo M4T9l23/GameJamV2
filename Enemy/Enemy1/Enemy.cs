@@ -53,6 +53,7 @@ public partial class Enemy : CharacterBody2D
 		{
 			if (GetSlideCollision(i).GetCollider() is Player player)
 			{
+				GD.Print("DMGGGG");
 				player.TakeDamage(ContactDamage);
 				QueueFree();
 				return;
