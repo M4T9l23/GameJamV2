@@ -77,14 +77,6 @@ IsEquipmentSlot = true
 
 [node name="Itemslot4" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=1154537791 instance=ExtResource("4_slot")]
 layout_mode = 2
-IsEquipmentSlot = true
 
 [node name="Itemslot5" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=1250681256 instance=ExtResource("4_slot")]
-layout_mode = 2
-IsEquipmentSlot = true
-
-[node name="Itemslot6" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=1171000582 instance=ExtResource("4_slot")]
-layout_mode = 2
-
-[node name="Itemslot7" parent="Inventory/MarginContainer/HBoxContainer/GridContainer" unique_id=434986796 instance=ExtResource("4_slot")]
 layout_mode = 2
