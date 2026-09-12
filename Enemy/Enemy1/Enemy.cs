@@ -156,17 +156,20 @@ public partial class Enemy : CharacterBody2D
 	{
 		foreach (DropEntry drop in Drops)
 		{
-			if (drop == null || drop.Item == null)
+			if (drop == null || drop.Scene == null)
 				continue;
 
 			if (GD.Randf() > drop.Chance)
 				continue;
 
-			var item = drop.Item.Instantiate<Node2D>();
+			var instance = drop.Scene.Instantiate<Node2D>();
 			Vector2 offset = new Vector2((float)GD.RandRange(-8, 8), (float)GD.RandRange(-8, 8));
-			item.Position = GlobalPosition + offset;
+			instance.Position = GlobalPosition + offset;
 
-			GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, item);
+			if (drop.ItemData != null && instance is WorldItem worldItem)
+				worldItem.SetItem(drop.ItemData);
+
+			GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, instance);
 		}
 	}
 }
