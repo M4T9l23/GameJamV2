@@ -108,3 +108,4 @@ polygon = PackedVector2Array(-10, -10, -10, 9, 10, 9, 10, -10)
 rotation = 3.1415927
 sprite_frames = SubResource("SpriteFrames_mti6b")
 animation = &"idle_animation"
+autoplay = "idle_animation"

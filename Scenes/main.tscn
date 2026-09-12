@@ -38,6 +38,18 @@ sources/1 = SubResource("TileSetAtlasSource_wsu2k")
 sources/2 = SubResource("TileSetAtlasSource_k12tt")
 sources/3 = SubResource("TileSetAtlasSource_h1bgf")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1ilt"]
+size = Vector2(636, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6iyac"]
+size = Vector2(678, 23)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdnlq"]
+size = Vector2(19, 626)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hptm8"]
+size = Vector2(28, 642)
+
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("5_kry3j")]
@@ -80,3 +92,27 @@ scale = Vector2(0.25, 0.25)
 tile_set = SubResource("TileSet_62yky")
 format = 2
 layer_0/tile_data = PackedInt32Array(-1, 1, 0, 65535, 2, 0, -65537, 2, 0, -131073, 2, 0, 131071, 2, 0, -2, 3, 0, -65536, 3, 0, -65535, 3, 0, -3, 3, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 0, 0)
+
+[node name="border south" type="StaticBody2D" parent="." unique_id=1252232798]
+
+[node name="CollisionShape2D_S" type="CollisionShape2D" parent="border south" unique_id=1032265013]
+position = Vector2(-66, 265)
+shape = SubResource("RectangleShape2D_d1ilt")
+
+[node name="border north" type="StaticBody2D" parent="." unique_id=1107000904]
+
+[node name="CollisionShape2D_N" type="CollisionShape2D" parent="border north" unique_id=1138500833]
+position = Vector2(-72, -399)
+shape = SubResource("RectangleShape2D_6iyac")
+
+[node name="border east" type="StaticBody2D" parent="." unique_id=1050368188]
+
+[node name="CollisionShape2D_E" type="CollisionShape2D" parent="border east" unique_id=79191894]
+position = Vector2(264, -64)
+shape = SubResource("RectangleShape2D_fdnlq")
+
+[node name="border west" type="StaticBody2D" parent="." unique_id=1102912973]
+
+[node name="CollisionShape2D_W" type="CollisionShape2D" parent="border west" unique_id=340314180]
+position = Vector2(-396, -65)
+shape = SubResource("RectangleShape2D_hptm8")
