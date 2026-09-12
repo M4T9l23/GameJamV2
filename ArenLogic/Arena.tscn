@@ -50,3 +50,4 @@ position = Vector2(320, 220)
 
 [node name="Border" type="Node2D" parent="." unique_id=319960845]
 script = ExtResource("2_r33ip")
+Layer = 4
