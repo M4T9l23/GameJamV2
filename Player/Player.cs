@@ -20,9 +20,21 @@ public partial class Player : CharacterBody2D
 	[Export] public float BaseSpeed = 200f;
 	[Export] public int BaseDamage = 1;
 
+	// Sekundární útok (Q = waterball). Vlastní cooldown a vlastní damage,
+	// takže může mít úplně jiný rytmus/sílu než primární útok (E = fireball).
+	[Export] public float FireRateSecondary = 1.00f;
+	[Export] public int BaseDamageSecondary = 1;
+
+	// Volitelné přebití rychlosti/homingu pro sekundární útok. Pokud chceš,
+	// aby waterball měl stejné hodnoty jako je nastaveno přímo na Attack1.tscn,
+	// prostě nech tyto hodnoty stejné jako tam (Speed=400, Homing=true).
+	[Export] public float SecondarySpeed = 300f;
+	[Export] public bool SecondaryHoming = false;
+
 	public int Health;
 	private Vector2 _facing = Vector2.Right;
 	private bool _canShoot = true;
+	private bool _canShootSecondary = true;
 	private bool _isDead;
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
@@ -80,6 +92,7 @@ public partial class Player : CharacterBody2D
 		Health = health > 0 ? Mathf.Min(health, MaxHealth) : MaxHealth;
 		_isDead = false;
 		_canShoot = true;
+		_canShootSecondary = true;
 		_isAttacking = false;
 
 		SetPhysicsProcess(true);   // Die() ho vypnul
@@ -97,11 +110,19 @@ public partial class Player : CharacterBody2D
 		return BaseSpeed + bonus;
 	}
 
-	// Poškození útoku včetně bonusu z tagu "strength:<číslo>".
+	// Poškození primárního útoku (E = fireball) včetně bonusu z tagu "strength:<číslo>".
 	public int GetAttackDamage()
 	{
 		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("strength") ?? 0f;
 		return BaseDamage + Mathf.RoundToInt(bonus);
+	}
+
+	// Poškození sekundárního útoku (Q = waterball). Vlastní base hodnota,
+	// ale sdílí stejný "strength" bonus z vybavení jako primární útok.
+	public int GetAttackDamageSecondary()
+	{
+		float bonus = PlayerEquipmentBonuses.Instance?.GetBonus("strength") ?? 0f;
+		return BaseDamageSecondary + Mathf.RoundToInt(bonus);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -122,27 +143,49 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
 
 		if (Input.IsActionPressed("shoot") && _canShoot)
-			Shoot();
+			Shoot(Attack1.AttackKind.Fireball);
+
+		if (Input.IsActionPressed("shoot_secondary") && _canShootSecondary)
+			Shoot(Attack1.AttackKind.Waterball);
 	}
 
-	private async void Shoot()
+	private async void Shoot(Attack1.AttackKind kind)
 	{
-		_canShoot = false;
+		bool isSecondary = kind == Attack1.AttackKind.Waterball;
+
+		if (isSecondary)
+			_canShootSecondary = false;
+		else
+			_canShoot = false;
 
 		_isAttacking = true;
 		_animatedSprite.Frame = 0;
 		_animatedSprite.Play(AttackAnim);
 
 		var bullet = BulletScene.Instantiate<Attack1>();
+		bullet.Kind = kind; // picks fireball/waterball animation in Attack1._Ready()
 		bullet.Direction = _facing;
 		bullet.Shooter = this;
-		bullet.Damage = GetAttackDamage();
+		bullet.Damage = isSecondary ? GetAttackDamageSecondary() : GetAttackDamage();
+
+		if (isSecondary)
+		{
+			bullet.Speed = SecondarySpeed;
+			bullet.Homing = SecondaryHoming;
+		}
+		// else: leave Speed/Homing at whatever Attack1.tscn has them set to
+
 		GetTree().CurrentScene.AddChild(bullet);
 		bullet.GlobalPosition = GlobalPosition;
 
-		await ToSignal(GetTree().CreateTimer(FireRate), SceneTreeTimer.SignalName.Timeout);
+		float rate = isSecondary ? FireRateSecondary : FireRate;
+		await ToSignal(GetTree().CreateTimer(rate), SceneTreeTimer.SignalName.Timeout);
 
 		if (!IsInstanceValid(this)) return;
-		_canShoot = true;
+
+		if (isSecondary)
+			_canShootSecondary = true;
+		else
+			_canShoot = true;
 	}
 }

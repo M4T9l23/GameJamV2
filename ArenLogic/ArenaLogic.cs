@@ -13,6 +13,7 @@ using System.Collections.Generic;
 //     +-- Respawn (Marker2D)     ... kam se Jane respawne po smrti
 //     +-- Exit (Marker2D)        ... kam Jane skončí, když arénu opustí
 //     +-- RewardPoint (Marker2D) ... kam spadne genom
+//     +-- Border (Node2D + ArenaBorder) ... svítící obrys, volitelný
 //     +-- Spawn1..N (Marker2D)   ... spawn pointy nepřátel
 //
 // Exit MUSÍ ležet mimo Region, jinak se aréna hned znovu aktivuje.
@@ -37,6 +38,8 @@ public partial class ArenaLogic : Node2D
 	[Export] public Marker2D DroidParkPoint;
 	[Export] public Marker2D RespawnPoint;
 	[Export] public Marker2D ExitPoint;
+	// Svítící obrys arény. Nechej prázdné - najde se Node2D "Border".
+	[Export] public ArenaBorder Border;
 
 	[ExportGroup("Spawn")]
 	[Export] public Godot.Collections.Array<PackedScene> EnemyScenes = new();
@@ -124,6 +127,7 @@ public partial class ArenaLogic : Node2D
 		RespawnPoint ??= GetNodeOrNull<Marker2D>("Respawn");
 		ExitPoint ??= GetNodeOrNull<Marker2D>("Exit");
 		RewardPoint ??= GetNodeOrNull<Marker2D>("RewardPoint");
+		Border ??= GetNodeOrNull<ArenaBorder>("Border");
 
 		if (SpawnPoints.Count == 0)
 		{
@@ -195,6 +199,8 @@ public partial class ArenaLogic : Node2D
 
 		GlobalSpawner?.SetPhysicsProcess(false);
 
+		Border?.SetActive(true);
+
 		Droid droid = GetDroid();
 		Vector2? park = DroidParkPoint?.GlobalPosition ?? Entrance?.GlobalPosition;
 
@@ -206,6 +212,9 @@ public partial class ArenaLogic : Node2D
 
 	private void TickScan(float dt, int enemyCount)
 	{
+		// Obrys pulzuje rychleji, když sken padá dolů.
+		Border?.SetAlert(enemyCount > 0);
+
 		float change = enemyCount == 0
 			? ScanRate
 			: -DrainPerEnemy * enemyCount;
@@ -224,6 +233,7 @@ public partial class ArenaLogic : Node2D
 		RemoveFromGroup("active_arena");
 
 		SetEntranceBlocked(false);
+		Border?.FlashComplete();
 
 		// Spawn se zastaví, ale nepřátelé, co zbyli, zůstanou - jinak to
 		// vypadá, jako bys je vypnul vypínačem.
@@ -418,6 +428,7 @@ public partial class ArenaLogic : Node2D
 		RemoveFromGroup("active_arena");
 
 		SetEntranceBlocked(false);
+		Border?.SetActive(false);
 
 		GlobalSpawner?.SetPhysicsProcess(true);
 

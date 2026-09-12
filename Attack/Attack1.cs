@@ -2,6 +2,17 @@ using Godot;
 
 public partial class Attack1 : Area2D
 {
+	// Which projectile this instance represents. The Player script sets this
+	// right after Instantiate(), before adding the bullet to the tree, so
+	// _Ready() below picks the correct animation.
+	public enum AttackKind
+	{
+		Fireball,
+		Waterball
+	}
+
+	[Export] public AttackKind Kind = AttackKind.Fireball;
+
 	[Export] public float Speed = 400f;
 	[Export] public int Damage = 1;
 	[Export] public bool Homing = true; // true = follows the enemy, false = aims once
@@ -11,10 +22,16 @@ public partial class Attack1 : Area2D
 	private bool _hasHit;
 	private bool _targetChosen;
 	private Node2D _target;
+	private AnimatedSprite2D _sprite;
 
 	public override void _Ready()
 	{
 		BodyEntered += OnBodyEntered;
+
+		// Both "fireball" and "waterball" animations live in the same
+		// SpriteFrames on this node, switch to whichever one this shot is.
+		_sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_sprite.Play(Kind == AttackKind.Fireball ? "fireball" : "waterball");
 
 		// clean up missed shots after 3 seconds
 		GetTree().CreateTimer(3.0).Timeout += () =>
