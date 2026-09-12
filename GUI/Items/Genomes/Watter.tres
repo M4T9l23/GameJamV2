@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Genome" format=3 uid="uid://cie2xv0ontwby"]
+
+[ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="1_sv5ct"]
+[ext_resource type="Script" uid="uid://bo8mkmj7tmra2" path="res://ArenLogic/Genome.cs" id="2_7lbrg"]
+
+[resource]
+script = ExtResource("2_7lbrg")
+metadata/_custom_type_script = "uid://bo8mkmj7tmra2"
