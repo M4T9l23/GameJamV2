@@ -49,12 +49,12 @@ public partial class DeathScreen : CanvasLayer
 		if (_isDeathMode)
 		{
 			if (_title != null) _title.Text = "[JaneSteel ~]$ Status: Dead";
-			_labels.AddRange(new[] { "Restart level", "Leave arena", "Credits", "Exit" });
+			_labels.AddRange(new[] { "Restart level", "Unstack", "Credits", "Exit" });
 		}
 		else
 		{
 			if (_title != null) _title.Text = "[JaneSteel ~]$ Status: Paused";
-			_labels.AddRange(new[] { "Resume", "Restart level", "Leave arena", "Exit" });
+			_labels.AddRange(new[] { "Resume", "Restart level", "Unstack", "Exit" });
 			GetTree().Paused = true;
 		}
 
@@ -127,9 +127,12 @@ public partial class DeathScreen : CanvasLayer
 				GetTree().ReloadCurrentScene();
 				break;
 
-			case "Leave arena":
-				GetTree().Paused = false;
-				GetTree().ChangeSceneToFile("res://Scenes/MainMenu.tscn");
+			case "Unstack":
+				if (GetTree().GetFirstNodeInGroup("player") is Player p)
+					p.Unstack();
+				else
+					GD.PushWarning("DeathScreen: zadny node ve skupine 'player'.");
+				Resume();
 				break;
 
 			case "Credits":

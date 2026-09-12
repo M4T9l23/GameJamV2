@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
@@ -6,6 +7,8 @@ public partial class Player : CharacterBody2D
 	// Vyletí, když Jane zkusí použít schopnost, kterou nemá odemčenou.
 	// Napoj si na to zvuk nebo hlášku v HUD.
 	[Signal] public delegate void AbilityBlockedEventHandler(string ability);
+	// Vyletí po úspěšném unstacku - navěš si na to zvuk / fade / hlášku.
+	[Signal] public delegate void UnstuckEventHandler(Vector2 position);
 	[Export] public int MaxHealth = 5;
 	[Export] public PackedScene BulletScene;
 	[Export] public float FireRate = 1.00f;
@@ -51,6 +54,19 @@ public partial class Player : CharacterBody2D
 	// Prodleva mezi použitími v sekundách.
 	[Export] public float HealCooldown = 8f;
 
+	[ExportGroup("Unstack")]
+	// Jak často se ukládá bezpečná pozice (v sekundách).
+	[Export] public float UnstackSampleInterval = 0.25f;
+	// Kolik vzorků se drží. 12 * 0.25 = tři sekundy historie. Vic = skok
+	// dal dozadu, ale taky vetsi sance, ze to Jane hodi pres pul areny.
+	[Export] public int UnstackHistorySize = 12;
+	// Jak daleko od sebe musi byt dva vzorky, aby se ten novy ulozil.
+	// Brani tomu, aby se buffer zaplnil dvanacti skoro shodnymi body,
+	// kdyz se Jane zasekne a jen se tam vrti o par pixelu.
+	[Export] public float UnstackMinSampleDistance = 24f;
+	// Prodleva mezi pouzitimi. Bez ni je unstack volny unik z obklici.
+	[Export] public float UnstackCooldown = 15f;
+
 	[ExportGroup("Zamky schopnosti")]
 	// Když je zapnuto, schopnost jde použít jen s odpovídajícím itemem
 	// v equipment slotu (tag "ability_fire" / "ability_water" /
@@ -69,6 +85,9 @@ public partial class Player : CharacterBody2D
 	public float StaminaMax => BaseStamina + Bonus("stamina");
 	public bool IsSprinting { get; private set; }
 
+	// Pro HUD: kdyz je false, unstack je na cooldownu.
+	public bool CanUnstack => _canUnstack;
+
 	private float _staminaIdle;
 
 	public int Health;
@@ -76,12 +95,20 @@ public partial class Player : CharacterBody2D
 	private bool _canShoot = true;
 	private bool _canShootSecondary = true;
 	private bool _canHeal = true;
+	private bool _canUnstack = true;
 	// Managed flag - da se cist i kdyz uz je nativni objekt uvolneny,
 	// na rozdil od cehokoliv, co sahne na strom nebo na nody.
 	private bool _exiting;
 	private bool _isDead;
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
+
+	// Kruhova historie bezpecnych pozic. Ukladaji se jen body, ve kterych
+	// se Jane opravdu hybala a do niceho nenarazila - takze pozice z
+	// okamziku, kdy uz byla zaseknuta, se sem nikdy nedostane.
+	private readonly Queue<Vector2> _safeSpots = new();
+	private Vector2 _spawnPoint;
+	private float _sampleTimer;
 
 	public override void _Ready()
 	{
@@ -91,6 +118,10 @@ public partial class Player : CharacterBody2D
 
 		Health = GetEffectiveMaxHealth();
 		Stamina = StaminaMax;
+
+		// Zachranna brzda pro pripad, ze je historie prazdna (Jane se
+		// zasekla driv, nez se stihl ulozit prvni vzorek).
+		_spawnPoint = GlobalPosition;
 
 		// Když si Jane sundá item s "maxhp", musíme HP doříznout na nové
 		// maximum - jinak by jí zůstalo víc, než smí mít.
@@ -174,7 +205,7 @@ public partial class Player : CharacterBody2D
 		if (_animatedSprite.Animation == AttackAnim)
 			_isAttacking = false;
 	}
-	
+
 
 	private void Die()
 	{
@@ -191,6 +222,114 @@ public partial class Player : CharacterBody2D
 		GetTree().CurrentScene.AddChild(screen);
 	}
 
+	// --- unstack ---------------------------------------------------------
+
+	// Ulozi aktualni pozici jako bezpecnou, pokud splnuje podminky.
+	// Vola se z _PhysicsProcess az PO MoveAndSlide(), aby uz byly zname
+	// kolize z tohohle framu.
+	private void SampleSafeSpot(float dt, Vector2 input)
+	{
+		_sampleTimer += dt;
+
+		if (_sampleTimer < UnstackSampleInterval)
+			return;
+
+		_sampleTimer = 0f;
+
+		// Zadny vstup = Jane stoji, nic zajimaveho k ulozeni.
+		if (input == Vector2.Zero)
+			return;
+
+		// Tohle je jadro cele veci: kdyz se Jane o neco otira, pozice je
+		// podezrela a neulozi se. Zaseknuty stav tim padem nikdy neskonci
+		// v historii a unstack ma vzdycky kam skocit.
+		if (GetSlideCollisionCount() > 0)
+			return;
+
+		// Drzela klavesu, ale nehnula se? Taky zasek (nebo naraz do zdi
+		// presne v ose, kde MoveAndSlide nenahlasi skluz).
+		if (Velocity.Length() < 1f)
+			return;
+
+		if (_safeSpots.Count > 0)
+		{
+			Vector2 last = LastSafeSpot();
+
+			if (GlobalPosition.DistanceTo(last) < UnstackMinSampleDistance)
+				return;
+		}
+
+		_safeSpots.Enqueue(GlobalPosition);
+
+		while (_safeSpots.Count > Mathf.Max(1, UnstackHistorySize))
+			_safeSpots.Dequeue();
+	}
+
+	private Vector2 LastSafeSpot()
+	{
+		Vector2 last = _spawnPoint;
+
+		foreach (Vector2 spot in _safeSpots)
+			last = spot;
+
+		return last;
+	}
+
+	// Vytahne Jane ze zaseku: skoci na nejstarsi zapamatovanou bezpecnou
+	// pozici (tedy cca UnstackHistorySize * UnstackSampleInterval sekund
+	// zpatky), vynuluje rychlost a vycisti historii, aby se nedalo
+	// spamovat porad do stejneho spatneho framu.
+	//
+	// Kdyz je Jane mrtva, unstack ji zaroven oziví - v death menu je to
+	// alternativa k restartu celeho levelu.
+	public void Unstack()
+	{
+		if (_exiting || !IsInstanceValid(this))
+			return;
+
+		if (!_canUnstack && !_isDead)
+		{
+			GD.Print("Player: unstack je na cooldownu.");
+			return;
+		}
+
+		Vector2 target = _safeSpots.Count > 0 ? _safeSpots.Peek() : _spawnPoint;
+
+		_safeSpots.Clear();
+		_sampleTimer = 0f;
+
+		if (_isDead)
+		{
+			// RespawnAt resetuje HP, staminu i _isDead a zase zapne
+			// fyziku, kterou Die() vypnul.
+			RespawnAt(target, 0);
+		}
+		else
+		{
+			GlobalPosition = target;
+			Velocity = Vector2.Zero;
+			StartUnstackCooldown();
+		}
+
+		GD.Print($"Player unstuck -> {target}");
+		EmitSignal(SignalName.Unstuck, target);
+	}
+
+	private async void StartUnstackCooldown()
+	{
+		if (UnstackCooldown <= 0f)
+			return;
+
+		_canUnstack = false;
+
+		await ToSignal(GetTree().CreateTimer(UnstackCooldown), SceneTreeTimer.SignalName.Timeout);
+
+		if (!_exiting && IsInstanceValid(this))
+			_canUnstack = true;
+	}
+
+	// ---------------------------------------------------------------------
+
 	// Volá ArenaLogic při respawnu nebo opuštění arény.
 	// health <= 0 znamená plné HP.
 	public void RespawnAt(Vector2 position, int health)
@@ -205,7 +344,14 @@ public partial class Player : CharacterBody2D
 		_canShoot = true;
 		_canShootSecondary = true;
 		_canHeal = true;
+		_canUnstack = true;
 		_isAttacking = false;
+
+		// Historie z minuleho zivota uz neplati - nova pozice je novy
+		// zachytny bod.
+		_safeSpots.Clear();
+		_sampleTimer = 0f;
+		_spawnPoint = position;
 
 		SetPhysicsProcess(true);   // Die() ho vypnul
 
@@ -278,8 +424,11 @@ public partial class Player : CharacterBody2D
 		// Attack animace má přednost před idle/move
 		if (!_isAttacking)
 			_animatedSprite.Play(input != Vector2.Zero ? MoveAnim : IdleAnim);
-			
+
 		MoveAndSlide();
+
+		// Az tady - GetSlideCollisionCount() ma smysl jen po MoveAndSlide().
+		SampleSafeSpot((float)delta, input);
 
 		// Zámky se kontrolují až tady, ne uvnitř Shoot() - jinak by se
 		// spustila attack animace a spálil cooldown i pro zablokovaný útok.
@@ -442,4 +591,4 @@ public partial class Player : CharacterBody2D
 
 		GD.Print($"Strela vyrobena: {kind}, dmg {bullet.Damage}");
 	}
-}
+};

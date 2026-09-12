@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://3mlf876ra6x" path="res://Assets/Music/freesound_community-single-mosquito-buzz-69360.mp3" id="3_hqw5c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
-size = Vector2(15, 15)
+size = Vector2(25, 49)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_erxgo"]
 atlas = ExtResource("2_oesri")
@@ -101,10 +101,11 @@ Health = 2
 Speed = 200.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
-visible = false
+position = Vector2(3.5, -11.5)
 shape = SubResource("RectangleShape2D_4np7o")
 
 [node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=1701339122]
+visible = false
 offset_left = -7.000003
 offset_top = -7.0
 offset_right = 32.999996
@@ -116,10 +117,7 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(-2, -3.0000002)
 scale = Vector2(0.18819445, 0.18472223)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
-animation = &"death_animation"
 autoplay = "default"
-frame = 3
-frame_progress = 1.0
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1230329637]
 position = Vector2(1, 0)
