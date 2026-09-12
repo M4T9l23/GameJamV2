@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://cs1wjac4xdv8j"]
 
-[ext_resource type="Texture2D" uid="uid://rmk6vicj4ii2" path="res://Assets/Sprites/player_sprite_test.png" id="1_3425d"]
 [ext_resource type="Script" uid="uid://bia5411sh8s0k" path="res://GUI/Inventory.cs" id="1_fp6ph"]
 [ext_resource type="Script" uid="uid://deum3idkwccxu" path="res://GUI/ItemSlot.cs" id="1_gmbn6"]
 
@@ -35,8 +34,9 @@ columns = 7
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 script = ExtResource("1_gmbn6")
+IsEquipmentSlot = true
 
-[node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot" unique_id=1000217180]
+[node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot" unique_id=2133456412]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +47,6 @@ offset_right = -18.0
 offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_3425d")
 expand_mode = 1
 stretch_mode = 5
 
@@ -55,6 +54,7 @@ stretch_mode = 5
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 script = ExtResource("1_gmbn6")
+IsEquipmentSlot = true
 
 [node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot2" unique_id=2004864784]
 layout_mode = 1
@@ -67,7 +67,6 @@ offset_right = -18.0
 offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_3425d")
 expand_mode = 1
 stretch_mode = 5
 
@@ -75,6 +74,7 @@ stretch_mode = 5
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 script = ExtResource("1_gmbn6")
+IsEquipmentSlot = true
 
 [node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot3" unique_id=428123292]
 layout_mode = 1
@@ -94,6 +94,7 @@ stretch_mode = 5
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 script = ExtResource("1_gmbn6")
+IsEquipmentSlot = true
 
 [node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot4" unique_id=1333801419]
 layout_mode = 1
@@ -113,6 +114,7 @@ stretch_mode = 5
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 script = ExtResource("1_gmbn6")
+IsEquipmentSlot = true
 
 [node name="Icon" type="TextureRect" parent="Inventory/MarginContainer/GridContainer/Itemslot5" unique_id=1234698036]
 layout_mode = 1

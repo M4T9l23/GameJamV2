@@ -2,57 +2,57 @@ using Godot;
 
 public partial class EnemySpawner : Node2D
 {
-    [Export] public PackedScene EnemyScene;
-    [Export] public float SpawnInterval = 3f;
-    [Export] public float SpawnDistance = 600f;
-    [Export] public int MaxEnemies = 15;
+	[Export] public PackedScene EnemyScene;
+	[Export] public float SpawnInterval = 3f;
+	[Export] public float SpawnDistance = 600f;
+	[Export] public int MaxEnemies = 15;
 
 
-    private float _timer;
+	private float _timer;
 
-    public override void _Ready()
-    {
-        GD.Print("Spawner: ready");
-    }
-    
-    public override void _Process(double delta)
-    {
-        _timer -= (float)delta;
-        if (_timer > 0)
-            return;
+	public override void _Ready()
+	{
+		GD.Print("Spawner: ready");
+	}
+	
+	public override void _Process(double delta)
+	{
+		_timer -= (float)delta;
+		if (_timer > 0)
+			return;
 
-        _timer = SpawnInterval;
+		_timer = SpawnInterval;
 
-        // Don't spawn if we're already at the cap
-        if (GetTree().GetNodesInGroup("enemies").Count >= MaxEnemies)
-            return;
+		// Don't spawn if we're already at the cap
+		if (GetTree().GetNodesInGroup("enemies").Count >= MaxEnemies)
+			return;
 
-        SpawnEnemy();
-    }
+		SpawnEnemy();
+	}
 
-    private void SpawnEnemy()
-    {
-        var player = GetTree().GetFirstNodeInGroup("player") as Node2D;
-        if (player == null)
-        {
-            GD.Print("Spawner: no player found in group 'player'");
-            return;
-        }
+	private void SpawnEnemy()
+	{
+		var player = GetTree().GetFirstNodeInGroup("player") as Node2D;
+		if (player == null)
+		{
+			GD.Print("Spawner: no player found in group 'player'");
+			return;
+		}
 
-        if (EnemyScene == null)
-        {
-            GD.Print("Spawner: EnemyScene is not assigned");
-            return;
-        }
+		if (EnemyScene == null)
+		{
+			GD.Print("Spawner: EnemyScene is not assigned");
+			return;
+		}
 
-        var enemy = EnemyScene.Instantiate<Node2D>();
-        AddChild(enemy);
+		var enemy = EnemyScene.Instantiate<Node2D>();
+		AddChild(enemy);
 
-        Vector2 offset = Vector2.Right.Rotated(GD.Randf() * Mathf.Tau) * SpawnDistance;
-        enemy.GlobalPosition = player.GlobalPosition + offset;
+		Vector2 offset = Vector2.Right.Rotated(GD.Randf() * Mathf.Tau) * SpawnDistance;
+		enemy.GlobalPosition = player.GlobalPosition + offset;
 
-        if (enemy.GetChildCount() > 15)
-        {
-        }
-    }
+		if (enemy.GetChildCount() > 15)
+		{
+		}
+	}
 }
