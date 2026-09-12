@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cji4ofnhn8eb5"]
+
+[ext_resource type="Texture2D" uid="uid://ce0ukw26xdb7y" path="res://Assets/Sprites/HP.png" id="1_2syjc"]
+[ext_resource type="Script" uid="uid://cnpdgysf32ska" path="res://Player/HP.cs" id="2_i733u"]
+
+[node name="HP" type="Node2D" unique_id=2011219489]
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=808893351]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=188782857]
+texture = ExtResource("1_2syjc")
+vframes = 5
+frame = 2
+region_enabled = true
+region_rect = Rect2(0, 0, 119, 876.89685)
+script = ExtResource("2_i733u")

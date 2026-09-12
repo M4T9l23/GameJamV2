@@ -28,13 +28,19 @@ public partial class Player : CharacterBody2D
         if (Health <= 0)
             Die();
     }
-    
+    [Export] private PackedScene _deathScreenScene;
+    private bool _isDead = false;
+
     private void Die()
     {
-        GD.Print("Player died");
-        GetTree().ReloadCurrentScene(); // restart the level for now
+        
+        if (_isDead) return;
+        _isDead = true;
+        
+        GD.Print("Player died");    
+        var screen = _deathScreenScene.Instantiate();
+        GetTree().CurrentScene.AddChild(screen);
     }
-    
     public override void _PhysicsProcess(double delta)
     {
         Vector2 input = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
