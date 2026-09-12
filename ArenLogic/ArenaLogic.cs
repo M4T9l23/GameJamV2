@@ -17,6 +17,10 @@ using System.Collections.Generic;
 //     +-- Spawn1..N (Marker2D)   ... spawn pointy nepřátel
 //
 // Exit MUSÍ ležet mimo Region, jinak se aréna hned znovu aktivuje.
+//
+// Aréna se dá projít opakovaně: spustí se pokaždé, když do ní Jane vejde
+// a odměna nikde neexistuje - nemá ji v inventáři ani neleží na zemi.
+// Když ji ztratí nebo zahodí, aréna se odemkne sama.
 public partial class ArenaLogic : Node2D
 {
 	public enum ArenaState { Idle, Scanning, Done }
@@ -28,6 +32,9 @@ public partial class ArenaLogic : Node2D
 	[Export] public PackedScene WorldItemScene;
 	// Když už Jane tenhle item má, defaultně nepadne nic.
 	[Export] public bool DropEvenIfOwned = false;
+	// Počítat i odměnu ležící na zemi jako "Jane ji má". Vypni, jestli
+	// se má aréna dát projít znovu i když jen zapomněla item sebrat.
+	[Export] public bool CheckWorldItems = true;
 
 	[ExportGroup("Prostor")]
 	[Export] public Area2D Region;
@@ -67,6 +74,7 @@ public partial class ArenaLogic : Node2D
 	private float _spawnTimer;
 	private Droid _droid;
 	private CollisionShape2D _entranceShape;
+	private string _blockReason;
 	private bool _entranceBlocked;
 
 	// Nepřátelé, které tahle aréna spawnla. Používá se jen na úklid - počítání
@@ -205,7 +213,7 @@ public partial class ArenaLogic : Node2D
 		switch (CurrentState)
 		{
 			case ArenaState.Idle:
-				if (playerInside)
+				if (playerInside && ShouldActivate())
 					Activate();
 				break;
 
@@ -214,10 +222,74 @@ public partial class ArenaLogic : Node2D
 				TickScan(dt, enemyCount);
 				TickSpawn(dt, enemyCount);
 				break;
+
+			case ArenaState.Done:
+				// Zpet do Idle az kdyz Jane odejde. Bez toho by se arena
+				// spustila znovu hned, protoze odmena lezi na zemi a ona
+				// ji jeste nema v inventari.
+				if (!playerInside)
+				{
+					CurrentState = ArenaState.Idle;
+					GD.Print($"Arena '{Name}': Jane odesla, arena je pripravena.");
+				}
+				break;
 		}
 	}
 
 	// --- aktivace a dokončení -------------------------------------------
+
+	// Má smysl arénu (znovu) spustit? Ne, když odměna už existuje - buď
+	// ji Jane drží, nebo leží někde ve světě. Když o ni přijde, aréna
+	// se odemkne a dá se projít znovu.
+	private bool ShouldActivate()
+	{
+		if (Reward == null || DropEvenIfOwned)
+			return true;
+
+		if (PlayerAlreadyHas(Reward))
+			return LogBlocked($"Jane uz ma '{Reward.DisplayName}' v inventari");
+
+		if (CheckWorldItems)
+		{
+			WorldItem lying = FindRewardInWorld();
+			if (lying != null)
+				return LogBlocked($"'{Reward.DisplayName}' lezi ve svete jako '{lying.Name}' " +
+					$"na {lying.GlobalPosition}. Vypni CheckWorldItems, jestli to vadi.");
+		}
+
+		_blockReason = null;
+		return true;
+	}
+
+	// Vypíše důvod jen při změně, ne každý frame.
+	private bool LogBlocked(string reason)
+	{
+		if (_blockReason != reason)
+		{
+			_blockReason = reason;
+			GD.Print($"Arena '{Name}': nespoustim se - {reason}.");
+		}
+
+		return false;
+	}
+
+	// Vrátí WorldItem s odměnou, pokud nějaký ve scéně leží.
+	private WorldItem FindRewardInWorld()
+	{
+		Node scene = GetTree().CurrentScene;
+		if (scene == null)
+			return null;
+
+		foreach (Node node in scene.GetChildren())
+		{
+			if (node is WorldItem pickup && pickup.GetItem()?.Id == Reward.Id)
+				return pickup;
+		}
+
+		return null;
+	}
+
+
 
 	private void Activate()
 	{
