@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpoxy16cqtgbe"
-path="res://.godot/imported/Asphalt_lines.png-c917a80ad11373c480202525a363e531.ctex"
+uid="uid://beqlbtru52kaf"
+path="res://.godot/imported/Trava.png-c817eccbafd771c4dce5bc5d9a082205.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Asphalt_lines.png"
-dest_files=["res://.godot/imported/Asphalt_lines.png-c917a80ad11373c480202525a363e531.ctex"]
+source_file="res://Assets/Sprites/tiles/Trava.png"
+dest_files=["res://.godot/imported/Trava.png-c817eccbafd771c4dce5bc5d9a082205.ctex"]
 
 [params]
 

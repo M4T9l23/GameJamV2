@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qlaj3rtr4q54"
-path="res://.godot/imported/Dead_eye_man.png-dc34758dcda1a6a59d0f526555f47885.ctex"
+uid="uid://b1m1tscksgnyb"
+path="res://.godot/imported/Asphalt_lines_horisontal.png-c05a8e1b48f2bc0b6cbb8bf01dfaa423.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Dead_eye_man.png"
-dest_files=["res://.godot/imported/Dead_eye_man.png-dc34758dcda1a6a59d0f526555f47885.ctex"]
+source_file="res://Assets/Sprites/tiles/Asphalt_lines_horisontal.png"
+dest_files=["res://.godot/imported/Asphalt_lines_horisontal.png-c05a8e1b48f2bc0b6cbb8bf01dfaa423.ctex"]
 
 [params]
 

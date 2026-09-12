@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3r6rvg6h1r7e"
-path="res://.godot/imported/LU.png-ce8e7ad942d6bb6a67cf426d5f99b48a.ctex"
+uid="uid://qlaj3rtr4q54"
+path="res://.godot/imported/Dead_eye_man.png-ad6a59fd16701e2068d2637c3043658a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/LU.png"
-dest_files=["res://.godot/imported/LU.png-ce8e7ad942d6bb6a67cf426d5f99b48a.ctex"]
+source_file="res://Assets/Sprites/sprite_sheets/Dead_eye_man.png"
+dest_files=["res://.godot/imported/Dead_eye_man.png-ad6a59fd16701e2068d2637c3043658a.ctex"]
 
 [params]
 

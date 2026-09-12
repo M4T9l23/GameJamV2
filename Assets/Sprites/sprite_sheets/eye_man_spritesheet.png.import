@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2gybhvg3bvr3"
-path="res://.godot/imported/eye_man_spritesheet.png-070f7f0f1826a5a6f89a08c3ae58e602.ctex"
+path="res://.godot/imported/eye_man_spritesheet.png-150ccfaa7b9ac3b45415d15584a1f165.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/eye_man_spritesheet.png"
-dest_files=["res://.godot/imported/eye_man_spritesheet.png-070f7f0f1826a5a6f89a08c3ae58e602.ctex"]
+source_file="res://Assets/Sprites/sprite_sheets/eye_man_spritesheet.png"
+dest_files=["res://.godot/imported/eye_man_spritesheet.png-150ccfaa7b9ac3b45415d15584a1f165.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jo70k2dkontu"
-path="res://.godot/imported/T1.png-79879794603c58adaa06188c5a257760.ctex"
+uid="uid://2lhjhlpuhid"
+path="res://.godot/imported/Asphalt.png-c044fbdb27cf6ae953297a72f02c9433.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/T1.png"
-dest_files=["res://.godot/imported/T1.png-79879794603c58adaa06188c5a257760.ctex"]
+source_file="res://Assets/Sprites/tiles/Asphalt.png"
+dest_files=["res://.godot/imported/Asphalt.png-c044fbdb27cf6ae953297a72f02c9433.ctex"]
 
 [params]
 

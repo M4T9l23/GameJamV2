@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5vemat1qlypa"
-path="res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"
+uid="uid://b12bl8wx0vnt1"
+path="res://.godot/imported/Water1.png-600013501ed973724d5b88da48d3aba5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Animace_astronauta_revamp.png"
-dest_files=["res://.godot/imported/Animace_astronauta_revamp.png-1aad1df06713c21d63f95bcb5771f76a.ctex"]
+source_file="res://Assets/Sprites/Water1.png"
+dest_files=["res://.godot/imported/Water1.png-600013501ed973724d5b88da48d3aba5.ctex"]
 
 [params]
 

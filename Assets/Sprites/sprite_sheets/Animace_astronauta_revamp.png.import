@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhksdwoqmdnj1"
-path="res://.godot/imported/LD.png-e0eeefb1a25a4639a2ea183f3114859f.ctex"
+uid="uid://b5vemat1qlypa"
+path="res://.godot/imported/Animace_astronauta_revamp.png-b956215754db4cc852284bcccb0b2048.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/LD.png"
-dest_files=["res://.godot/imported/LD.png-e0eeefb1a25a4639a2ea183f3114859f.ctex"]
+source_file="res://Assets/Sprites/sprite_sheets/Animace_astronauta_revamp.png"
+dest_files=["res://.godot/imported/Animace_astronauta_revamp.png-b956215754db4cc852284bcccb0b2048.ctex"]
 
 [params]
 

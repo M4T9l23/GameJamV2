@@ -1,18 +1,15 @@
 [gd_scene format=3 uid="uid://bcrlhq3ppubhr"]
 
-[ext_resource type="Script" uid="uid://bgw8fwiyeb6eb" path="res://Enemy/Enemy2/Enemy2.cs" id="1_w1xm3"]
+[ext_resource type="Script" uid="uid://bgw8fwiyeb6eb" path="res://Enemy/Enemy3_frog/Enemy3.cs" id="1_s0rsv"]
+[ext_resource type="Texture2D" uid="uid://cl2cd1o6u2w7s" path="res://Assets/Sprites/frog_placeholder.png" id="2_xl4gw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=106441782]
-collision_layer = 3
-collision_mask = 3
-platform_floor_layers = 4294967055
-platform_wall_layers = 15
-script = ExtResource("1_w1xm3")
-Health = 2
-Speed = 200.0
+platform_floor_layers = 4294967047
+platform_wall_layers = 7
+script = ExtResource("1_s0rsv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
 shape = SubResource("RectangleShape2D_4np7o")
@@ -23,3 +20,8 @@ offset_top = -7.0
 offset_right = 32.999996
 offset_bottom = 33.0
 scale = Vector2(0.35782865, 0.35942712)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1458304712]
+position = Vector2(-3.000002, -9.536743e-07)
+scale = Vector2(0.042391304, 0.04192387)
+texture = ExtResource("2_xl4gw")
