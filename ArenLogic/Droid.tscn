@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://2teh0kiftjcb"]
+[gd_scene format=3 uid="uid://c4dcomkaq5r6f"]
 
 [ext_resource type="Script" uid="uid://5apkfccqp511" path="res://ArenLogic/Droid.cs" id="1_droid"]
 [ext_resource type="Texture2D" uid="uid://yvo1j1wexooy" path="res://Assets/Sprites/Egg.png" id="2_wurjk"]
@@ -39,8 +39,11 @@ animations = [{
 "speed": 7.0
 }]
 
-[node name="Droid" type="Node2D" unique_id=643107466 node_paths=PackedStringArray("ScanBar")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5nal"]
+
+[node name="Droid" type="AnimatableBody2D" unique_id=1296388702 node_paths=PackedStringArray("ScanBar")]
 script = ExtResource("1_droid")
+FollowDistance = 200.0
 ScanBar = NodePath("ScanBar")
 
 [node name="Body" type="ColorRect" parent="." unique_id=11451987]
@@ -63,3 +66,8 @@ scale = Vector2(0.15138891, 0.13935183)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
 frame_progress = 0.5879919
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1888060318]
+position = Vector2(0, 2)
+scale = Vector2(4, 3.8399997)
+shape = SubResource("CircleShape2D_v5nal")
