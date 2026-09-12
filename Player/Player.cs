@@ -2,6 +2,8 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
+	[Signal] public delegate void HealthChangedEventHandler(int currentHealth, int maxHealth);
+	
 	[Export] public int MaxHealth = 5;
 	[Export] public PackedScene BulletScene;
 	[Export] public float FireRate = 1.00f;
@@ -24,6 +26,8 @@ public partial class Player : CharacterBody2D
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		Health = MaxHealth;
 		AddToGroup("player");
+		// Notify listeners of initial health
+		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 	}
 
 	public void TakeDamage(int amount)
@@ -32,7 +36,8 @@ public partial class Player : CharacterBody2D
 
 		Health -= amount;
 		GD.Print($"Player HP: {Health}/{MaxHealth}");
-
+		// Emit updated health
+		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 		if (Health <= 0)
 			Die();
 	}
@@ -60,7 +65,8 @@ public partial class Player : CharacterBody2D
 		Health = health > 0 ? Mathf.Min(health, MaxHealth) : MaxHealth;
 		_isDead = false;
 		_canShoot = true;
-
+		// Emit updated health on respawn
+		EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
 		GD.Print($"Player respawned, HP: {Health}/{MaxHealth}");
 	}
 
