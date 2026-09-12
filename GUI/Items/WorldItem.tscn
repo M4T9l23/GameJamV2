@@ -1,15 +1,18 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://d2p2s1eaw2b38"]
 
-[ext_resource type="Script" path="res://GUI/Items/WorldItem.cs" id="1"]
+[ext_resource type="Script" uid="uid://cidoavl7cavoy" path="res://GUI/Items/WorldItem.cs" id="1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
 radius = 16.0
 
-[node name="WorldItem" type="Area2D"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hyiav"]
+load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
+
+[node name="WorldItem" type="Area2D" unique_id=13913295]
 script = ExtResource("1")
-input_pickable = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=274226263]
 shape = SubResource("CircleShape2D_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=871477920]
+texture = SubResource("CompressedTexture2D_hyiav")

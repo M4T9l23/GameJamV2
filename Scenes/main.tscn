@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
-[ext_resource type="PackedScene" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
+[ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="6_6bp64"]
 [ext_resource type="PackedScene" uid="uid://bbo35pwjheaf3" path="res://Enemy/Enemy2/enemy_2.tscn" id="6_pdsj5"]
+[ext_resource type="Resource" uid="uid://dt61peydl5j78" path="res://GUI/Items/Speed.tres" id="7_344ge"]
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/tiles/Asphalt.png" id="7_hptm8"]
 [ext_resource type="Texture2D" uid="uid://hkta2s33tb1i" path="res://Assets/Sprites/tiles/Asphalt_cross.png" id="8_d1ilt"]
 [ext_resource type="Texture2D" uid="uid://dpoxy16cqtgbe" path="res://Assets/Sprites/tiles/Asphalt_lines.png" id="9_6iyac"]
@@ -25,6 +26,7 @@
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("2_8gbba")
+Interval = 5.0
 MaxAlive = 3
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
@@ -131,6 +133,10 @@ size = Vector2(39, 1995)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
+[node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
+position = Vector2(-146, -112)
+InitialItem = ExtResource("7_344ge")
+
 [node name="Node2D" parent="." unique_id=588614674 instance=ExtResource("5_kry3j")]
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
@@ -159,11 +165,9 @@ position = Vector2(231.00003, 92.00001)
 rotation = -1.5477359
 scale = Vector2(0.4, 0.386)
 
-[node name="SpeedBoost" parent="." unique_id=1519125267 instance=ExtResource("6_6bp64")]
-position = Vector2(-146, -112)
-
 [node name="SpeedBoost2" parent="." unique_id=468350600 instance=ExtResource("6_6bp64")]
 position = Vector2(114, -201)
+InitialItem = ExtResource("7_344ge")
 
 [node name="TileMap" type="TileMap" parent="." unique_id=978513498]
 z_index = -1

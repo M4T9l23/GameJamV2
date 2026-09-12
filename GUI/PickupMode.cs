@@ -91,4 +91,12 @@ public partial class PickupMode : Node
 
 		Input.SetCustomMouseCursor(tex, Input.CursorShape.Arrow, hotspot);
 	}
+	public override void _Process(double delta)
+	{
+		if (!Active)
+			return;
+
+		Control hovered = GetViewport().GuiGetHoveredControl();
+		GD.Print(hovered == null ? "hovered: <none>" : $"hovered: {hovered.GetPath()}");
+	}
 }
