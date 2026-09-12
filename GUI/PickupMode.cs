@@ -91,12 +91,26 @@ public partial class PickupMode : Node
 
 		Input.SetCustomMouseCursor(tex, Input.CursorShape.Arrow, hotspot);
 	}
+	// Ladici vypis toho, nad cim je mys. Bezel kazdy frame a zaplavil
+	// konzoli tak, ze v ni nebylo videt nic jineho. Zapnout jen kdyz je
+	// potreba ladit drag & drop.
+	[Export] public bool DebugHover = false;
+
 	public override void _Process(double delta)
 	{
-		if (!Active)
+		if (!Active || !DebugHover)
 			return;
 
 		Control hovered = GetViewport().GuiGetHoveredControl();
-		GD.Print(hovered == null ? "hovered: <none>" : $"hovered: {hovered.GetPath()}");
+		string path = hovered == null ? "<none>" : hovered.GetPath().ToString();
+
+		// Vypsat jen pri zmene, ne kazdy frame.
+		if (path == _lastHovered)
+			return;
+
+		_lastHovered = path;
+		GD.Print($"hovered: {path}");
 	}
+
+	private string _lastHovered = "";
 }

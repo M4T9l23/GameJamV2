@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://3bb3qkheio60"]
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="1_ptfg5"]
+[ext_resource type="Resource" path="res://GUI/Items/Abilities/Fireball.tres" id="2_2daye"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
@@ -30,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -339,9 +341,13 @@ size = Vector2(160, 40)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
+[node name="WorldItem" parent="." unique_id=13913295 instance=ExtResource("1_ptfg5")]
+position = Vector2(126, -479)
+InitialItem = ExtResource("2_2daye")
+
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
-Entries = Array[ExtResource("2_h1bgf")]([SubResource("Resource_hibaj"), SubResource("Resource_3w5oe"), SubResource("Resource_pdsj5")])
+Entries = [SubResource("Resource_hibaj"), SubResource("Resource_3w5oe"), SubResource("Resource_pdsj5")]
 FloorMap = NodePath("../TileMap")
 
 [node name="CharacterBody2D" parent="." unique_id=1439360079 instance=ExtResource("2_bo1nx")]
@@ -349,8 +355,6 @@ z_index = 1
 position = Vector2(-112, -380.00006)
 scale = Vector2(0.4, 0.386)
 collision_layer = 2
-BaseDamageSecondary = 1
-SecondarySpeed = 300.0
 
 [node name="Wall1" parent="." unique_id=234318673 instance=ExtResource("4_jjvhh")]
 z_index = 1

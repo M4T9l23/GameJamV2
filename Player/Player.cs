@@ -76,10 +76,12 @@ public partial class Player : CharacterBody2D
 	private bool _canShoot = true;
 	private bool _canShootSecondary = true;
 	private bool _canHeal = true;
+	// Managed flag - da se cist i kdyz uz je nativni objekt uvolneny,
+	// na rozdil od cehokoliv, co sahne na strom nebo na nody.
+	private bool _exiting;
 	private bool _isDead;
 	private bool _isAttacking;
 	private AnimatedSprite2D _animatedSprite;
-	private AudioStreamPlayer2D _musicPlayer;
 
 	public override void _Ready()
 	{
@@ -102,11 +104,24 @@ public partial class Player : CharacterBody2D
 		GD.Print($"Player: zamky schopnosti -> fire={CanCastFire}, water={CanCastWater}, " +
 			$"sprint={CanSprint}, heal={CanHeal} (Require: {RequireFireItem}/{RequireWaterItem}/" +
 			$"{RequireSprintItem}/{RequireHealItem})");
-		_musicPlayer = GetNode<AudioStreamPlayer2D>("../LevelMusic");
+	}
+
+	// Autoload prezije reload sceny, Jane ne. Bez odhlaseni by si drzel
+	// odkaz na kazdou mrtvou Jane a pri kazde zmene bonusu je vsechny
+	// zavolal -> ObjectDisposedException.
+	public override void _ExitTree()
+	{
+		_exiting = true;
+
+		if (PlayerEquipmentBonuses.Instance != null)
+			PlayerEquipmentBonuses.Instance.BonusesChanged -= OnBonusesChanged;
 	}
 
 	private void OnBonusesChanged()
 	{
+		if (_exiting)
+			return;
+
 		int max = GetEffectiveMaxHealth();
 
 		if (Health > max)
@@ -152,12 +167,6 @@ public partial class Player : CharacterBody2D
 
 		if (Health <= 0)
 			Die();
-		// 1. Get the LevelMusic node. 
-		// Since LevelMusic and CharacterBody2D are both direct children of 'main', we use "../LevelMusic"
-		AudioStreamPlayer musicPlayer = GetNode<AudioStreamPlayer>("../LevelMusic");
-        
-		// 2. Stop the music
-		musicPlayer.Stop();
 	}
 
 	private void OnAnimationFinished()
@@ -180,7 +189,6 @@ public partial class Player : CharacterBody2D
 		var screen = _deathScreenScene.Instantiate<DeathScreen>();
 		screen.Setup(true);
 		GetTree().CurrentScene.AddChild(screen);
-		_musicPlayer?.Stop();
 	}
 
 	// Volá ArenaLogic při respawnu nebo opuštění arény.
@@ -276,12 +284,20 @@ public partial class Player : CharacterBody2D
 		// Zámky se kontrolují až tady, ne uvnitř Shoot() - jinak by se
 		// spustila attack animace a spálil cooldown i pro zablokovaný útok.
 		if (Input.IsActionJustPressed("shoot") && !CanCastFire)
+		{
+			GD.Print($"BLOK fire: ability_fire={Bonus("ability_fire")}, Require={RequireFireItem}");
+			DumpInventory();
 			EmitSignal(SignalName.AbilityBlocked, "fire");
+		}
 		else if (Input.IsActionPressed("shoot") && _canShoot && CanCastFire)
 			Shoot(Attack1.AttackKind.Fireball);
 
 		if (Input.IsActionJustPressed("shoot_secondary") && !CanCastWater)
+		{
+			GD.Print($"BLOK water: ability_water={Bonus("ability_water")}, Require={RequireWaterItem}");
+			DumpInventory();
 			EmitSignal(SignalName.AbilityBlocked, "water");
+		}
 		else if (Input.IsActionPressed("shoot_secondary") && _canShootSecondary && CanCastWater)
 			Shoot(Attack1.AttackKind.Waterball);
 	}
@@ -324,6 +340,27 @@ public partial class Player : CharacterBody2D
 
 	// Doplní HP a nastartuje cooldown. Když je Jane na plných, použití
 	// se nespotřebuje - jinak by se dal lék omylem vyplýtvat.
+	// Ladici vypis: co je opravdu ve slotech a jake to ma tagy.
+	private void DumpInventory()
+	{
+		if (GetTree().GetFirstNodeInGroup("inventory") is not Inventory inv)
+		{
+			GD.Print("  inventar: NENALEZEN (grupa 'inventory')");
+			return;
+		}
+
+		int i = 0;
+		foreach (ItemSlot slot in inv.GetSlots())
+		{
+			Item it = slot.GetItem();
+			string tags = it?.Tags == null || it.Tags.Length == 0
+				? "ZADNE TAGY"
+				: string.Join(" | ", it.Tags);
+
+			GD.Print($"  slot {i++}: {(it == null ? "prazdny" : $"'{it.DisplayName}' [{tags}]")}");
+		}
+	}
+
 	private async void Heal()
 	{
 		int max = GetEffectiveMaxHealth();
@@ -342,7 +379,7 @@ public partial class Player : CharacterBody2D
 
 		await ToSignal(GetTree().CreateTimer(HealCooldown), SceneTreeTimer.SignalName.Timeout);
 
-		if (IsInstanceValid(this))
+		if (!_exiting && IsInstanceValid(this))
 			_canHeal = true;
 	}
 
@@ -358,6 +395,34 @@ public partial class Player : CharacterBody2D
 		_isAttacking = true;
 		_animatedSprite.Frame = 0;
 		_animatedSprite.Play(AttackAnim);
+
+		// Kdyz tady cokoliv spadne, _canShoot uz by se nikdy nevratilo na
+		// true a strelba by tise umrela. Radsi to chytit a nahlasit.
+		try
+		{
+			SpawnBullet(kind, isSecondary);
+		}
+		catch (System.Exception e)
+		{
+			GD.PushError($"Player.Shoot selhal: {e.Message}");
+			GD.Print($"Player.Shoot SELHAL: {e}");
+		}
+
+		float rate = isSecondary ? GetEffectiveFireRateSecondary() : GetEffectiveFireRate();
+		await ToSignal(GetTree().CreateTimer(rate), SceneTreeTimer.SignalName.Timeout);
+
+		if (_exiting || !IsInstanceValid(this)) return;
+
+		if (isSecondary)
+			_canShootSecondary = true;
+		else
+			_canShoot = true;
+	}
+
+	private void SpawnBullet(Attack1.AttackKind kind, bool isSecondary)
+	{
+		if (BulletScene == null)
+			throw new System.InvalidOperationException("BulletScene neni prirazena v inspektoru hrace.");
 
 		var bullet = BulletScene.Instantiate<Attack1>();
 		bullet.Kind = kind; // picks fireball/waterball animation in Attack1._Ready()
@@ -375,14 +440,6 @@ public partial class Player : CharacterBody2D
 		GetTree().CurrentScene.AddChild(bullet);
 		bullet.GlobalPosition = GlobalPosition;
 
-		float rate = isSecondary ? GetEffectiveFireRateSecondary() : GetEffectiveFireRate();
-		await ToSignal(GetTree().CreateTimer(rate), SceneTreeTimer.SignalName.Timeout);
-
-		if (!IsInstanceValid(this)) return;
-
-		if (isSecondary)
-			_canShootSecondary = true;
-		else
-			_canShoot = true;
+		GD.Print($"Strela vyrobena: {kind}, dmg {bullet.Damage}");
 	}
 }
