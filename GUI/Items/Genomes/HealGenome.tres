@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Genome" format=3]
+
+[ext_resource type="Script" path="res://ArenLogic/Genome.cs" id="1_genome"]
+[ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="2_item"]
+[ext_resource type="Resource" path="res://GUI/Items/Genomes/Heal.tres" id="3_stage"]
+
+[resource]
+script = ExtResource("1_genome")
+FamilyId = "heal"
+Stages = Array[ExtResource("2_item")]([ExtResource("3_stage")])
