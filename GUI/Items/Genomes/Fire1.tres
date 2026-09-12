@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="Item" format=3]
+[gd_resource type="Resource" script_class="Item" format=3 uid="uid://d0vti6c40o0dx"]
 
 [ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="1_item"]
-[ext_resource type="Texture2D" path="res://Assets/Sprites/genes/Fire1.png" id="2_tex"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sk2gb"]
+load_path = "res://.godot/imported/Fire1.png-a82113f573244b0b41a49c43dee2fe5d.ctex"
 
 [resource]
 script = ExtResource("1_item")
 Id = "fire_1"
 DisplayName = "Fire genome I"
-Texture = ExtResource("2_tex")
+Texture = SubResource("CompressedTexture2D_sk2gb")
 Tags = PackedStringArray("strength:1")
 GenomeFamily = "fire"
-Stage = 1
 metadata/_custom_type_script = "uid://ymtgxosvhtwn"

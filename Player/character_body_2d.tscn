@@ -108,4 +108,4 @@ polygon = PackedVector2Array(-10, -10, -10, 9, 10, 9, 10, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813099957]
 sprite_frames = SubResource("SpriteFrames_mti6b")
-animation = &"move_animation"
+animation = &"idle_animation"
