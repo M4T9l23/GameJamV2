@@ -25,6 +25,9 @@ public partial class WorldItem : Area2D
 			SetItem(InitialItem);
 	}
 
+	// Aby si ArenaLogic mohl overit, jestli uz odmena neco lezi ve svete.
+	public Item GetItem() => _item;
+
 	public void SetItem(Item item)
 	{
 		_item = item;

@@ -4,12 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="1_ptfg5"]
 [ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="2_2daye"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
 [ext_resource type="Resource" uid="uid://bqlap1wgcdh23" path="res://GUI/Items/Abilities/Waterball.tres" id="3_1semv"]
 [ext_resource type="Resource" uid="uid://c76x0ae2td80q" path="res://GUI/Items/Abilities/Sprint.tres" id="3_qax2n"]
 [ext_resource type="PackedScene" uid="uid://dk52dcev42fv7" path="res://Attack/Wall.tscn" id="4_jjvhh"]
-[ext_resource type="Resource" path="res://GUI/Items/Abilities/FireArmor.tres" id="4_y86h7"]
+[ext_resource type="Resource" uid="uid://3nj15gm8h2at" path="res://GUI/Items/Abilities/FireArmor.tres" id="4_y86h7"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
@@ -352,10 +352,6 @@ size = Vector2(160, 40)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
-[node name="Fire" parent="." unique_id=13913295 instance=ExtResource("1_ptfg5")]
-position = Vector2(126, -479)
-InitialItem = ExtResource("2_2daye")
-
 [node name="Sprint" parent="." unique_id=417779031 instance=ExtResource("1_ptfg5")]
 position = Vector2(344, -515)
 InitialItem = ExtResource("3_qax2n")
@@ -423,10 +419,12 @@ shape = SubResource("RectangleShape2D_hptm8")
 [node name="Droid" parent="." unique_id=479326033 instance=ExtResource("23_gt3je")]
 position = Vector2(-588, -786)
 
-[node name="Arena" type="Node2D" parent="." unique_id=591025582]
+[node name="Arena" type="Node2D" parent="." unique_id=591025582 node_paths=PackedStringArray("RewardPoint")]
 position = Vector2(-420, 441.00003)
 scale = Vector2(1.5, 1.5)
 script = ExtResource("46_v2nl5")
+Reward = ExtResource("2_2daye")
+RewardPoint = NodePath("RewardPoint")
 
 [node name="Region" type="Area2D" parent="Arena" unique_id=938882783]
 collision_layer = 0
