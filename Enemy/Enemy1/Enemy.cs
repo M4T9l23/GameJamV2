@@ -1,7 +1,9 @@
 using Godot;
 
-public partial class Enemy : CharacterBody2D
-{
+public partial class Enemy : CharacterBody2D, IDamageable
+{	
+	[Export] public float HitRadius = 24f;   // add to the exports up top
+
 	[Export] public int Health = 3;
 	[Export] public int ContactDamage = 1;
 	[Export] public float Speed = 80f;
@@ -49,16 +51,17 @@ public partial class Enemy : CharacterBody2D
 		Velocity = direction * Speed;
 		MoveAndSlide();
 
-		for (int i = 0; i < GetSlideCollisionCount(); i++)
+
+		if (GlobalPosition.DistanceTo(_player.GlobalPosition) <= HitRadius)
+	{
+		if (_player is Player player)
 		{
-			if (GetSlideCollision(i).GetCollider() is Player player)
-			{
-				GD.Print("DMGGGG");
-				player.TakeDamage(ContactDamage);
-				QueueFree();
-				return;
-			}
+			_dead = true;
+			player.TakeDamage(ContactDamage);
+			QueueFree();
+			return;
 		}
+	}
 	}
 
 	// Push away from any enemy that's too close. The closer it is, the harder the push.

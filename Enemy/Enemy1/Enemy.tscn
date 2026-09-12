@@ -79,7 +79,7 @@ platform_wall_layers = 1
 script = ExtResource("1_3o4wt")
 Visual = NodePath("AnimatedSprite2D")
 SeparationDistance = 80.0
-SeparationWeight = 20.0
+SeparationWeight = 10.0
 WallWeight = 10.0
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=897123053]
@@ -91,8 +91,6 @@ position = Vector2(7.9166574, -4.069766)
 shape = SubResource("RectangleShape2D_gtgmb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867286319]
-position = Vector2(-1.9073486e-06, -0.58139515)
-scale = Vector2(1.093068, 0.8687554)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
-frame_progress = 0.31199792
+frame_progress = 0.64576066

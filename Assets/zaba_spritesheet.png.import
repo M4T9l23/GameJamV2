@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uiulq8au8l6g"
-path="res://.godot/imported/Fire3.png-4fc2be1037820265f8b6e7ea8d43962c.ctex"
+uid="uid://7aec8c34kfr"
+path="res://.godot/imported/zaba_spritesheet.png-6f510b522082d9dcb79fdafe70e2124d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/genes/Fire3.png"
-dest_files=["res://.godot/imported/Fire3.png-4fc2be1037820265f8b6e7ea8d43962c.ctex"]
+source_file="res://Assets/zaba_spritesheet.png"
+dest_files=["res://.godot/imported/zaba_spritesheet.png-6f510b522082d9dcb79fdafe70e2124d.ctex"]
 
 [params]
 
