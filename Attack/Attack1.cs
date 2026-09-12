@@ -69,8 +69,11 @@ public partial class Attack1 : Area2D
 		if (_hasHit || body == Shooter) return;
 		_hasHit = true;
 
-		if (body is Enemy enemy)
-			enemy.TakeDamage(Damage);
+		// Dynamically call TakeDamage if the hit body supports it
+		if (body.HasMethod("TakeDamage"))
+		{
+			body.Call("TakeDamage", Damage);
+		}
 
 		QueueFree(); // walls, enemies, anything solid
 	}
