@@ -35,13 +35,28 @@ public partial class Attack1 : Area2D
 
 		// Both "fireball" and "waterball" animations live in the same
 		// SpriteFrames on this node, switch to whichever one this shot is.
-		_sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_sprite = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
 
-		bool isFire = Kind == AttackKind.Fireball;
-		_sprite.Play(isFire ? "fireball" : "waterball");
-		_sprite.RotationDegrees = isFire
-			? FireballSpriteAngleOffset
-			: WaterballSpriteAngleOffset;
+		if (_sprite == null)
+		{
+			GD.Print("Attack1: chybi potomek 'AnimatedSprite2D', strela poleti bez grafiky.");
+		}
+		else
+		{
+			bool isFire = Kind == AttackKind.Fireball;
+			string anim = isFire ? "fireball" : "waterball";
+
+			// Chybejici animace by jinak shodila celou strelu i strelbu.
+			if (_sprite.SpriteFrames != null && _sprite.SpriteFrames.HasAnimation(anim))
+				_sprite.Play(anim);
+			else
+				GD.Print($"Attack1: SpriteFrames nema animaci '{anim}'. " +
+					$"Dostupne: {(_sprite.SpriteFrames == null ? "zadne SpriteFrames" : string.Join(", ", _sprite.SpriteFrames.GetAnimationNames()))}");
+
+			_sprite.RotationDegrees = isFire
+				? FireballSpriteAngleOffset
+				: WaterballSpriteAngleOffset;
+		}
 
 		// clean up missed shots after 3 seconds
 		GetTree().CreateTimer(3.0).Timeout += () =>
