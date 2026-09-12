@@ -1,11 +1,28 @@
 [gd_scene format=3 uid="uid://bbo35pwjheaf3"]
 
 [ext_resource type="Script" uid="uid://c7otwxiuoy57x" path="res://Enemy/Enemy2/Enemy2.cs" id="1_w1xm3"]
+[ext_resource type="Texture2D" uid="uid://cyf153txq4g2a" path="res://Assets/Sprites/Exploze.png" id="2_oesri"]
 [ext_resource type="Texture2D" uid="uid://cqfcaw7sf522k" path="res://Assets/Sprites/Komar animation.png" id="2_qpft6"]
 [ext_resource type="AudioStream" uid="uid://3mlf876ra6x" path="res://Assets/Music/freesound_community-single-mosquito-buzz-69360.mp3" id="3_hqw5c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_erxgo"]
+atlas = ExtResource("2_oesri")
+region = Rect2(0, 0, 540, 540)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8p4nu"]
+atlas = ExtResource("2_oesri")
+region = Rect2(540, 0, 540, 540)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l85kr"]
+atlas = ExtResource("2_oesri")
+region = Rect2(0, 540, 540, 540)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kky8v"]
+atlas = ExtResource("2_oesri")
+region = Rect2(540, 540, 540, 540)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hqw5c"]
 atlas = ExtResource("2_qpft6")
@@ -33,6 +50,23 @@ region = Rect2(5400, 0, 1080, 1080)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_erxgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8p4nu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l85kr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kky8v")
+}],
+"loop": 0,
+"name": &"death_animation",
+"speed": 11.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hqw5c")
@@ -67,6 +101,7 @@ Health = 2
 Speed = 200.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=438777270]
+visible = false
 shape = SubResource("RectangleShape2D_4np7o")
 
 [node name="ColorRect" type="ColorRect" parent="CollisionShape2D" unique_id=1701339122]
@@ -78,11 +113,13 @@ scale = Vector2(0.35782865, 0.35942712)
 metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1699675156]
-position = Vector2(-3, 15)
-scale = Vector2(0.13935184, 0.12870371)
+position = Vector2(-2, -3.0000002)
+scale = Vector2(0.18819445, 0.18472223)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"death_animation"
 autoplay = "default"
-frame_progress = 0.8186173
+frame = 3
+frame_progress = 1.0
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1230329637]
 position = Vector2(1, 0)
