@@ -419,12 +419,13 @@ shape = SubResource("RectangleShape2D_hptm8")
 [node name="Droid" parent="." unique_id=479326033 instance=ExtResource("23_gt3je")]
 position = Vector2(-588, -786)
 
-[node name="Arena" type="Node2D" parent="." unique_id=591025582 node_paths=PackedStringArray("RewardPoint")]
+[node name="Arena" type="Node2D" parent="." unique_id=591025582 node_paths=PackedStringArray("RewardPoint", "SpawnPoints")]
 position = Vector2(-420, 441.00003)
 scale = Vector2(1.5, 1.5)
 script = ExtResource("46_v2nl5")
 Reward = ExtResource("2_2daye")
 RewardPoint = NodePath("RewardPoint")
+SpawnPoints = [null]
 
 [node name="Region" type="Area2D" parent="Arena" unique_id=938882783]
 collision_layer = 0
