@@ -88,6 +88,27 @@ public partial class ArenaLogic : Node2D
 		Region.CollisionMask = 7;
 
 		SetupEntrance();
+		LogSetup();
+	}
+
+	// Souhrn zapojení do konzole. Chybějící věc se tu projeví hned, místo
+	// aby se poznala až podle toho, že něco v logu chybí.
+	private void LogSetup()
+	{
+		GD.Print($"--- Arena '{Name}' ---");
+		GD.Print($"  Region:    {(Region != null ? "OK" : "CHYBI")}");
+		GD.Print($"  Entrance:  {(_entranceShape != null ? "OK" : "CHYBI")}");
+		GD.Print($"  Border:    {(Border != null ? "OK" : "CHYBI (pridej Node2D 'Border' se skriptem ArenaBorder)")}");
+		GD.Print($"  Respawn:   {(RespawnPoint != null ? "OK" : "CHYBI")}");
+		GD.Print($"  Exit:      {(ExitPoint != null ? "OK" : "CHYBI")}");
+		GD.Print($"  Reward:    {(Reward != null ? $"'{Reward.FamilyId}', {Reward.MaxStage} stage" : "CHYBI (nastav Genome .tres)")}");
+		GD.Print($"  Nepratele: {EnemyScenes.Count} scen, {SpawnPoints.Count} spawn pointu");
+
+		if (Reward == null)
+			GD.Print("  ! Po dokonceni skenu nic nespadne.");
+
+		if (EnemyScenes.Count == 0 || SpawnPoints.Count == 0)
+			GD.Print("  ! Arena nebude spawnovat nic, sken probehne bez odporu.");
 	}
 
 	private void SetupEntrance()
@@ -128,6 +149,16 @@ public partial class ArenaLogic : Node2D
 		ExitPoint ??= GetNodeOrNull<Marker2D>("Exit");
 		RewardPoint ??= GetNodeOrNull<Marker2D>("RewardPoint");
 		Border ??= GetNodeOrNull<ArenaBorder>("Border");
+
+		// Kdyby ve scéně nebyl (třeba u arény udělané přes Make Local),
+		// vyrobíme ho za běhu. Nastavení z inspektoru tím pádem není
+		// potřeba a nedá se to zapomenout.
+		if (Border == null)
+		{
+			Border = new ArenaBorder { Name = "Border" };
+			AddChild(Border);
+			GD.Print($"Arena '{Name}': Border nebyl ve scene, vyrobil jsem ho za behu.");
+		}
 
 		if (SpawnPoints.Count == 0)
 		{
@@ -337,7 +368,7 @@ public partial class ArenaLogic : Node2D
 	{
 		if (Reward == null || Reward.Stages.Count == 0)
 		{
-			GD.PushWarning($"Arena '{Name}': neni nastaveny Reward genom.");
+			GD.Print($"Arena '{Name}': neni nastaveny Reward genom, nic nepada.");
 			return;
 		}
 
@@ -370,7 +401,7 @@ public partial class ArenaLogic : Node2D
 		var inventory = GetTree().GetFirstNodeInGroup("inventory") as Inventory;
 		if (inventory == null)
 		{
-			GD.PushWarning("ArenaLogic: inventar nenalezen, davam stage 1.");
+			GD.Print("ArenaLogic: inventar nenalezen, davam stage 1.");
 			return 0;
 		}
 

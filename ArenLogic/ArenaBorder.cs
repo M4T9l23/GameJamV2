@@ -34,6 +34,11 @@ public partial class ArenaBorder : Node2D
 	// Jak hluboko pulz stahuje jas. 0 = bez pulzu, 1 = úplně zhasíná.
 	[Export] public float PulseDepth = 0.3f;
 
+	[ExportGroup("Ladění")]
+	// Zapni, ať obrys svítí pořád, bez ohledu na to, co dělá aréna.
+	// Slouží k odlišení "nekreslí se" od "aréna se nespustila".
+	[Export] public bool DebugAlwaysOn = false;
+
 	[ExportGroup("Náběh")]
 	// Jak rychle se rozsvítí a zhasne.
 	[Export] public float FadeSpeed = 4f;
@@ -55,6 +60,14 @@ public partial class ArenaBorder : Node2D
 
 		ResolveShape();
 		SetProcess(true);
+
+		if (DebugAlwaysOn)
+			SetActive(true);
+
+		// Jednorázový výpis do konzole, ať je vidět, jestli se tvar našel.
+		RebuildPoints();
+		GD.Print($"ArenaBorder '{Name}': shape={(SourceShape?.Shape?.GetType().Name ?? "NULL")}, bodu={_points.Length}, zindex={ZIndex}");
+
 		QueueRedraw();
 	}
 
@@ -69,7 +82,7 @@ public partial class ArenaBorder : Node2D
 
 		if (region == null)
 		{
-			GD.PushWarning($"ArenaBorder '{Name}': nenasel jsem Region, obrys se nevykresli.");
+			GD.Print($"ArenaBorder '{Name}': nenasel jsem Region, obrys se nevykresli.");
 			return;
 		}
 
@@ -82,12 +95,17 @@ public partial class ArenaBorder : Node2D
 			}
 		}
 
-		GD.PushWarning($"ArenaBorder '{Name}': Region nema CollisionShape2D.");
+		GD.Print($"ArenaBorder '{Name}': Region nema CollisionShape2D.");
 	}
 
 	public override void _Process(double delta)
 	{
 		float dt = (float)delta;
+
+		// Region se nemusel najít napoprvé (třeba když nás ArenaLogic
+		// vyrobil dřív, než byl strom hotový). Zkoušíme dál.
+		if (SourceShape == null)
+			ResolveShape();
 
 		if (_flashTimer > 0f)
 		{
@@ -101,6 +119,9 @@ public partial class ArenaBorder : Node2D
 
 		// Exponenciální náběh - nezávislý na framerate.
 		_intensity = Mathf.Lerp(_intensity, _targetIntensity, 1f - Mathf.Exp(-FadeSpeed * dt));
+
+		if (DebugAlwaysOn)
+			_targetIntensity = 1f;
 
 		if (_intensity < 0.01f && _targetIntensity <= 0f)
 		{
@@ -179,7 +200,7 @@ public partial class ArenaBorder : Node2D
 				for (int i = 0; i <= steps; i++)
 				{
 					float a = Mathf.Tau * i / steps;
-					pts[i] = t * new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * circle.Radius;
+					pts[i] = t * (new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * circle.Radius);
 				}
 
 				_points = pts;
@@ -211,6 +232,8 @@ public partial class ArenaBorder : Node2D
 
 	public void SetActive(bool active)
 	{
+		GD.Print($"ArenaBorder '{Name}': SetActive({active}), shape={(SourceShape?.Shape != null ? "OK" : "NULL")}");
+
 		_flashTimer = 0f;
 		_color = ActiveColor;
 		_targetIntensity = active ? 1f : 0f;
