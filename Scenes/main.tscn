@@ -198,7 +198,7 @@ rotation = 1.5707964
 scale = Vector2(3, 1)
 
 [node name="StaticBody2D" parent="StaticBody2D" unique_id=1668936254 instance=ExtResource("4_jjvhh")]
-position = Vector2(135.66669, 145)
+position = Vector2(133.33334, 166.99998)
 rotation = 1.5707964
 scale = Vector2(3, 0.3)
 
