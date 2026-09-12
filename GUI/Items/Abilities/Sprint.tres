@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="Item" format=3]
+[gd_resource type="Resource" script_class="Item" format=3 uid="uid://c76x0ae2td80q"]
 
+[ext_resource type="Texture2D" uid="uid://bmvfsfqxg33ii" path="res://Assets/Sprites/Moonster.png" id="1_b6xg2"]
 [ext_resource type="Script" uid="uid://ymtgxosvhtwn" path="res://GUI/Item.cs" id="1_item"]
-[ext_resource type="Texture2D" path="res://Assets/Sprites/Attack.png" id="2_tex"]
 
 [resource]
 script = ExtResource("1_item")
 Id = "sprint"
 DisplayName = "Servo Boots"
-Texture = ExtResource("2_tex")
+Texture = ExtResource("1_b6xg2")
 Tags = PackedStringArray("ability_sprint:1", "sprint:25")
 metadata/_custom_type_script = "uid://ymtgxosvhtwn"
