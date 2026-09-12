@@ -27,7 +27,13 @@ public partial class Enemy : CharacterBody2D, IDamageable
 	[Export] public Node2D Visual;
 	[Export] public bool FlipInsteadOfRotate = false;
 	[Export] public float RotationOffset = 0f;
-
+	
+	
+	[ExportGroup("Death")]
+	[Export] public string DeathAnim = "death_animation";
+	[Export] public float CorpseLifetime = 1.0f;   // 0 = corpse zůstane napořád
+	[Export] public float DeathScale = 0.4f; //*--/*-/df-sdfgweopafiopafhjioupwaefhguiawgfwuioaegfyuioawigfyuoweagfyu
+	
 	[ExportGroup("Steering")]
 	[Export] public float SeparationDistance = 48f;
 	[Export] public float SeparationWeight = 1.5f;
@@ -220,11 +226,34 @@ public partial class Enemy : CharacterBody2D, IDamageable
 			Die();
 	}
 
-	private void Die()
+	private async void Die()
 	{
 		_dead = true;
 		DropItems();
-		QueueFree();
+		
+
+		// Mrtvola nesmí nic dělat ani do ničeho narážet.
+		Velocity = Vector2.Zero;
+		SetPhysicsProcess(false);
+		foreach (Node child in GetChildren())
+			if (child is CollisionShape2D shape)
+				shape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+
+		if (Visual is AnimatedSprite2D sprite && sprite.SpriteFrames.HasAnimation(DeathAnim))
+		{
+			sprite.Scale *= DeathScale;
+			sprite.Play(DeathAnim);
+			await ToSignal(sprite, AnimatedSprite2D.SignalName.AnimationFinished);
+		}
+
+		if (!IsInstanceValid(this)) return;
+
+		if (CorpseLifetime > 0f)
+		{
+			await ToSignal(GetTree().CreateTimer(CorpseLifetime), SceneTreeTimer.SignalName.Timeout);
+			if (!IsInstanceValid(this)) return;
+			QueueFree();
+		}
 	}
 
 	private void DropItems()

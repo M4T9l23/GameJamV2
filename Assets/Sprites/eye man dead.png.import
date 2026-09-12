@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qlaj3rtr4q54"
-path="res://.godot/imported/Dead_eye_man.png-ad6a59fd16701e2068d2637c3043658a.ctex"
+uid="uid://45eyx250o10r"
+path="res://.godot/imported/eye man dead.png-f6f5eff69c545547347315a55d861e95.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/sprite_sheets/Dead_eye_man.png"
-dest_files=["res://.godot/imported/Dead_eye_man.png-ad6a59fd16701e2068d2637c3043658a.ctex"]
+source_file="res://Assets/Sprites/eye man dead.png"
+dest_files=["res://.godot/imported/eye man dead.png-f6f5eff69c545547347315a55d861e95.ctex"]
 
 [params]
 

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b3duedluhxi2p" path="res://Enemy/Enemy1/Enemy.cs" id="1_3o4wt"]
 [ext_resource type="Texture2D" uid="uid://c2gybhvg3bvr3" path="res://Assets/Sprites/sprite_sheets/eye_man_spritesheet.png" id="2_epr5s"]
 [ext_resource type="PackedScene" uid="uid://ci5hvtypgk8rp" path="res://Enemy/Enemy1/enemy_projectile.tscn" id="2_gje4k"]
+[ext_resource type="Texture2D" uid="uid://45eyx250o10r" path="res://Assets/Sprites/eye man dead.png" id="3_3w5oe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
 size = Vector2(35.833313, 110.46511)
@@ -41,6 +42,14 @@ region = Rect2(1498, 0, 214, 216)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3w5oe")
+}],
+"loop": 0,
+"name": &"death_animation",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_vonkd")
@@ -93,6 +102,6 @@ position = Vector2(7.9166574, -4.069766)
 shape = SubResource("RectangleShape2D_gtgmb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867286319]
+position = Vector2(3.333332, 6.6666718)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
-frame_progress = 0.64576066
