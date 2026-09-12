@@ -72,6 +72,9 @@ radius = 56.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1439360079]
 script = ExtResource("1_v8jqv")
+BaseStamina = 20.0
+StaminaRecoverySeconds = 15.0
+StaminaRecoveryDelay = 0.2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=800808724]
 sprite_frames = SubResource("SpriteFrames_62yky")
