@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
-[ext_resource type="Resource" path="res://GUI/Items/Abilities/Waterball.tres" id="3_1semv"]
+[ext_resource type="Resource" uid="uid://lbvtoi2xett0" path="res://GUI/Items/Abilities/Waterball.tres" id="3_1semv"]
 [ext_resource type="Resource" path="res://GUI/Items/Abilities/Sprint.tres" id="3_qax2n"]
 [ext_resource type="Resource" path="res://GUI/Items/Abilities/FireArmor.tres" id="4_y86h7"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
@@ -362,7 +362,7 @@ sources/44 = SubResource("TileSetAtlasSource_fd3ed")
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="Sprint" parent="." unique_id=417779031 instance=ExtResource("1_ptfg5")]
-position = Vector2(344, -515)
+position = Vector2(-2411, 439)
 InitialItem = ExtResource("3_qax2n")
 
 [node name="FireArmor" parent="." unique_id=1212144418 instance=ExtResource("1_ptfg5")]
@@ -370,11 +370,11 @@ position = Vector2(370, -1208)
 InitialItem = ExtResource("4_y86h7")
 
 [node name="Healing" parent="." unique_id=1370641298 instance=ExtResource("1_ptfg5")]
-position = Vector2(185, -604)
+position = Vector2(-1239, -534)
 InitialItem = ExtResource("5_my4ki")
 
 [node name="watter" parent="." unique_id=163148361 instance=ExtResource("1_ptfg5")]
-position = Vector2(185, -604)
+position = Vector2(-2629, 454)
 InitialItem = ExtResource("3_1semv")
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]

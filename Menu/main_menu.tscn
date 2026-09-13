@@ -10,7 +10,7 @@ texture = ExtResource("2_ci1se")
 modulate_color = Color(0.5963672, 0.59636724, 0.59636724, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4kxuq"]
-bg_color = Color(0.015686275, 0.44705883, 0.3019608, 1)
+bg_color = Color(0.105882354, 0.105882354, 0.105882354, 1)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
@@ -66,7 +66,7 @@ grow_vertical = 2
 [node name="Button" type="Button" parent="VBoxContainer" unique_id=815053126]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_constants/h_separation = 15
 theme_override_fonts/font = ExtResource("1_sla5p")
@@ -79,7 +79,7 @@ text = "Start game"
 [node name="Button2" type="Button" parent="VBoxContainer" unique_id=876319870]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.28235295, 0.8039216, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(1, 0.16862746, 1, 1)
 theme_override_constants/h_separation = 15
