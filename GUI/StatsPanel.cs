@@ -68,6 +68,9 @@ public partial class StatsPanel : Label
 		ClipText = false;
 		AutowrapMode = TextServer.AutowrapMode.Off;
 		TextOverrunBehavior = TextServer.OverrunBehavior.NoTrimming;
+		// Aby si nas LocationLine nasel bez tahani NodePath v inspektoru.
+		AddToGroup("stats_panel");
+
 		// Deferred, protože Inventory/CanvasLayer se může načíst dřív než hráč.
 		CallDeferred(nameof(HookPlayer));
 	}

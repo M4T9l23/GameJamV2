@@ -7,6 +7,13 @@ public partial class WorldItem : Area2D
 	// item automaticky nastaví (texturu, Id i tagy).
 	[Export] public Item InitialItem;
 
+	[ExportGroup("Velikost")]
+	// Na kolik pixelu se sprite dopocita, at uz ma textura jakekoliv
+	// rozliseni. Bez toho vychazel kazdy item jinak velky - kamen
+	// 193x219 px, tedy vetsi nez Jane.
+	// Nula = nechat puvodni scale ze sceny.
+	[Export] public float IconSize = 56f;
+
 	[ExportGroup("Despawn")]
 	// Item zmizí, když sjede z obrazovky. Notifier se vyrábí v kódu,
 	// takže do WorldItem.tscn nemusíš nic přidávat.
@@ -14,7 +21,7 @@ public partial class WorldItem : Area2D
 	// Kolik sekund musí být mimo obraz, než zmizí. Nula = okamžitě.
 	// Krátká prodleva zabrání tomu, aby item zmizel jen proto, že se
 	// Jane na chvilku otočila.
-	[Export] public float DespawnDelay = 0.1f;
+	[Export] public float DespawnDelay = 3f;
 	// Obdélník, podle kterého se posuzuje "je na obrazovce".
 	[Export] public Vector2 DespawnRectSize = new Vector2(64, 64);
 
@@ -105,6 +112,7 @@ public partial class WorldItem : Area2D
 		if (_dragIcon != null)
 			_dragIcon.Texture = item?.Texture;
 
+		NormalizeSpriteScale();
 		UpdateHandleSize();
 	}
 
@@ -132,6 +140,22 @@ public partial class WorldItem : Area2D
 		AddChild(_handle);
 
 		UpdateHandleSize();
+	}
+
+	// Delsi strana textury se natahne na IconSize, pomer stran zustane.
+	private void NormalizeSpriteScale()
+	{
+		if (IconSize <= 0f || _sprite?.Texture == null)
+			return;
+
+		Vector2 size = _sprite.Texture.GetSize();
+		float longest = Mathf.Max(size.X, size.Y);
+
+		if (longest <= 0f)
+			return;
+
+		float factor = IconSize / longest;
+		_sprite.Scale = new Vector2(factor, factor);
 	}
 
 	private void UpdateHandleSize()

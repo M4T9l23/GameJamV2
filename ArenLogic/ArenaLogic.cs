@@ -52,8 +52,24 @@ public partial class ArenaLogic : Node2D
 	[ExportGroup("Spawn")]
 	[Export] public Godot.Collections.Array<PackedScene> EnemyScenes = new();
 	[Export] public Godot.Collections.Array<Marker2D> SpawnPoints = new();
-	[Export] public float SpawnInterval = 2.5f;
-	[Export] public int MaxAlive = 8;
+	// Rozestup mezi jednotlivými nepřáteli UVNITŘ vlny, ať se nevysypou
+	// všichni v jednom framu.
+	[Export] public float SpawnInterval = 0.4f;
+	// Pojistka - víc než tolik živých naráz aréna nepustí.
+	[Export] public int MaxAlive = 12;
+
+	[ExportGroup("Vlny")]
+	// Kolik vln proběhne, než aréna přestane spawnovat. Po poslední už
+	// nic nepřijde a sken doběhne do 100 %.
+	[Export] public int WaveCount = 3;
+	// Velikost první vlny.
+	[Export] public int EnemiesPerWave = 3;
+	// O kolik je každá další vlna větší.
+	[Export] public int ExtraEnemiesPerWave = 1;
+	// Pauza po vyčištění vlny, než přijde další. Během ní sken stoupá.
+	[Export] public float WaveDelay = 3f;
+	// Pauza mezi vstupem Jane a první vlnou.
+	[Export] public float FirstWaveDelay = 1.5f;
 
 	[ExportGroup("Sken")]
 	[Export] public float ScanRate = 8f;          // %/s v prázdné aréně
@@ -75,6 +91,10 @@ public partial class ArenaLogic : Node2D
 	private Droid _droid;
 	private CollisionShape2D _entranceShape;
 	private string _blockReason;
+	private int _waveIndex;
+	private int _toSpawnInWave;
+	private bool _waveActive;
+	private float _waveTimer;
 	private bool _entranceBlocked;
 
 	// Nepřátelé, které tahle aréna spawnla. Používá se jen na úklid - počítání
@@ -111,7 +131,7 @@ public partial class ArenaLogic : Node2D
 		GD.Print($"  Respawn:   {(RespawnPoint != null ? "OK" : "CHYBI")}");
 		GD.Print($"  Exit:      {(ExitPoint != null ? "OK" : "CHYBI")}");
 		GD.Print($"  Reward:    {(Reward != null ? $"'{Reward.DisplayName}'" : "CHYBI (nastav Item .tres)")}");
-		GD.Print($"  Nepratele: {EnemyScenes.Count} scen, {SpawnPoints.Count} spawn pointu");
+		GD.Print($"  Nepratele: {EnemyScenes.Count} scen, {SpawnPoints.Count} spawn pointu, {WaveCount} vln");
 
 		if (Reward == null)
 			GD.Print("  ! Po dokonceni skenu nic nespadne.");
@@ -295,8 +315,8 @@ public partial class ArenaLogic : Node2D
 	{
 		CurrentState = ArenaState.Scanning;
 		ScanProgress = 0f;
-		_spawnTimer = 0f;
 		_entranceBlocked = false;
+		ResetWaves();
 
 		// Player.Die() si podle téhle grupy najde, ve které aréně zemřel.
 		AddToGroup("active_arena");
@@ -412,15 +432,70 @@ public partial class ArenaLogic : Node2D
 		if (EnemyScenes.Count == 0 || SpawnPoints.Count == 0)
 			return;
 
-		_spawnTimer -= dt;
-		if (_spawnTimer > 0f)
+		// 1) Rozsypávám aktuální vlnu po jednom.
+		if (_toSpawnInWave > 0)
+		{
+			_spawnTimer -= dt;
+			if (_spawnTimer > 0f)
+				return;
+
+			_spawnTimer = SpawnInterval;
+
+			if (enemyCount >= MaxAlive)
+				return;
+
+			SpawnOne();
+			_toSpawnInWave--;
+			return;
+		}
+
+		// 2) Vlna je venku celá - čekám, až ji Jane vybije.
+		if (_waveActive)
+		{
+			if (enemyCount > 0)
+				return;
+
+			_waveActive = false;
+			_waveTimer = WaveDelay;
+
+			GD.Print($"Arena '{Name}': vlna {_waveIndex}/{WaveCount} vycistena.");
+			return;
+		}
+
+		// 3) Všechny vlny doběhly - dál už nic nespawnuje a sken volně
+		//    stoupá do 100 %.
+		if (_waveIndex >= WaveCount)
 			return;
 
-		_spawnTimer = SpawnInterval;
-
-		if (enemyCount >= MaxAlive)
+		// 4) Pauza mezi vlnami.
+		_waveTimer -= dt;
+		if (_waveTimer > 0f)
 			return;
 
+		StartNextWave();
+	}
+
+	private void StartNextWave()
+	{
+		_toSpawnInWave = EnemiesPerWave + _waveIndex * ExtraEnemiesPerWave;
+		_waveIndex++;
+		_waveActive = true;
+		_spawnTimer = 0f;
+
+		GD.Print($"Arena '{Name}': vlna {_waveIndex}/{WaveCount}, {_toSpawnInWave} nepratel.");
+	}
+
+	private void ResetWaves()
+	{
+		_waveIndex = 0;
+		_toSpawnInWave = 0;
+		_waveActive = false;
+		_waveTimer = FirstWaveDelay;
+		_spawnTimer = 0f;
+	}
+
+	private void SpawnOne()
+	{
 		PackedScene scene = EnemyScenes[(int)(GD.Randi() % (uint)EnemyScenes.Count)];
 		Marker2D point = SpawnPoints[(int)(GD.Randi() % (uint)SpawnPoints.Count)];
 
@@ -428,8 +503,16 @@ public partial class ArenaLogic : Node2D
 			return;
 
 		var enemy = scene.Instantiate<Node2D>();
-		AddChild(enemy);
+
+		// Do scény, ne pod arénu. Jako dítě arény by nepřítel zdědil její
+		// scale (a rotaci) a byl by jinak velký než ten samý nepřítel od
+		// globálního spawneru - včetně kolizních tvarů.
+		Node parent = GetTree().CurrentScene ?? (Node)this;
+		parent.AddChild(enemy);
+
 		enemy.GlobalPosition = point.GlobalPosition;
+		enemy.Scale = Vector2.One;
+		enemy.Rotation = 0f;
 
 		_spawned.RemoveAll(n => !IsInstanceValid(n) || n.IsQueuedForDeletion());
 		_spawned.Add(enemy);
@@ -496,7 +579,7 @@ public partial class ArenaLogic : Node2D
 	{
 		ClearEnemies();
 		ScanProgress = 0f;
-		_spawnTimer = SpawnInterval;
+		ResetWaves();
 
 		GetDroid()?.SetScanProgress(0f);
 

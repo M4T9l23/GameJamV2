@@ -115,7 +115,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1699675156]
 position = Vector2(-2, -3.0000002)
-scale = Vector2(0.18819445, 0.18472223)
+scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
 
