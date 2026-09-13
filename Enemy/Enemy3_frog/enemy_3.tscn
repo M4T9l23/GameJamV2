@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bgw8fwiyeb6eb" path="res://Enemy/Enemy3_frog/Enemy3.cs" id="1_eg515"]
 [ext_resource type="Texture2D" uid="uid://7aec8c34kfr" path="res://Assets/Sprites/sprite_sheets/zaba_spritesheet.png" id="2_eg515"]
 [ext_resource type="Texture2D" uid="uid://b17jmil0fh15t" path="res://Assets/Sprites/Zaba dead.png" id="2_ym2ry"]
+[ext_resource type="AudioStream" uid="uid://bm0y2bgrko0rg" path="res://Assets/Music/Frog.mp3" id="4_tsper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4np7o"]
 size = Vector2(15, 15)
@@ -76,10 +77,11 @@ animations = [{
 "speed": 2.0
 }]
 
-[node name="CharacterBody2D3" type="CharacterBody2D" unique_id=106441782 node_paths=PackedStringArray("Visual", "Sprite")]
+[node name="CharacterBody2D3" type="CharacterBody2D" unique_id=106441782 node_paths=PackedStringArray("JumpSound", "Visual", "Sprite")]
 platform_floor_layers = 4294967047
 platform_wall_layers = 7
 script = ExtResource("1_eg515")
+JumpSound = NodePath("JumpSound")
 Visual = NodePath("AnimatedSprite2D")
 Sprite = NodePath("AnimatedSprite2D")
 RotationOffset = 90.0
@@ -99,3 +101,7 @@ scale = Vector2(0.35782865, 0.35942712)
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 autoplay = "default"
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="." unique_id=1970487619]
+scale = Vector2(0.1, 0.1)
+stream = ExtResource("4_tsper")
