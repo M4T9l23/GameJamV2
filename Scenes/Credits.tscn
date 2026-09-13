@@ -56,7 +56,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_uy3b0")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_iynit")
 theme_override_styles/hover = SubResource("StyleBoxFlat_f64u0")
 action_mode = 0
-text = "Exit"
+text = "Start game"
 script = ExtResource("3_7xmno")
 
 [node name="Panel" type="Panel" parent="Panel" unique_id=1107100404]

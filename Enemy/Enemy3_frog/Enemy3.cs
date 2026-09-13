@@ -3,7 +3,9 @@ using Godot;
 public partial class Enemy3 : CharacterBody2D, IDamageable
 {
     [Export] public float HitRadius = 24f;
-
+    [ExportGroup("Audio")]
+    [Export] public AudioStreamPlayer2D JumpSound;
+    
     [Export] public int Health = 3;
     [Export] public int ContactDamage = 1;
     [Export] public string DamageType = "physical";
@@ -80,6 +82,8 @@ public partial class Enemy3 : CharacterBody2D, IDamageable
             Velocity = leapDirection * LeapForce;
             _leapTimer = 0.0;
             _inAir = true;
+            
+            JumpSound?.Play();
 
             if (Sprite != null)
                 Sprite.Frame = 1;   // stretched, mid-air

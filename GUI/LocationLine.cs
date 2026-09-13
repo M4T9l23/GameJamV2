@@ -98,7 +98,7 @@ public partial class LocationLine : Area2D
 			return;
 
 		if (ZoneMode)
-			EnterLocation(true);
+			Defer(true);
 		else
 			_entrySide = SideOf(body);
 	}
@@ -113,7 +113,7 @@ public partial class LocationLine : Area2D
 			// Odchod ze zóny droida zase rozjede. Název lokace neměníme,
 			// ten přepíše až další čára.
 			if (DroidWaitsAhead)
-				GetDroid()?.StopWaiting();
+				Callable.From(() => GetDroid()?.StopWaiting()).CallDeferred();
 
 			return;
 		}
@@ -124,7 +124,16 @@ public partial class LocationLine : Area2D
 		if (exitSide == 0f || exitSide == _entrySide)
 			return;
 
-		EnterLocation(exitSide > 0f);
+		Defer(exitSide > 0f);
+	}
+
+	// Signály z fyziky běží uprostřed vyhodnocování kolizí. Přidávat v tu
+	// chvíli do scény nody s Area2D (nepřátelé, WorldItem) Godot nedovolí
+	// a hlásí "Can't change this state while flushing queries".
+	// Proto všechno odložíme o frame.
+	private void Defer(bool ahead)
+	{
+		Callable.From(() => EnterLocation(ahead)).CallDeferred();
 	}
 
 	// Jane se ocitla v jedné z lokací téhle čáry.
