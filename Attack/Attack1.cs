@@ -111,6 +111,18 @@ public partial class Attack1 : Area2D
 		if (_hasHit || body == Shooter) return;
 		_hasHit = true;
 
+		// Spinac se neposkozuje - ohen ho zapali, voda uhasi.
+		if (body is FireSwitch fireSwitch)
+		{
+			if (Kind == AttackKind.Fireball)
+				fireSwitch.Ignite();
+			else
+				fireSwitch.Douse();
+
+			QueueFree();
+			return;
+		}
+
 		// Dynamically call TakeDamage if the hit body supports it
 		if (body.HasMethod("TakeDamage"))
 		{

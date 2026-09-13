@@ -492,27 +492,14 @@ offset_transform_scale = Vector2(1.5, 1.5)
 Message = "Use M1 to drag items in inventory"
 
 [node name="Control5" parent="." unique_id=582881259 instance=ExtResource("59_2060n")]
-offset_left = -8153.0005
-offset_top = -504.0
-offset_right = -8066.836
-offset_bottom = -504.0
+offset_left = -8122.0
+offset_top = -414.0
+offset_right = -8035.8354
+offset_bottom = -414.0
 scale = Vector2(0.99809146, 1)
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.5, 1.5)
-Message = "   Basic training finnished
-  here is your hacking robot
- it automatically hacks doors 
-     you just need to wait"
-
-[node name="Control6" parent="." unique_id=1389091754 instance=ExtResource("59_2060n")]
-offset_left = -7977.0
-offset_top = 299.0
-offset_right = -7890.8354
-offset_bottom = 299.0
-scale = Vector2(0.99809146, 1)
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.5, 1.5)
-Message = "Good luck out there"
+Message = "Oh no this path is locked!"
 
 [node name="border" type="StaticBody2D" parent="." unique_id=297508206]
 
@@ -726,3 +713,10 @@ rotation = 1.5707964
 scale = Vector2(1.4, 1.4)
 LocationAhead = "Training more"
 LocationBehind = "Training"
+
+[node name="Control4" parent="." unique_id=328944746 instance=ExtResource("59_2060n")]
+offset_left = -2699.0
+offset_top = 485.0
+offset_right = -2699.0
+offset_bottom = 485.0
+Message = "Press E to fire"
