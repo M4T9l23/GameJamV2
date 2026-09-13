@@ -87,6 +87,10 @@ public partial class ArenaLogic : Node2D
 	public ArenaState CurrentState { get; private set; } = ArenaState.Idle;
 	public float ScanProgress { get; private set; }
 
+	// Pro HUD (ScanBar v inventari).
+	public int CurrentWave => _waveIndex;
+	public int EnemiesInside { get; private set; }
+
 	private float _spawnTimer;
 	private Droid _droid;
 	private CollisionShape2D _entranceShape;
@@ -230,6 +234,8 @@ public partial class ArenaLogic : Node2D
 				playerInside = true;
 		}
 
+		EnemiesInside = enemyCount;
+
 		switch (CurrentState)
 		{
 			case ArenaState.Idle:
@@ -355,6 +361,9 @@ public partial class ArenaLogic : Node2D
 	{
 		CurrentState = ArenaState.Done;
 		RemoveFromGroup("active_arena");
+
+		// Podle teto grupy Esc menu pozna, ze uz je co dohrat.
+		AddToGroup("arena_completed");
 
 		SetEntranceBlocked(false);
 		Border?.FlashComplete();

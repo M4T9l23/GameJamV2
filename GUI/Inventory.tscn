@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://d2cdtayfg33a8" path="res://GUI/StatsPanel.cs" id="2_stats"]
 [ext_resource type="FontFile" uid="uid://kkhlqb31vjhq" path="res://Assets/MonospaceBold.ttf" id="3_font"]
 [ext_resource type="PackedScene" path="res://GUI/ItemSlot.tscn" id="4_slot"]
+[ext_resource type="Script" path="res://GUI/ScanBar.cs" id="5_scan"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.08, 0.08, 0.08, 1)
@@ -53,6 +54,19 @@ HP[##########----------]
 LOCATION: E-404"
 vertical_alignment = 1
 script = ExtResource("2_stats")
+
+[node name="ScanBar" type="Label" parent="Inventory/MarginContainer/HBoxContainer" unique_id=1405383795]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 0.2, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 16
+text = "+--------------------+
+|SCAN[##########----]   |
++--------------------+"
+vertical_alignment = 1
+script = ExtResource("5_scan")
 
 [node name="GridContainer" type="GridContainer" parent="Inventory/MarginContainer/HBoxContainer" unique_id=790947249]
 unique_name_in_owner = true

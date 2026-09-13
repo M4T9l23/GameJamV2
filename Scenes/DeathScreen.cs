@@ -46,6 +46,10 @@ public partial class DeathScreen : CanvasLayer
 			return;
 		}
 
+		// Jakmile je aspon jedna arena dokoncena, nabidneme zaverecnou
+		// obrazovku. ArenaLogic se pri dokonceni prida do teto grupy.
+		bool arenaDone = GetTree().GetNodesInGroup("arena_completed").Count > 0;
+
 		if (_isDeathMode)
 		{
 			if (_title != null) _title.Text = "[JaneSteel ~]$ Status: Dead";
@@ -54,13 +58,25 @@ public partial class DeathScreen : CanvasLayer
 		else
 		{
 			if (_title != null) _title.Text = "[JaneSteel ~]$ Status: Paused";
-			_labels.AddRange(new[] { "Resume", "Restart level", "Unstack", "Exit" });
+			_labels.AddRange(new[] { "Resume", "Restart level", "Unstack" });
+
+			if (arenaDone)
+				_labels.Add("Ending");
+
+			_labels.Add("Exit");
 			GetTree().Paused = true;
 		}
 
-		// Vic voleb nez labelu = prebytecne zahodit, min = prebytecne skryt.
-		while (_labels.Count > _options.Count)
-			_labels.RemoveAt(_labels.Count - 1);
+		// Kdyz je voleb vic nez Labelu ve scene, doduplikujeme posledni
+		// (zdedi tim font i barvu). Driv se prebytecne volby zahazovaly.
+		while (_options.Count < _labels.Count)
+		{
+			Label template = _options[_options.Count - 1];
+			var extra = (Label)template.Duplicate();
+			extra.Name = $"Option{_options.Count}";
+			template.GetParent().AddChild(extra);
+			_options.Add(extra);
+		}
 
 		for (int i = _labels.Count; i < _options.Count; i++)
 			_options[i].Hide();
@@ -133,6 +149,11 @@ public partial class DeathScreen : CanvasLayer
 				else
 					GD.PushWarning("DeathScreen: zadny node ve skupine 'player'.");
 				Resume();
+				break;
+
+			case "Ending":
+				GetTree().Paused = false;
+				GetTree().ChangeSceneToFile("res://Scenes/ending.tscn");
 				break;
 
 			case "Credits":

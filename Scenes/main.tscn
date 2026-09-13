@@ -906,7 +906,6 @@ Border = NodePath("Border")
 EnemyScenes = Array[PackedScene]([ExtResource("2_8gbba"), ExtResource("6_pdsj5"), ExtResource("5_hibaj")])
 SpawnPoints = [NodePath("Spawn1"), NodePath("Spawn2"), NodePath("Spawn3"), NodePath("Spawn4")]
 SpawnInterval = 2.0
-WaveCount = 6
 EnemiesPerWave = 8
 ExtraEnemiesPerWave = 2
 ScanRate = 20.0
@@ -957,3 +956,10 @@ position = Vector2(173.5, 194.16667)
 position = Vector2(5.8333335, 39.666668)
 script = ExtResource("73_pfx1i")
 Layer = 4
+
+[node name="LocationLine7" parent="." unique_id=1206041535 instance=ExtResource("54_bv80c")]
+position = Vector2(-10751, -4)
+rotation = 1.5707964
+scale = Vector2(2.4, 2.4)
+LocationAhead = "Arena"
+LocationBehind = "Training more"

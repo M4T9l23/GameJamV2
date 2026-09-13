@@ -102,6 +102,7 @@ collision_mask = 3
 script = ExtResource("1_v8jqv")
 BulletScene = ExtResource("2_vvw5e")
 _deathScreenScene = ExtResource("3_srlcf")
+IdleAnim = "move_animation"
 BaseDamageSecondary = 3
 SecondarySpeed = 100.0
 
