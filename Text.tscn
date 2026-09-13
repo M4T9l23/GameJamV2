@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://k7rikr2qllba"]
+
+[node name="Node2D" type="Control" unique_id=130824334]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Panel" type="Panel" parent="." unique_id=1121705410]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel" unique_id=813726321]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
