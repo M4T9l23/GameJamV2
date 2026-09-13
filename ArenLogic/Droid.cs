@@ -305,12 +305,33 @@ public partial class Droid : AnimatableBody2D
 
 	public void Say(string message)
 	{
-		if (SpeechLabel == null || string.IsNullOrEmpty(message))
+		if (string.IsNullOrEmpty(message))
+		{
+			GD.Print("Droid.Say: prazdna hlaska, nic se nezobrazi (vypln GiveMessage na LocationLine).");
 			return;
+		}
+
+		if (SpeechLabel == null)
+		{
+			GD.PushError("Droid.Say: SpeechLabel je null.");
+			return;
+		}
+
+		// Label s nulovou velikosti text orizne na nic. Kdyz si ho pridal
+		// rucne a nenatahl, dorovnat na neco rozumneho.
+		if (SpeechLabel.Size.X < 40f || SpeechLabel.Size.Y < 14f)
+		{
+			SpeechLabel.Size = new Vector2(220, 48);
+			SpeechLabel.Position = new Vector2(-110, -110);
+			GD.Print("Droid.Say: SpeechLabel mel nulovou velikost, dorovnano na 220x48.");
+		}
 
 		SpeechLabel.Text = message;
 		SpeechLabel.Show();
 		_messageTimer = MessageSeconds;
+
+		GD.Print($"Droid rika: \"{message}\" na {MessageSeconds}s, " +
+			$"label size {SpeechLabel.Size}, pozice {SpeechLabel.GlobalPosition}, visible {SpeechLabel.Visible}");
 	}
 
 	private void TickMessage(float dt)

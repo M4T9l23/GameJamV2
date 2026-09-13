@@ -372,11 +372,14 @@ _menuScene = ExtResource("5_21xkr")
 stream = ExtResource("54_gsvbx")
 autoplay = true
 
-[node name="LocationLine" parent="." unique_id=2007184301 instance=ExtResource("54_bv80c")]
-position = Vector2(-416, -352)
-
-[node name="LocationLine2" parent="." unique_id=455680139 instance=ExtResource("54_bv80c")]
+[node name="LocationLine2" parent="." unique_id=455680139 node_paths=PackedStringArray("WaitPointAhead") instance=ExtResource("54_bv80c")]
 position = Vector2(-557, -638)
 LocationAhead = "v pici total"
 LocationBehind = "mene v pici"
+DroidWaitsAhead = true
+WaitPointAhead = NodePath("../Marker2D")
 GiveItem = ExtResource("55_ptfg5")
+GiveMessage = "zabí se"
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=899331038]
+position = Vector2(-619, -568)
