@@ -71,7 +71,7 @@ public partial class FireSwitch : StaticBody2D
 		if (IsLit)
 			return;   // uz hori, jen se obnovil odpocet
 
-		GD.Print($"FireSwitch '{Name}': zapalen.");
+		GD.Print($"FireSwitch '{Name}': ZAPALEN.");
 		SetLit(true);
 	}
 

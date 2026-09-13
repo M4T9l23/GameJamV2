@@ -13,8 +13,11 @@ using Godot;
 public partial class ConditionDoor : StaticBody2D
 {
 	[ExportGroup("Podminka")]
-	// Spínače, na kterých dveře závisí. Přetáhni je sem z scény.
+	// Spínače, na kterých dveře závisí. Přetáhni je sem ze scény.
 	[Export] public Godot.Collections.Array<FireSwitch> Switches = new();
+	// Spolehlivější varianta: dej spínačům grupu (Node -> Groups) a její
+	// název napiš sem. Pole nahoře pak můžeš nechat prázdné.
+	[Export] public string SwitchGroup = "";
 	// Musí hořet všechny, nebo stačí jeden?
 	[Export] public bool RequireAll = true;
 	// Otevřít, když spínače NEhoří (past, nebo dveře zavírané ohněm).
@@ -33,6 +36,28 @@ public partial class ConditionDoor : StaticBody2D
 
 	private CollisionShape2D _shape;
 	private bool _everOpened;
+	private readonly System.Collections.Generic.List<FireSwitch> _resolved = new();
+
+	// Posbira spinace z pole i z grupy dohromady.
+	private void ResolveSwitches()
+	{
+		_resolved.Clear();
+
+		foreach (FireSwitch sw in Switches)
+		{
+			if (sw != null && IsInstanceValid(sw))
+				_resolved.Add(sw);
+		}
+
+		if (string.IsNullOrEmpty(SwitchGroup))
+			return;
+
+		foreach (Node node in GetTree().GetNodesInGroup(SwitchGroup))
+		{
+			if (node is FireSwitch sw && !_resolved.Contains(sw))
+				_resolved.Add(sw);
+		}
+	}
 
 	public override void _Ready()
 	{
@@ -50,8 +75,14 @@ public partial class ConditionDoor : StaticBody2D
 		if (_shape == null)
 			GD.PushError($"ConditionDoor '{Name}': chybi potomek CollisionShape2D.");
 
-		if (Switches.Count == 0)
-			GD.PushWarning($"ConditionDoor '{Name}': nema prirazeny zadny spinac, zustanou zavrene.");
+		ResolveSwitches();
+
+		GD.Print($"ConditionDoor '{Name}': {_resolved.Count} spinacu, " +
+			$"RequireAll={RequireAll}, Invert={Invert}, StayOpen={StayOpen}");
+
+		if (_resolved.Count == 0)
+			GD.Print($"ConditionDoor '{Name}': ZADNY SPINAC. Vypln pole Switches, " +
+				"nebo dej spinacum grupu a jeji nazev do SwitchGroup.");
 
 		// Zavřené na začátku, pokud podmínka neříká jinak.
 		Apply(Evaluate(), force: true);
@@ -71,13 +102,13 @@ public partial class ConditionDoor : StaticBody2D
 	// Splňují spínače podmínku?
 	private bool Evaluate()
 	{
-		if (Switches.Count == 0)
+		if (_resolved.Count == 0)
 			return Invert;
 
 		bool all = true;
 		bool any = false;
 
-		foreach (FireSwitch sw in Switches)
+		foreach (FireSwitch sw in _resolved)
 		{
 			if (sw == null || !IsInstanceValid(sw))
 				continue;

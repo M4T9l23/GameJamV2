@@ -68,6 +68,8 @@
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 [ext_resource type="PackedScene" uid="uid://2t246vx31yax" path="res://Scenes/Text.tscn" id="59_2060n"]
 [ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="63_my4ki"]
+[ext_resource type="PackedScene" path="res://Puzzle/ConditionDoor.tscn" id="69_uv6w5"]
+[ext_resource type="PackedScene" path="res://Puzzle/FireSwitch.tscn" id="70_r7bbj"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
@@ -422,10 +424,10 @@ size = Vector2(1150, 598)
 size = Vector2(1149.75, 593)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uv6w5"]
-size = Vector2(385.5, 587)
+size = Vector2(385.5, 600.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6rfp"]
-size = Vector2(373, 575)
+size = Vector2(373, 613)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r7bbj"]
 size = Vector2(127, 1153)
@@ -614,14 +616,14 @@ debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
 [node name="border10" type="StaticBody2D" parent="." unique_id=1071049086]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border10" unique_id=570459843]
-position = Vector2(-8512.25, -475)
+position = Vector2(-8512.25, -468.25)
 shape = SubResource("RectangleShape2D_uv6w5")
 debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
 
 [node name="border11" type="StaticBody2D" parent="." unique_id=264234514]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="border11" unique_id=300275497]
-position = Vector2(-8514.5, 485.5)
+position = Vector2(-8514.5, 466.5)
 shape = SubResource("RectangleShape2D_f6rfp")
 debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
 
@@ -772,7 +774,7 @@ offset_transform_scale = Vector2(1.5, 1.5)
 Message = "Press E to shoot"
 
 [node name="LocationLine6" parent="." unique_id=1747375226 instance=ExtResource("54_bv80c")]
-position = Vector2(3, 6)
+position = Vector2(23, 4)
 rotation = 1.5707964
 LocationAhead = "Tutorial"
 LocationBehind = "Tutorial"
@@ -793,3 +795,22 @@ LocationBehind = "Tutorial"
 position = Vector2(55, -36)
 LocationAhead = "Tutorial"
 LocationBehind = "Tutorial"
+
+[node name="ConditionDoor" parent="." unique_id=558600948 instance=ExtResource("69_uv6w5")]
+position = Vector2(-9921, -10)
+rotation = 1.5707964
+SwitchGroup = "dvere2"
+
+[node name="FireSwitch" parent="." unique_id=1172093045 groups=["dvere1"] instance=ExtResource("70_r7bbj")]
+position = Vector2(-7608, 1)
+
+[node name="ConditionDoor2" parent="." unique_id=1475303573 instance=ExtResource("69_uv6w5")]
+position = Vector2(-8575, -4)
+rotation = 1.5707964
+SwitchGroup = "dvere1"
+
+[node name="FireSwitch2" parent="." unique_id=493460610 groups=["dvere2"] instance=ExtResource("70_r7bbj")]
+position = Vector2(-9225, -131)
+
+[node name="FireSwitch3" parent="." unique_id=1999749156 groups=["dvere2"] instance=ExtResource("70_r7bbj")]
+position = Vector2(-9201, 135)
