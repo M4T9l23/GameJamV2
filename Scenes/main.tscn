@@ -3,10 +3,8 @@
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="1_ptfg5"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
-[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
-[ext_resource type="Resource" uid="uid://lbvtoi2xett0" path="res://GUI/Items/Abilities/Waterball.tres" id="3_1semv"]
-[ext_resource type="Resource" uid="uid://c76x0ae2td80q" path="res://GUI/Items/Abilities/Sprint.tres" id="3_qax2n"]
 [ext_resource type="Resource" uid="uid://3nj15gm8h2at" path="res://GUI/Items/Abilities/FireArmor.tres" id="4_y86h7"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
@@ -34,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -62,28 +60,30 @@
 [ext_resource type="Texture2D" uid="uid://dw7n5lr61bryv" path="res://Assets/Sprites/asp4.png" id="51_ynmfv"]
 [ext_resource type="Texture2D" uid="uid://brnda78885em4" path="res://Assets/Sprites/Asp 1.png" id="52_cblf0"]
 [ext_resource type="Texture2D" uid="uid://beqlbtru52kaf" path="res://Assets/Sprites/tiles/Trava.png" id="52_lx3vj"]
+[ext_resource type="PackedScene" path="res://GUI/LocationLine.tscn" id="54_bv80c"]
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 [ext_resource type="PackedScene" uid="uid://2t246vx31yax" path="res://Scenes/Text.tscn" id="59_2060n"]
+[ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="63_my4ki"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("2_8gbba")
 Interval = 5.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="Resource" id="Resource_3w5oe"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("5_hibaj")
 Interval = 7.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="Resource" id="Resource_pdsj5"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("6_pdsj5")
 Interval = 5.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
@@ -422,21 +422,9 @@ size = Vector2(118.5, 263)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
-[node name="Sprint" parent="." unique_id=417779031 instance=ExtResource("1_ptfg5")]
-position = Vector2(344, -515)
-InitialItem = ExtResource("3_qax2n")
-
 [node name="FireArmor" parent="." unique_id=1212144418 instance=ExtResource("1_ptfg5")]
 position = Vector2(370, -1208)
 InitialItem = ExtResource("4_y86h7")
-
-[node name="Healing" parent="." unique_id=1370641298 instance=ExtResource("1_ptfg5")]
-position = Vector2(185, -604)
-InitialItem = ExtResource("5_my4ki")
-
-[node name="watter" parent="." unique_id=163148361 instance=ExtResource("1_ptfg5")]
-position = Vector2(185, -604)
-InitialItem = ExtResource("3_1semv")
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
@@ -502,16 +490,6 @@ scale = Vector2(0.99809146, 1)
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.5, 1.5)
 Message = "Use M1 to drag items in inventory"
-
-[node name="Control4" parent="." unique_id=91259270 instance=ExtResource("59_2060n")]
-offset_left = -5730.0
-offset_top = -368.0
-offset_right = -5643.8354
-offset_bottom = -368.0
-scale = Vector2(0.99809146, 1)
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.5, 1.5)
-Message = "Press Q to autoaim and shoot enemy"
 
 [node name="Control5" parent="." unique_id=582881259 instance=ExtResource("59_2060n")]
 offset_left = -8153.0005
@@ -710,3 +688,41 @@ debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
 position = Vector2(-9921, 256)
 shape = SubResource("RectangleShape2D_fd3ed")
 debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
+
+[node name="LocationLine" parent="." unique_id=1639900733 node_paths=PackedStringArray("WaitPointAhead", "SpawnPoints") instance=ExtResource("54_bv80c")]
+position = Vector2(-4346, -1.9999981)
+rotation = 1.5707964
+scale = Vector2(1.4, 1.4)
+LocationAhead = "Training"
+LocationBehind = "Tutorial"
+DroidWaitsAhead = true
+WaitPointAhead = NodePath("../Marker2D")
+WaitMessageAhead = "Počkám vepředu"
+GiveItem = ExtResource("5_my4ki")
+GiveMessage = "Tohle se ti může hodit zmáčkni R až půjde do tuhého"
+SpawnEnemies = Array[PackedScene]([ExtResource("2_8gbba"), ExtResource("6_pdsj5"), ExtResource("5_hibaj")])
+SpawnPoints = [NodePath("../Marker2D2"), NodePath("../Marker2D3"), NodePath("../Marker2D4")]
+SpawnCount = 6
+
+[node name="WorldItem" parent="." unique_id=13913295 instance=ExtResource("1_ptfg5")]
+position = Vector2(-2502, 459)
+InitialItem = ExtResource("63_my4ki")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=329250193]
+position = Vector2(-5909, 12)
+
+[node name="Marker2D2" type="Marker2D" parent="." unique_id=2034864927]
+position = Vector2(-4675, -404)
+
+[node name="Marker2D3" type="Marker2D" parent="." unique_id=636083127]
+position = Vector2(-5383, -308)
+
+[node name="Marker2D4" type="Marker2D" parent="." unique_id=543361768]
+position = Vector2(-5039, 435)
+
+[node name="LocationLine2" parent="." unique_id=1163481936 instance=ExtResource("54_bv80c")]
+position = Vector2(-6026, 0)
+rotation = 1.5707964
+scale = Vector2(1.4, 1.4)
+LocationAhead = "Training more"
+LocationBehind = "Training"
