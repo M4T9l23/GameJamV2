@@ -1,21 +1,67 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://Puzzle/FireSwitch.cs" id="1_sw"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/Fire pit.png" id="2_pit"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/Fire animation.png" id="3_fire"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sw"]
-size = Vector2(32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0"]
+atlas = ExtResource("3_fire")
+region = Rect2(0, 0, 720, 720)
 
-[node name="FireSwitch" type="StaticBody2D" node_paths=PackedStringArray("Visual")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1"]
+atlas = ExtResource("3_fire")
+region = Rect2(720, 0, 720, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2"]
+atlas = ExtResource("3_fire")
+region = Rect2(1440, 0, 720, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3"]
+atlas = ExtResource("3_fire")
+region = Rect2(2160, 0, 720, 720)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fire"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3")
+}],
+"loop": true,
+"name": &"burn",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sw"]
+radius = 48.0
+
+[node name="FireSwitch" type="StaticBody2D" node_paths=PackedStringArray("LitVisual", "Visual")]
 collision_layer = 1
 collision_mask = 0
 script = ExtResource("1_sw")
-Visual = NodePath("Body")
+BurnSeconds = 0.0
+LitVisual = NodePath("Flame")
+Visual = NodePath("Pit")
+
+[node name="Pit" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_pit")
+
+[node name="Flame" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -22)
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_fire")
+animation = &"burn"
+autoplay = "burn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_sw")
-
-[node name="Body" type="ColorRect" parent="."]
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
+shape = SubResource("CircleShape2D_sw")

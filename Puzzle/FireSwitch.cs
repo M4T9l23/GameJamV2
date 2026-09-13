@@ -23,10 +23,14 @@ public partial class FireSwitch : StaticBody2D
 	[Export] public bool WaterExtinguishes = true;
 
 	[ExportGroup("Vzhled")]
-	// Co se obarvuje. Nechej prázdné a obarví se celý spínač.
+	// Vidět jen když hoří - typicky AnimatedSprite2D s plamenem.
+	[Export] public CanvasItem LitVisual;
+	// Vidět jen když nehoří. Nechej prázdné, když má jáma zůstat pořád.
+	[Export] public CanvasItem UnlitVisual;
+	// Zůstává vidět vždycky - samotná jáma. Obarvuje se podle stavu.
 	[Export] public CanvasItem Visual;
-	[Export] public Color LitColor = new Color(1f, 0.55f, 0.15f);
-	[Export] public Color UnlitColor = new Color(0.45f, 0.45f, 0.5f);
+	[Export] public Color LitColor = new Color(1f, 1f, 1f);
+	[Export] public Color UnlitColor = new Color(0.75f, 0.75f, 0.8f);
 
 	[Signal] public delegate void StateChangedEventHandler(bool lit);
 
@@ -38,7 +42,6 @@ public partial class FireSwitch : StaticBody2D
 	{
 		AddToGroup("fire_switch");
 
-		Visual ??= this;
 		IsLit = StartsLit;
 		_burnLeft = IsLit ? BurnSeconds : 0f;
 
@@ -92,6 +95,12 @@ public partial class FireSwitch : StaticBody2D
 
 	private void Repaint()
 	{
+		if (LitVisual != null)
+			LitVisual.Visible = IsLit;
+
+		if (UnlitVisual != null)
+			UnlitVisual.Visible = !IsLit;
+
 		if (Visual != null)
 			Visual.Modulate = IsLit ? LitColor : UnlitColor;
 	}
