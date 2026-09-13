@@ -31,12 +31,21 @@ public partial class LocationLine : Area2D
 	// Kam se dostane při průchodu opačným směrem. Prázdné = režim zóny.
 	[Export] public string LocationBehind = "";
 
+	[ExportGroup("Predani itemu")]
+	// Když Jane vstoupí do téhle lokace, droid k ní doletí a item jí
+	// položí na zem. Nechej prázdné, pokud se nic předávat nemá.
+	[Export] public Item GiveItem;
+	[Export(PropertyHint.MultilineText)] public string GiveMessage = "";
+	// Předat jen jednou za běh hry.
+	[Export] public bool GiveOnce = true;
+
 	[ExportGroup("Chovani")]
 	// Která lokální osa určuje "před" a "za". U vodorovné čáry nech Y,
 	// u svislé přepni na X.
 	[Export] public Axis CrossAxis = Axis.Y;
 
 	private float _entrySide;
+	private bool _given;
 
 	public override void _Ready()
 	{
@@ -102,5 +111,41 @@ public partial class LocationLine : Area2D
 
 		panel.Location = location;
 		GD.Print($"Location: {location}");
+
+		TryGiveItem();
+	}
+
+	// Posle droida, aby Jane donesl item. Neopakuje se, kdyz uz ho ma.
+	private void TryGiveItem()
+	{
+		if (GiveItem == null || (GiveOnce && _given))
+			return;
+
+		if (GetTree().GetFirstNodeInGroup("droid") is not Droid droid)
+		{
+			GD.Print($"LocationLine '{Name}': droid nenalezen (grupa 'droid').");
+			return;
+		}
+
+		if (PlayerHasItem(GiveItem))
+			return;
+
+		_given = true;
+		droid.DeliverItem(GiveItem, GiveMessage);
+	}
+
+	private bool PlayerHasItem(Item item)
+	{
+		if (GetTree().GetFirstNodeInGroup("inventory") is not Inventory inv)
+			return false;
+
+		foreach (ItemSlot slot in inv.GetSlots())
+		{
+			Item held = slot.GetItem();
+			if (held != null && held.Id == item.Id)
+				return true;
+		}
+
+		return false;
 	}
 }
