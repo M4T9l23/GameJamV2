@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="1_bbxyb"]
 [ext_resource type="Texture2D" uid="uid://diqqt2vxkw60f" path="res://Assets/Sprites/projectiles/fireball_spritesheet.png" id="2_t3l6r"]
+[ext_resource type="AudioStream" uid="uid://dynta1ogj4dng" path="res://Assets/Music/floraphonic-fireball-whoosh-1-179125.mp3" id="3_u28ej"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fxl0e"]
 radius = 11.0
@@ -67,3 +68,7 @@ sprite_frames = SubResource("SpriteFrames_u28ej")
 autoplay = "default"
 frame_progress = 0.028199404
 centered = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=922047853]
+stream = ExtResource("3_u28ej")
+autoplay = true
