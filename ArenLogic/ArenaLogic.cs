@@ -508,11 +508,17 @@ public partial class ArenaLogic : Node2D
 		// scale (a rotaci) a byl by jinak velký než ten samý nepřítel od
 		// globálního spawneru - včetně kolizních tvarů.
 		Node parent = GetTree().CurrentScene ?? (Node)this;
-		parent.AddChild(enemy);
+		parent.CallDeferred(Node.MethodName.AddChild, enemy);
 
-		enemy.GlobalPosition = point.GlobalPosition;
-		enemy.Scale = Vector2.One;
-		enemy.Rotation = 0f;
+		// Pozice az potom, co je nepritel ve strome. Scale ani rotaci
+		// NEPREPISOVAT - nesou si je z vlastni sceny (Enemy.tscn ma na
+		// koreni 0.4) a prepsanim na 1 by byli 2,5x vetsi.
+		Vector2 where = point.GlobalPosition;
+		Callable.From(() =>
+		{
+			if (IsInstanceValid(enemy))
+				enemy.GlobalPosition = where;
+		}).CallDeferred();
 
 		_spawned.RemoveAll(n => !IsInstanceValid(n) || n.IsQueuedForDeletion());
 		_spawned.Add(enemy);
@@ -567,9 +573,17 @@ public partial class ArenaLogic : Node2D
 		}
 
 		var pickup = scene.Instantiate<WorldItem>();
-		GetTree().CurrentScene.AddChild(pickup);
-		pickup.GlobalPosition = RewardPoint?.GlobalPosition ?? GlobalPosition;
-		pickup.SetItem(item);
+		Vector2 where = RewardPoint?.GlobalPosition ?? GlobalPosition;
+
+		GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, pickup);
+
+		// Pozice az potom, co je ve strome.
+		Callable.From(() =>
+		{
+			if (!IsInstanceValid(pickup)) return;
+			pickup.GlobalPosition = where;
+			pickup.SetItem(item);
+		}).CallDeferred();
 	}
 
 	// --- smrt hráče ------------------------------------------------------

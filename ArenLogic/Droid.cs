@@ -227,6 +227,17 @@ public partial class Droid : AnimatableBody2D
 
 		_pendingItem = item;
 		_pendingMessage = message;
+
+		// Kdyz ma cekat venku, nikam za Jane nelitame - to by cely wait
+		// zrusilo. Item pustime tady. Jane prave preslapla caru, takze
+		// stoji hned vedle.
+		if (_waiting)
+		{
+			DropPendingItem();
+			_state = DroidState.Waiting;
+			return;
+		}
+
 		_state = DroidState.Delivering;
 	}
 
@@ -267,9 +278,17 @@ public partial class Droid : AnimatableBody2D
 		}
 
 		var pickup = scene.Instantiate<WorldItem>();
-		GetTree().CurrentScene.AddChild(pickup);
-		pickup.GlobalPosition = GlobalPosition;
-		pickup.SetItem(_pendingItem);
+		Vector2 where = GlobalPosition;
+		Item dropped = _pendingItem;
+
+		GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, pickup);
+
+		Callable.From(() =>
+		{
+			if (!IsInstanceValid(pickup)) return;
+			pickup.GlobalPosition = where;
+			pickup.SetItem(dropped);
+		}).CallDeferred();
 
 		GD.Print($"Droid: predal '{_pendingItem.DisplayName}'.");
 

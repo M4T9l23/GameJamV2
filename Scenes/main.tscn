@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/character_body_2d.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
-[ext_resource type="Resource" uid="uid://3nj15gm8h2at" path="res://GUI/Items/Abilities/FireArmor.tres" id="4_y86h7"]
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
+[ext_resource type="Resource" uid="uid://dutse2hj4wqam" path="res://GUI/Items/Abilities/Healing.tres" id="5_my4ki"]
 [ext_resource type="PackedScene" uid="uid://bbo35pwjheaf3" path="res://Enemy/Enemy2/enemy_2.tscn" id="6_pdsj5"]
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/tiles/Asphalt.png" id="7_hptm8"]
 [ext_resource type="Texture2D" uid="uid://hkta2s33tb1i" path="res://Assets/Sprites/tiles/Asphalt_cross.png" id="8_d1ilt"]
@@ -59,6 +59,7 @@
 [ext_resource type="Texture2D" uid="uid://dw7n5lr61bryv" path="res://Assets/Sprites/asp4.png" id="51_ynmfv"]
 [ext_resource type="Texture2D" uid="uid://brnda78885em4" path="res://Assets/Sprites/Asp 1.png" id="52_cblf0"]
 [ext_resource type="Texture2D" uid="uid://beqlbtru52kaf" path="res://Assets/Sprites/tiles/Trava.png" id="52_lx3vj"]
+[ext_resource type="PackedScene" path="res://GUI/LocationLine.tscn" id="54_bv80c"]
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 [ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="55_ptfg5"]
 [ext_resource type="PackedScene" uid="uid://2t246vx31yax" path="res://Scenes/Text.tscn" id="59_2060n"]
@@ -396,9 +397,9 @@ size = Vector2(125.75, 583)
 
 [node name="Main" type="Node2D" unique_id=1197338719]
 
-[node name="FireArmor" parent="." unique_id=1212144418 instance=ExtResource("1_ptfg5")]
-position = Vector2(370, -1208)
-InitialItem = ExtResource("4_y86h7")
+[node name="WorldItem" parent="." unique_id=13913295 instance=ExtResource("1_ptfg5")]
+position = Vector2(-2513, 448)
+InitialItem = ExtResource("55_ptfg5")
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1075618122 node_paths=PackedStringArray("FloorMap")]
 script = ExtResource("1_jjgbg")
@@ -464,16 +465,6 @@ scale = Vector2(0.99809146, 1)
 offset_transform_enabled = true
 offset_transform_scale = Vector2(1.5, 1.5)
 Message = "Use M1 to drag items in inventory"
-
-[node name="Control4" parent="." unique_id=91259270 instance=ExtResource("59_2060n")]
-offset_left = -5730.0
-offset_top = -368.0
-offset_right = -5643.8354
-offset_bottom = -368.0
-scale = Vector2(0.99809146, 1)
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.5, 1.5)
-Message = "Press Q to autoaim and shoot enemy"
 
 [node name="border" type="StaticBody2D" parent="." unique_id=297508206]
 
@@ -541,13 +532,58 @@ shape = SubResource("RectangleShape2D_uv6w5")
 position = Vector2(-5826.875, 470.5)
 shape = SubResource("RectangleShape2D_r7bbj")
 
-[node name="WorldItem" parent="." unique_id=13913295 instance=ExtResource("1_ptfg5")]
-position = Vector2(-2513, 448)
-InitialItem = ExtResource("55_ptfg5")
-
 [node name="Control5" parent="." unique_id=1499371179 instance=ExtResource("59_2060n")]
 offset_left = -2711.0
 offset_top = 482.0
 offset_right = -2711.0
 offset_bottom = 482.0
 Message = "Press E to shoot"
+
+[node name="LocationLine" parent="." unique_id=1856098799 node_paths=PackedStringArray("WaitPointAhead", "SpawnPoints") instance=ExtResource("54_bv80c")]
+position = Vector2(-4332, -3.000002)
+rotation = 1.5707964
+scale = Vector2(1.4, 1.4)
+DroidWaitsAhead = true
+WaitPointAhead = NodePath("../Marker2D4")
+WaitMessageAhead = "Počkám vepředu"
+GiveItem = ExtResource("5_my4ki")
+GiveMessage = "Tohle se ti bude hodit zmáčkni R až budeš v úzkých"
+SpawnEnemies = Array[PackedScene]([ExtResource("2_8gbba"), ExtResource("6_pdsj5"), ExtResource("5_hibaj")])
+SpawnPoints = [NodePath("../Marker2D"), NodePath("../Marker2D2"), NodePath("../Marker2D3")]
+SpawnCount = 6
+
+[node name="LocationLine2" parent="." unique_id=804337800 instance=ExtResource("54_bv80c")]
+position = Vector2(18, -1)
+rotation = 1.5707964
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine2" parent="LocationLine2" unique_id=630987138 instance=ExtResource("54_bv80c")]
+position = Vector2(-41, -37.999996)
+rotation = 1.5707964
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine2" parent="LocationLine2/LocationLine2" unique_id=1618004123 instance=ExtResource("54_bv80c")]
+position = Vector2(-41, -37.999996)
+rotation = 1.5707964
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine2" parent="LocationLine2/LocationLine2/LocationLine2" unique_id=776698202 instance=ExtResource("54_bv80c")]
+position = Vector2(-41, -37.999996)
+rotation = 1.5707964
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1255953370]
+position = Vector2(-4700, -381)
+
+[node name="Marker2D2" type="Marker2D" parent="." unique_id=1280141447]
+position = Vector2(-5500, -372)
+
+[node name="Marker2D3" type="Marker2D" parent="." unique_id=675570899]
+position = Vector2(-5115, 413)
+
+[node name="Marker2D4" type="Marker2D" parent="." unique_id=1903355978]
+position = Vector2(-5978, 8)
