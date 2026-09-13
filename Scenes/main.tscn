@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -67,9 +67,12 @@
 [ext_resource type="PackedScene" path="res://GUI/LocationLine.tscn" id="54_bv80c"]
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 [ext_resource type="PackedScene" uid="uid://2t246vx31yax" path="res://Scenes/Text.tscn" id="59_2060n"]
-[ext_resource type="Resource" path="res://GUI/Items/Abilities/Fireball.tres" id="63_my4ki"]
+[ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="63_my4ki"]
 [ext_resource type="PackedScene" path="res://Puzzle/ConditionDoor.tscn" id="69_uv6w5"]
 [ext_resource type="PackedScene" path="res://Puzzle/FireSwitch.tscn" id="70_r7bbj"]
+[ext_resource type="Script" uid="uid://ba3agrdjeb4fa" path="res://ArenLogic/ArenaLogic.cs" id="71_f6rfp"]
+[ext_resource type="Resource" uid="uid://c76x0ae2td80q" path="res://GUI/Items/Abilities/Sprint.tres" id="72_sasc4"]
+[ext_resource type="Script" uid="uid://brn3slsrrievu" path="res://ArenLogic/ArenaBorder.cs" id="73_pfx1i"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
 script = ExtResource("2_h1bgf")
@@ -474,6 +477,12 @@ size = Vector2(127, 4197)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k8rh3"]
 size = Vector2(578, 213)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_goeth"]
+size = Vector2(766.3334, 662.3333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_entrance"]
+size = Vector2(160, 40)
+
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="FireArmor" parent="." unique_id=1212144418 instance=ExtResource("1_ptfg5")]
@@ -817,6 +826,7 @@ LocationBehind = "Tutorial"
 [node name="ConditionDoor" parent="." unique_id=558600948 instance=ExtResource("69_uv6w5")]
 position = Vector2(-9921, -10)
 rotation = 1.5707964
+SwitchGroup = "dvere2"
 
 [node name="FireSwitch" parent="." unique_id=1172093045 groups=["dvere1"] instance=ExtResource("70_r7bbj")]
 position = Vector2(-7608, 1)
@@ -824,6 +834,7 @@ position = Vector2(-7608, 1)
 [node name="ConditionDoor2" parent="." unique_id=1475303573 instance=ExtResource("69_uv6w5")]
 position = Vector2(-8575, -4)
 rotation = 1.5707964
+SwitchGroup = "dvere1"
 
 [node name="FireSwitch2" parent="." unique_id=493460610 groups=["dvere2"] instance=ExtResource("70_r7bbj")]
 position = Vector2(-9225, -131)
@@ -879,3 +890,70 @@ debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
 position = Vector2(-10753, 404)
 shape = SubResource("RectangleShape2D_k8rh3")
 debug_color = Color(0.92156863, 0, 0.69803923, 0.41960785)
+
+[node name="Arena" type="Node2D" parent="." unique_id=1058713205 node_paths=PackedStringArray("RewardPoint", "Region", "Entrance", "DroidParkPoint", "RespawnPoint", "ExitPoint", "Border", "SpawnPoints")]
+position = Vector2(-13483, -242)
+scale = Vector2(6, 6)
+script = ExtResource("71_f6rfp")
+Reward = ExtResource("72_sasc4")
+RewardPoint = NodePath("RewardPoint")
+Region = NodePath("Region")
+Entrance = NodePath("Entrance")
+DroidParkPoint = NodePath("RewardPoint")
+RespawnPoint = NodePath("Respawn")
+ExitPoint = NodePath("Exit")
+Border = NodePath("Border")
+EnemyScenes = Array[PackedScene]([ExtResource("2_8gbba"), ExtResource("6_pdsj5"), ExtResource("5_hibaj")])
+SpawnPoints = [NodePath("Spawn1"), NodePath("Spawn2"), NodePath("Spawn3"), NodePath("Spawn4")]
+SpawnInterval = 2.0
+WaveCount = 6
+EnemiesPerWave = 8
+ExtraEnemiesPerWave = 2
+ScanRate = 20.0
+DrainPerEnemy = 0.4
+RespawnHealth = 20
+
+[node name="Region" type="Area2D" parent="Arena" unique_id=726801219]
+collision_layer = 0
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Region" unique_id=1425235778]
+position = Vector2(7.833252, 51.50002)
+shape = SubResource("RectangleShape2D_goeth")
+
+[node name="Entrance" type="StaticBody2D" parent="Arena" unique_id=1486805697]
+position = Vector2(0, 300)
+collision_layer = 7
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Entrance" unique_id=1721168954]
+position = Vector2(367.1667, -260.66666)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_entrance")
+disabled = true
+
+[node name="Respawn" type="Marker2D" parent="Arena" unique_id=1449246206]
+position = Vector2(283, 40.5)
+
+[node name="Exit" type="Marker2D" parent="Arena" unique_id=192181024]
+position = Vector2(-339.1667, 41.833313)
+
+[node name="RewardPoint" type="Marker2D" parent="Arena" unique_id=1923606737]
+position = Vector2(11.833334, 32.5)
+
+[node name="Spawn1" type="Marker2D" parent="Arena" unique_id=41971694]
+position = Vector2(-178.83333, -115.5)
+
+[node name="Spawn2" type="Marker2D" parent="Arena" unique_id=925153034]
+position = Vector2(187, -119.666664)
+
+[node name="Spawn3" type="Marker2D" parent="Arena" unique_id=598746983]
+position = Vector2(-184.33333, 199.66667)
+
+[node name="Spawn4" type="Marker2D" parent="Arena" unique_id=603918759]
+position = Vector2(173.5, 194.16667)
+
+[node name="Border" type="Node2D" parent="Arena" unique_id=319960845]
+position = Vector2(5.8333335, 39.666668)
+script = ExtResource("73_pfx1i")
+Layer = 4
