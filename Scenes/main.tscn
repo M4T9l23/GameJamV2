@@ -720,3 +720,24 @@ offset_top = 485.0
 offset_right = -2699.0
 offset_bottom = 485.0
 Message = "Press E to fire"
+
+[node name="LocationLine3" parent="." unique_id=972523359 instance=ExtResource("54_bv80c")]
+position = Vector2(65, -36)
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine3" parent="LocationLine3" unique_id=705367129 instance=ExtResource("54_bv80c")]
+position = Vector2(-1, 58)
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine3" parent="LocationLine3/LocationLine3" unique_id=401288178 instance=ExtResource("54_bv80c")]
+position = Vector2(-43, -23)
+rotation = 1.5707964
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
+
+[node name="LocationLine3" parent="LocationLine3/LocationLine3/LocationLine3" unique_id=1985548244 instance=ExtResource("54_bv80c")]
+position = Vector2(-7.000004, -70)
+LocationAhead = "Tutorial"
+LocationBehind = "Tutorial"
