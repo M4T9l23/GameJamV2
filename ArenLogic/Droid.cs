@@ -41,6 +41,17 @@ public partial class Droid : AnimatableBody2D
 	// přesné, ale klidnější.
 	[Export] public bool PhysicsSync = true;
 
+	[ExportGroup("Doruceni")]
+	// Jak blizko k Jane doletí, než item pustí.
+	[Export] public float DeliverDistance = 70f;
+	[Export] public float DeliverSpeed = 420f;
+	// Jak dlouho zůstane viset hláška nad droidem.
+	[Export] public float MessageSeconds = 4f;
+	// Nechej prázdné, vezme se res://GUI/Items/WorldItem.tscn.
+	[Export] public PackedScene WorldItemScene;
+	// Label na hlášky. Nechej prázdné, vyrobí se za běhu.
+	[Export] public Label SpeechLabel;
+
 	[ExportGroup("Otáčení")]
 	// Node, který se otáčí. Nechej prázdné - najde si první AnimatedSprite2D
 	// nebo Sprite2D mezi dětmi. Otáčí se jen tenhle node, ne celý droid,
@@ -54,12 +65,17 @@ public partial class Droid : AnimatableBody2D
 	// Vyšší číslo = ostřejší zatáčení. Kolem 20 je to skoro okamžité.
 	[Export] public float TurnSpeed = 10f;
 
-	private enum DroidState { Following, MovingToPark, Parked }
+	private enum DroidState { Following, MovingToPark, Parked, Delivering, Waiting }
 
 	private DroidState _state = DroidState.Following;
 	private Vector2 _parkPoint;
 	private Node2D _player;
 	private Vector2 _facing = Vector2.Right;
+	private Item _pendingItem;
+	private string _pendingMessage;
+	private Vector2 _waitPoint;
+	private bool _waiting;
+	private float _messageTimer;
 
 	// ArenaLogic podle tohohle pozná, že už může zablokovat vchod.
 	public bool IsParked => _state == DroidState.Parked;
@@ -80,6 +96,7 @@ public partial class Droid : AnimatableBody2D
 		_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
 
 		AutoWireVisual();
+		SetupSpeech();
 
 		if (ScanBar != null)
 		{
@@ -128,8 +145,17 @@ public partial class Droid : AnimatableBody2D
 			case DroidState.Parked:
 				// Stojí ve vchodu a skenuje, drží si poslední směr.
 				break;
+
+			case DroidState.Delivering:
+				moveDir = MoveToDeliver(dt);
+				break;
+
+			case DroidState.Waiting:
+				moveDir = MoveTowards(_waitPoint, FollowSpeed * dt, 4f);
+				break;
 		}
 
+		TickMessage(dt);
 		UpdateFacing(moveDir, dt);
 	}
 
@@ -172,6 +198,154 @@ public partial class Droid : AnimatableBody2D
 		Visual.Rotation = Mathf.LerpAngle(Visual.Rotation, target, 1f - Mathf.Exp(-TurnSpeed * dt));
 	}
 
+	// Obecny posun k bodu. Vraci smer letu, nebo Zero kdyz uz je na miste.
+	private Vector2 MoveTowards(Vector2 point, float step, float tolerance)
+	{
+		Vector2 delta = point - GlobalPosition;
+
+		if (delta.Length() <= tolerance)
+			return Vector2.Zero;
+
+		GlobalPosition = GlobalPosition.MoveToward(point, step);
+		return delta.Normalized();
+	}
+
+	// --- doruceni itemu --------------------------------------------------
+
+	// Droid doleti k Jane, polozi item a rekne hlasku.
+	public void DeliverItem(Item item, string message)
+	{
+		if (item == null)
+			return;
+
+		// Behem skenovani arenu neopousti - doruci az potom.
+		if (_state == DroidState.MovingToPark || _state == DroidState.Parked)
+		{
+			GD.Print("Droid: doruceni odlozeno, zrovna drzi vchod.");
+			return;
+		}
+
+		_pendingItem = item;
+		_pendingMessage = message;
+		_state = DroidState.Delivering;
+	}
+
+	private Vector2 MoveToDeliver(float dt)
+	{
+		if (_player == null || !IsInstanceValid(_player))
+		{
+			_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
+			if (_player == null)
+			{
+				_state = DroidState.Following;
+				return Vector2.Zero;
+			}
+		}
+
+		Vector2 dir = MoveTowards(_player.GlobalPosition, DeliverSpeed * dt, DeliverDistance);
+
+		// Jeste nedoletel.
+		if (dir != Vector2.Zero)
+			return dir;
+
+		DropPendingItem();
+		_state = _waiting ? DroidState.Waiting : DroidState.Following;
+		return Vector2.Zero;
+	}
+
+	private void DropPendingItem()
+	{
+		if (_pendingItem == null)
+			return;
+
+		PackedScene scene = WorldItemScene ?? GD.Load<PackedScene>("res://GUI/Items/WorldItem.tscn");
+
+		if (scene == null)
+		{
+			GD.PushError("Droid: nepodarilo se nacist WorldItem.tscn");
+			return;
+		}
+
+		var pickup = scene.Instantiate<WorldItem>();
+		GetTree().CurrentScene.AddChild(pickup);
+		pickup.GlobalPosition = GlobalPosition;
+		pickup.SetItem(_pendingItem);
+
+		GD.Print($"Droid: predal '{_pendingItem.DisplayName}'.");
+
+		if (!string.IsNullOrEmpty(_pendingMessage))
+			Say(_pendingMessage);
+
+		_pendingItem = null;
+		_pendingMessage = null;
+	}
+
+	// --- hlasky ----------------------------------------------------------
+
+	private void SetupSpeech()
+	{
+		if (SpeechLabel != null)
+		{
+			SpeechLabel.Hide();
+			return;
+		}
+
+		SpeechLabel = new Label
+		{
+			Name = "SpeechLabel",
+			HorizontalAlignment = HorizontalAlignment.Center,
+			AutowrapMode = TextServer.AutowrapMode.WordSmart,
+			Size = new Vector2(220, 48),
+			Position = new Vector2(-110, -110),
+		};
+
+		AddChild(SpeechLabel);
+		SpeechLabel.Hide();
+	}
+
+	public void Say(string message)
+	{
+		if (SpeechLabel == null || string.IsNullOrEmpty(message))
+			return;
+
+		SpeechLabel.Text = message;
+		SpeechLabel.Show();
+		_messageTimer = MessageSeconds;
+	}
+
+	private void TickMessage(float dt)
+	{
+		if (_messageTimer <= 0f)
+			return;
+
+		_messageTimer -= dt;
+
+		if (_messageTimer <= 0f)
+			SpeechLabel?.Hide();
+	}
+
+	// --- cekaci zony -----------------------------------------------------
+
+	// Jane vesla do lokace, kam droid nechodi. Zaparkuje a ceka.
+	public void WaitAt(Vector2 point)
+	{
+		_waiting = true;
+		_waitPoint = point;
+
+		// Arenu ani doruceni neprerusujeme.
+		if (_state == DroidState.Following)
+			_state = DroidState.Waiting;
+	}
+
+	// Jane z te lokace vysla, droid se zase rozjede za ni.
+	public void StopWaiting()
+	{
+		_waiting = false;
+
+		if (_state == DroidState.Waiting)
+			_state = DroidState.Following;
+	}
+
 	// --- volá ArenaLogic -------------------------------------------------
 
 	public void ParkAt(Vector2 point)
@@ -188,7 +362,7 @@ public partial class Droid : AnimatableBody2D
 
 	public void Release()
 	{
-		_state = DroidState.Following;
+		_state = _waiting ? DroidState.Waiting : DroidState.Following;
 		ScanBar?.Hide();
 	}
 
