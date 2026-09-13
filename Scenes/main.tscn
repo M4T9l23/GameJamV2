@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://jsynbmu2n6e8" path="res://Enemy/EnemySpawner.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://d2p2s1eaw2b38" path="res://GUI/Items/WorldItem.tscn" id="1_ptfg5"]
-[ext_resource type="Resource" uid="uid://ckreaq7utrcjn" path="res://GUI/Items/Abilities/Fireball.tres" id="2_2daye"]
 [ext_resource type="PackedScene" uid="uid://djos7eh4sq0tp" path="res://Enemy/Enemy1/Enemy.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://ckjctphwfa8xg" path="res://Player/player_scene.tscn" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://br8d8mwiwbhwb" path="res://Enemy/SpawnEntry.cs" id="2_h1bgf"]
@@ -13,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cbjkggej1psfs" path="res://Scenes/death_screen.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bcrlhq3ppubhr" path="res://Enemy/Enemy3_frog/enemy_3.tscn" id="5_hibaj"]
 [ext_resource type="PackedScene" uid="uid://cs1wjac4xdv8j" path="res://GUI/Inventory.tscn" id="5_kry3j"]
-[ext_resource type="Resource" path="res://GUI/Items/Abilities/Healing.tres" id="5_my4ki"]
+[ext_resource type="Resource" uid="uid://dutse2hj4wqam" path="res://GUI/Items/Abilities/Healing.tres" id="5_my4ki"]
 [ext_resource type="PackedScene" uid="uid://bbo35pwjheaf3" path="res://Enemy/Enemy2/enemy_2.tscn" id="6_pdsj5"]
 [ext_resource type="Texture2D" uid="uid://2lhjhlpuhid" path="res://Assets/Sprites/tiles/Asphalt.png" id="7_hptm8"]
 [ext_resource type="Texture2D" uid="uid://hkta2s33tb1i" path="res://Assets/Sprites/tiles/Asphalt_cross.png" id="8_d1ilt"]
@@ -36,7 +35,7 @@
 [ext_resource type="Texture2D" uid="uid://dasal8xlklglr" path="res://Assets/Sprites/tiles/Kontejner7.png" id="21_xdkp6"]
 [ext_resource type="Script" uid="uid://ckov2s5lpks0w" path="res://Enemy/Enemy1/EnemyProjectile.cs" id="23_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://bgl3bajmqdekb" path="res://Assets/Sprites/tiles/Kontejner8.png" id="23_54nrm"]
-[ext_resource type="PackedScene" uid="uid://2teh0kiftjcb" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
+[ext_resource type="PackedScene" uid="uid://c4dcomkaq5r6f" path="res://ArenLogic/Droid.tscn" id="23_gt3je"]
 [ext_resource type="Script" uid="uid://cwy0y2x5tcm7a" path="res://Scenes/PauseOnEsc.cs" id="24_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://b4m4kjpserwq0" path="res://Assets/Sprites/tiles/Kontejner9.png" id="24_55jeb"]
 [ext_resource type="Texture2D" uid="uid://y8253d3nvgt2" path="res://Assets/Sprites/tiles/Kontejner10.png" id="25_gsvbx"]
@@ -59,7 +58,6 @@
 [ext_resource type="Texture2D" uid="uid://d23cqqcqitod0" path="res://Assets/Sprites/tiles/Wall_right.png" id="41_bv80c"]
 [ext_resource type="Texture2D" uid="uid://dae638wr044ys" path="res://Assets/Sprites/tiles/Wall_top.png" id="42_ptfg5"]
 [ext_resource type="Texture2D" uid="uid://b83bsj46wqfmw" path="res://Assets/Sprites/tiles/Asphalt_hazard.png" id="43_bv80c"]
-[ext_resource type="Script" uid="uid://ba3agrdjeb4fa" path="res://ArenLogic/ArenaLogic.cs" id="46_v2nl5"]
 [ext_resource type="AudioStream" uid="uid://cfcdmfj3w5ho7" path="res://Assets/Music/In game Music.wav" id="54_gsvbx"]
 
 [sub_resource type="Resource" id="Resource_hibaj"]
@@ -345,12 +343,6 @@ size = Vector2(57, 2038.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hptm8"]
 size = Vector2(39, 2145)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_region"]
-size = Vector2(833.3334, 644.6667)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_entrance"]
-size = Vector2(160, 40)
-
 [node name="Main" type="Node2D" unique_id=1197338719]
 
 [node name="Sprint" parent="." unique_id=417779031 instance=ExtResource("1_ptfg5")]
@@ -390,7 +382,7 @@ z_index = -1
 scale = Vector2(0.25, 0.25)
 tile_set = SubResource("TileSet_62yky")
 format = 2
-layer_0/tile_data = PackedInt32Array(-1, 35, 0, 65535, 0, 0, -65537, 2, 0, -131073, 2, 0, 131071, 0, 0, -2, 35, 0, -65536, 3, 0, -65535, 3, 0, -3, 35, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 34, 0, 196607, 0, 0, 262143, 0, 0, -196609, 2, 0, -262145, 2, 0, -4, 35, 0, -5, 35, 0, -65534, 3, 0, -65533, 3, 0, -6, 35, 0, -327681, 9, 0, -65532, 10, 0, 327679, 0, 0, -131078, 4, 0, 131066, 0, 0, 65530, 0, 0, -65542, 2, 0, -327682, 3, 0, -393216, 3, 0, 327678, 0, 0, 262144, 0, 0, 4, 2, 0, -131068, 2, 0, -196604, 6, 0, 65540, 7, 0, -393215, 5, 0, -327683, 7, 0, 262145, 34, 0, 327677, 0, 0, -262147, 0, 0, -131077, 0, 0, 65531, 0, 0, -196606, 0, 0, 2, 0, 0, 196605, 0, 0, 131072, 0, 0, -65541, 0, 0, 131067, 0, 0, -196611, 0, 0, -131070, 0, 0, 196608, 0, 0, 262141, 0, 0, -131076, 0, 0, -262146, 0, 0, -196605, 0, 0, -327679, 0, 0, 131073, 34, 0, 196606, 0, 0, 65532, 0, 0, 131068, 0, 0, -65540, 0, 0, -131069, 0, 0, 196609, 34, 0, 262142, 0, 0, -262143, 0, 0, -196610, 0, 0, -327680, 0, 0, -262144, 0, 0, 65538, 0, 0, 3, 0, 0, 65539, 0, 0, -393219, 4, 0, -196603, 5, 0, 131065, 0, 0, -458751, 6, 0, 65541, 4, 0, -131079, 7, 0, -393223, 1, 0, -196615, 2, 0, -262151, 2, 0, -327687, 2, 0, -393222, 3, 0, -393221, 3, 0, -393220, 3, 0, -458750, 3, 0, -458749, 3, 0, -458748, 3, 0, -458747, 1, 0, 393209, 0, 0, 327681, 34, 0, 393213, 0, 0, 196601, 0, 0, 262137, 0, 0, 327673, 0, 0, 131077, 2, 0, 196613, 2, 0, 262149, 2, 0, 327685, 1, 0, -393211, 2, 0, -327675, 2, 0, -262139, 2, 0, 393210, 0, 0, 393212, 0, 0, 393211, 0, 0, 327682, 3, 0, 327683, 3, 0, 327684, 3, 0, -327677, 0, 0, -262149, 0, 0, 262139, 0, 0, 196611, 0, 0, -327684, 0, 0, -262148, 0, 0, -196612, 0, 0, -196613, 0, 0, -196614, 0, 0, -262150, 0, 0, -327686, 0, 0, -327685, 0, 0, -327678, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -327676, 0, 0, -393212, 0, 0, -393213, 0, 0, -393214, 0, 0, 131074, 0, 0, 196610, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 196612, 0, 0, 131076, 0, 0, 131075, 0, 0, 196604, 0, 0, 196603, 0, 0, 196602, 0, 0, 262138, 0, 0, 327674, 0, 0, 327675, 0, 0, 327676, 0, 0, 262140, 0, 0, -65543, 4, 0, 65529, 0, 0, -458752, 5, 0, 327680, 0, 0, -7, 35, 0, -393217, 3, 0, -393218, 7, 0, -65544, 6, 0, 65528, 0, 0, -8, 35, 0, 393214, 0, 0, 393215, 0, 0, 458751, 0, 0, 393216, 0, 0, 458750, 0, 0, 5, 7, 0, 6, 5, 0, -131066, 4, 0, -131067, 6, 0, -65531, 2, 0, -65530, 2, 0, -524288, 4, 0, -458754, 6, 0, -458753, 3, 0, -458760, 0, 0, -458759, 0, 0, -458758, 0, 0, -458757, 0, 0, -458756, 0, 0, -458755, 0, 0, -524287, 0, 0, -524286, 0, 0, -524285, 0, 0, -524284, 0, 0, -524283, 0, 0, -524282, 0, 0, -458746, 0, 0, -393210, 0, 0, -327674, 0, 0, -196602, 0, 0, -262138, 0, 0, -393224, 0, 0, -327688, 0, 0, -262152, 0, 0, -196616, 0, 0, -131080, 0, 0, 131064, 0, 0, 262136, 0, 0, 196600, 0, 0, 327672, 0, 0, 393208, 0, 0, 458744, 0, 0, 458745, 0, 0, 458746, 0, 0, 458747, 0, 0, 458748, 0, 0, 458749, 0, 0, 393217, 34, 0, 393218, 0, 0, 393220, 0, 0, 393219, 0, 0, 393221, 0, 0, 393222, 0, 0, 327686, 0, 0, 262150, 0, 0, 196614, 0, 0, 131078, 0, 0, 65542, 0, 0, 524280, 35, 0, 524281, 35, 0, 524282, 35, 0, 524283, 35, 0, 524286, 35, 0, 524287, 35, 0, 458752, 35, 0, 458753, 36, 0, 458754, 30, 0, 458755, 30, 0, 458756, 30, 0, 458757, 30, 0, 458758, 30, 0, 458759, 36, 0, 393223, 17, 0, 327687, 17, 0, 262151, 17, 0, 196615, 17, 0, 131079, 16, 0, 65543, 16, 0, 7, 16, 0, -65529, 16, 0, -131065, 15, 0, -196601, 15, 0, -262137, 15, 0, -327673, 15, 0, -393209, 14, 0, -458745, 14, 0, -524281, 14, 0, -589817, 32, 0, -589818, 18, 0, -589819, 18, 0, -589820, 18, 0, -589821, 18, 0, -589822, 21, 0, -589823, 21, 0, -589824, 21, 0, -524289, 21, 0, -524290, 23, 0, -524291, 23, 0, -524292, 23, 0, -524293, 23, 0, -524294, 22, 0, -524295, 22, 0, -524296, 22, 0, -524297, 37, 0, 458743, 27, 0, 393207, 27, 0, 327671, 27, 0, 262135, 27, 0, 196599, 24, 0, 131063, 24, 0, 65527, 24, 0, -9, 37, 0, -65545, 29, 0, -131081, 29, 0, -196617, 29, 0, -262153, 29, 0, -327689, 24, 0, -393225, 24, 0, -458761, 24, 0, 524279, 37, 0)
+layer_0/tile_data = PackedInt32Array(-1, 0, 0, 65535, 0, 0, -65537, 2, 0, -131073, 2, 0, 131071, 0, 0, -2, 0, 0, -65536, 3, 0, -65535, 3, 0, -3, 0, 0, -65539, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131072, 0, 0, 65534, 0, 0, 65533, 0, 0, 131070, 0, 0, 131069, 0, 0, 0, 0, 0, 65536, 0, 0, 1, 0, 0, 65537, 0, 0, 196607, 0, 0, 262143, 0, 0, -196609, 2, 0, -262145, 2, 0, -4, 0, 0, -5, 0, 0, -65534, 3, 0, -65533, 3, 0, -6, 0, 0, -327681, 9, 0, -65532, 10, 0, 327679, 0, 0, -131078, 4, 0, 131066, 0, 0, 65530, 0, 0, -65542, 2, 0, -327682, 3, 0, -393216, 3, 0, 327678, 0, 0, 262144, 0, 0, 4, 2, 0, -131068, 2, 0, -196604, 6, 0, 65540, 7, 0, -393215, 5, 0, -327683, 7, 0, 262145, 0, 0, 327677, 0, 0, -262147, 0, 0, -131077, 0, 0, 65531, 0, 0, -196606, 0, 0, 2, 0, 0, 196605, 0, 0, 131072, 0, 0, -65541, 0, 0, 131067, 0, 0, -196611, 0, 0, -131070, 0, 0, 196608, 0, 0, 262141, 0, 0, -262146, 0, 0, -196605, 0, 0, -327679, 0, 0, 131073, 0, 0, 65532, 0, 0, 131068, 0, 0, -65540, 0, 0, -131069, 0, 0, 196609, 0, 0, 262142, 0, 0, -262143, 0, 0, -196610, 0, 0, -327680, 0, 0, -262144, 0, 0, 65538, 0, 0, 3, 0, 0, 65539, 0, 0, -393219, 4, 0, -196603, 5, 0, 131065, 0, 0, -458751, 6, 0, 65541, 4, 0, -131079, 7, 0, -393223, 1, 0, -196615, 2, 0, -262151, 2, 0, -327687, 2, 0, -393222, 3, 0, -393221, 3, 0, -393220, 3, 0, -458750, 3, 0, -458749, 3, 0, -458748, 3, 0, -458747, 1, 0, 393209, 0, 0, 327681, 0, 0, 393213, 0, 0, 196601, 0, 0, 262137, 0, 0, 327673, 0, 0, 131077, 2, 0, 196613, 2, 0, 262149, 2, 0, 327685, 1, 0, -393211, 2, 0, -327675, 2, 0, -262139, 2, 0, 393210, 0, 0, 393212, 0, 0, 393211, 0, 0, 327682, 3, 0, 327683, 3, 0, 327684, 3, 0, -327677, 0, 0, -262149, 0, 0, 262139, 0, 0, 196611, 0, 0, -327684, 0, 0, -262148, 0, 0, -196612, 0, 0, -196613, 0, 0, -196614, 0, 0, -262150, 0, 0, -327686, 0, 0, -327685, 0, 0, -327678, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -327676, 0, 0, -393212, 0, 0, -393213, 0, 0, -393214, 0, 0, 131074, 0, 0, 196610, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 196612, 0, 0, 131076, 0, 0, 131075, 0, 0, 196604, 0, 0, 196603, 0, 0, 196602, 0, 0, 262138, 0, 0, 327674, 0, 0, 327675, 0, 0, 327676, 0, 0, 262140, 0, 0, -65543, 4, 0, 65529, 0, 0, -458752, 5, 0, 327680, 0, 0, -7, 0, 0, -393217, 3, 0, -393218, 7, 0, -65544, 6, 0, 65528, 0, 0, -8, 0, 0, 393214, 0, 0, 393215, 0, 0, 458751, 0, 0, 393216, 0, 0, 458750, 0, 0, 5, 7, 0, 6, 5, 0, -131066, 4, 0, -131067, 6, 0, -65531, 2, 0, -65530, 2, 0, -524288, 4, 0, -458754, 6, 0, -458753, 3, 0, -458760, 0, 0, -458759, 0, 0, -458758, 0, 0, -458757, 0, 0, -458756, 0, 0, -458755, 0, 0, -524287, 0, 0, -524286, 0, 0, -524285, 0, 0, -524284, 0, 0, -524283, 0, 0, -524282, 0, 0, -458746, 0, 0, -393210, 0, 0, -327674, 0, 0, -196602, 0, 0, -262138, 0, 0, -393224, 0, 0, -327688, 0, 0, -262152, 0, 0, -196616, 0, 0, -131080, 0, 0, 131064, 0, 0, 262136, 0, 0, 196600, 0, 0, 327672, 0, 0, 393208, 0, 0, 458744, 0, 0, 458745, 0, 0, 458746, 0, 0, 458747, 0, 0, 458748, 0, 0, 458749, 0, 0, 393217, 0, 0, 393218, 0, 0, 393220, 0, 0, 393219, 0, 0, 393221, 0, 0, 393222, 0, 0, 327686, 0, 0, 262150, 0, 0, 196614, 0, 0, 131078, 0, 0, 65542, 0, 0, 524280, 30, 0, 524281, 30, 0, 524282, 30, 0, 524283, 30, 0, 524286, 30, 0, 524287, 30, 0, 458752, 30, 0, 458753, 30, 0, 458754, 30, 0, 458755, 30, 0, 458756, 30, 0, 458757, 30, 0, 458758, 30, 0, 458759, 36, 0, 393223, 17, 0, 327687, 17, 0, 262151, 17, 0, 196615, 17, 0, 131079, 16, 0, 65543, 16, 0, 7, 16, 0, -65529, 16, 0, -131065, 15, 0, -196601, 15, 0, -262137, 15, 0, -327673, 15, 0, -393209, 14, 0, -458745, 14, 0, -524281, 14, 0, -589817, 32, 0, -589818, 18, 0, -589819, 18, 0, -589820, 18, 0, -589821, 18, 0, -589822, 21, 0, -589823, 21, 0, -589824, 21, 0, -524289, 21, 0, -524290, 23, 0, -524291, 23, 0, -524292, 23, 0, -524293, 23, 0, -524294, 22, 0, -524295, 22, 0, -524296, 22, 0, -524297, 37, 0, 458743, 27, 0, 393207, 27, 0, 327671, 27, 0, 262135, 27, 0, 196599, 24, 0, 131063, 24, 0, 65527, 24, 0, -9, 37, 0, -65545, 29, 0, -131081, 29, 0, -196617, 29, 0, -262153, 29, 0, -327689, 24, 0, -393225, 24, 0, -458761, 24, 0, 524279, 30, 0, -131076, 0, 0, 196606, 0, 0, 524285, 30, 0, 524284, 30, 0)
 
 [node name="border south" type="StaticBody2D" parent="." unique_id=1252232798]
 
@@ -419,52 +411,6 @@ shape = SubResource("RectangleShape2D_hptm8")
 
 [node name="Droid" parent="." unique_id=479326033 instance=ExtResource("23_gt3je")]
 position = Vector2(-588, -786)
-
-[node name="Arena" type="Node2D" parent="." unique_id=591025582 node_paths=PackedStringArray("RewardPoint", "SpawnPoints")]
-position = Vector2(-420, 441.00003)
-scale = Vector2(1.5, 1.5)
-script = ExtResource("46_v2nl5")
-Reward = ExtResource("2_2daye")
-RewardPoint = NodePath("RewardPoint")
-SpawnPoints = [null]
-
-[node name="Region" type="Area2D" parent="Arena" unique_id=938882783]
-collision_layer = 0
-collision_mask = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Region" unique_id=425964771]
-position = Vector2(-30, 3.9999795)
-shape = SubResource("RectangleShape2D_region")
-
-[node name="Entrance" type="StaticBody2D" parent="Arena" unique_id=1848628705]
-position = Vector2(330.66666, -276.6667)
-collision_layer = 7
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Entrance" unique_id=1771020387]
-position = Vector2(363.33334, -600.6667)
-shape = SubResource("RectangleShape2D_entrance")
-disabled = true
-
-[node name="Respawn" type="Marker2D" parent="Arena" unique_id=1810806213]
-position = Vector2(0, 220)
-
-[node name="Exit" type="Marker2D" parent="Arena" unique_id=1499744936]
-position = Vector2(0, 400)
-
-[node name="RewardPoint" type="Marker2D" parent="Arena" unique_id=636169479]
-
-[node name="Spawn1" type="Marker2D" parent="Arena" unique_id=13205091]
-position = Vector2(-320, -220)
-
-[node name="Spawn2" type="Marker2D" parent="Arena" unique_id=1021266995]
-position = Vector2(320, -220)
-
-[node name="Spawn3" type="Marker2D" parent="Arena" unique_id=1290944365]
-position = Vector2(-320, 220)
-
-[node name="Spawn4" type="Marker2D" parent="Arena" unique_id=46986521]
-position = Vector2(320, 220)
 
 [node name="StaticBody2D2" parent="." unique_id=1668936254 instance=ExtResource("4_jjvhh")]
 visible = false
