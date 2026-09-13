@@ -68,21 +68,21 @@
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("2_8gbba")
 Interval = 5.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="Resource" id="Resource_3w5oe"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("5_hibaj")
 Interval = 7.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="Resource" id="Resource_pdsj5"]
 script = ExtResource("2_h1bgf")
 Scene = ExtResource("6_pdsj5")
 Interval = 5.0
-MaxAlive = 5
+MaxAlive = 0
 metadata/_custom_type_script = "uid://br8d8mwiwbhwb"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkdf5"]
