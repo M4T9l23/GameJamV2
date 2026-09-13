@@ -105,3 +105,4 @@ autoplay = "default"
 [node name="JumpSound" type="AudioStreamPlayer2D" parent="." unique_id=1970487619]
 scale = Vector2(0.1, 0.1)
 stream = ExtResource("4_tsper")
+volume_db = -0.30
