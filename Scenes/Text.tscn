@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://2t246vx31yax"]
+
+[ext_resource type="Script" uid="uid://b6ts0o0yycxlv" path="res://Scenes/Text.cs" id="1_yjwyh"]
+[ext_resource type="FontFile" uid="uid://kkhlqb31vjhq" path="res://Assets/MonospaceBold.ttf" id="2_aymh6"]
+
+[node name="Control" type="Control" unique_id=1484165270]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yjwyh")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1454577024]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="PanelContainer" unique_id=661073234]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_aymh6")
+text = "Press tab to drag items to your inv."
