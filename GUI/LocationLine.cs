@@ -229,7 +229,7 @@ public partial class LocationLine : Area2D
 	}
 
 	// Pošle droida, aby Jane donesl item. Neopakuje se, když ho už má.
-	private void TryGiveItem()
+	private async void TryGiveItem()
 	{
 		if (GiveItem == null || (GiveOnce && _given))
 			return;
@@ -242,6 +242,7 @@ public partial class LocationLine : Area2D
 			return;
 
 		_given = true;
+		await ToSignal(GetTree().CreateTimer(2.0f), SceneTreeTimer.SignalName.Timeout);
 		droid.DeliverItem(GiveItem, GiveMessage);
 	}
 
